@@ -31,3 +31,9 @@ Los archivos `.env`, volcados de base de datos y datos persistentes estan exclui
 ## Identidad visual
 
 El proyecto utiliza un unico archivo de imagen de marca: `frontend/public/DaleConTodoMiKing.png`. No se incluyen imagenes de marca alternativas.
+
+## Estado del proyecto
+
+Versión actual: **v0.2.0 — Etapa 2**.
+
+El modelo de datos Prisma está definido en `backend/prisma/schema.prisma`. Todavía no se ejecutan migraciones automáticas; la primera migración se realizará al preparar la conexión del backend con PostgreSQL.

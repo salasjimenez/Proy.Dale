@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CategoriaEscenario {
+  LABORAL
+  TRAMITES_CALLE
+  SOCIAL
+  JOVENES_ESTUDIANTES
+
+  @@map("categoria_escenario")
+}
+
+enum NivelDificultad {
+  BASICO
+  INTERMEDIO
+  DIFICIL
+
+  @@map("nivel_dificultad")
+}
+
+enum ModalidadRespuesta {
+  VOZ
+  TEXTO
+
+  @@map("modalidad_respuesta")
+}
+
+enum EstadoSesion {
+  INICIADA
+  COMPLETADA
+  ABANDONADA
+
+  @@map("estado_sesion")
+}
+
+model Usuario {
+  id            String   @id @default(uuid()) @db.Uuid
+  email         String   @unique @db.VarChar(254)
+  passwordHash  String   @map("password_hash") @db.VarChar(255)
+  nombre        String?  @db.VarChar(100)
+  creadoEn      DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  sesiones Sesion[]
+
+  @@map("usuarios")
+}
+
+model Escenario {
+  id            String             @id @default(uuid()) @db.Uuid
+  slug          String             @unique @db.VarChar(120)
+  titulo        String             @db.VarChar(160)
+  descripcion   String             @db.Text
+  situacion     String             @db.Text
+  instrucciones String?            @db.Text
+  categoria     CategoriaEscenario
+  nivel         NivelDificultad
+  activo        Boolean            @default(true)
+  orden         Int                @default(0)
+  creadoEn      DateTime           @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime           @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  sesiones Sesion[]
+
+  @@index([categoria, nivel, activo])
+  @@index([activo, orden])
+  @@map("escenarios")
+}
+
+model Sesion {
+  id            String             @id @default(uuid()) @db.Uuid
+  usuarioId     String             @map("usuario_id") @db.Uuid
+  escenarioId   String             @map("escenario_id") @db.Uuid
+  modalidad     ModalidadRespuesta
+  estado        EstadoSesion       @default(INICIADA)
+  transcripcion String?            @db.Text
+  duracionMs    Int?               @map("duracion_ms")
+  iniciadaEn    DateTime           @default(now()) @map("iniciada_en") @db.Timestamptz(6)
+  finalizadaEn  DateTime?          @map("finalizada_en") @db.Timestamptz(6)
+  creadoEn      DateTime           @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime           @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  usuario   Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  escenario Escenario @relation(fields: [escenarioId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  metrica   Metrica?
+
+  @@index([usuarioId, creadoEn])
+  @@index([escenarioId])
+  @@index([estado])
+  @@map("sesiones")
+}
+
+model Metrica {
+  id                String   @id @default(uuid()) @db.Uuid
+  sesionId          String   @unique @map("sesion_id") @db.Uuid
+  palabras          Int      @default(0)
+  palabrasPorMinuto Float?   @map("palabras_por_minuto")
+  cantidadPausas    Int      @default(0) @map("cantidad_pausas")
+  duracionPausasMs  Int      @default(0) @map("duracion_pausas_ms")
+  pausaPromedioMs   Float?   @map("pausa_promedio_ms")
+  pausaMaximaMs     Int?     @map("pausa_maxima_ms")
+  muletillasTotal   Int      @default(0) @map("muletillas_total")
+  muletillasDetalle Json?    @map("muletillas_detalle")
+  repeticiones      Int      @default(0)
+  puntajeRitmo      Int?     @map("puntaje_ritmo")
+  puntajePausas     Int?     @map("puntaje_pausas")
+  puntajeMuletillas Int?     @map("puntaje_muletillas")
+  puntajeGeneral    Int?     @map("puntaje_general")
+  pausasDetalle     Json?    @map("pausas_detalle")
+  creadoEn          DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn     DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  sesion Sesion @relation(fields: [sesionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([puntajeGeneral])
+  @@map("metricas")
+}
