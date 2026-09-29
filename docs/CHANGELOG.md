@@ -2,6 +2,19 @@
 
 Todos los cambios relevantes de Dale se documentan en este archivo siguiendo versionado semántico.
 
+## [0.3.0] - 2026-09-29
+
+### Agregado
+
+- Servidor Express funcional con TypeScript.
+- Conexión de arranque y cierre controlado de Prisma.
+- `GET /ping` con comprobación real de PostgreSQL.
+- Rutas base para `auth`, `escenarios` y `sesiones`.
+- Helmet, CORS configurable y límite de JSON.
+- Middleware central de 404 y errores.
+- Migración inicial versionada para PostgreSQL.
+- Scripts para levantar PostgreSQL y aplicar/verificar migraciones.
+
 ## [0.2.0] - 2026-09-29
 
 ### Agregado

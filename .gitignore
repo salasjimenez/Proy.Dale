@@ -26,6 +26,7 @@ backend/dist/
 *.sqlite3
 *.dump
 *.sql
+!backend/prisma/migrations/**/*.sql
 pgdata/
 postgres-data/
 

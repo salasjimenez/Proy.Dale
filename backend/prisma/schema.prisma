@@ -40,11 +40,11 @@ enum EstadoSesion {
 }
 
 model Usuario {
-  id            String   @id @default(uuid()) @db.Uuid
-  email         String   @unique @db.VarChar(254)
-  passwordHash  String   @map("password_hash") @db.VarChar(255)
-  nombre        String?  @db.VarChar(100)
-  creadoEn      DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique @db.VarChar(254)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  nombre       String?  @db.VarChar(100)
+  creadoEn     DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
   actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
 
   sesiones Sesion[]
@@ -97,24 +97,24 @@ model Sesion {
 }
 
 model Metrica {
-  id                String   @id @default(uuid()) @db.Uuid
-  sesionId          String   @unique @map("sesion_id") @db.Uuid
-  palabras          Int      @default(0)
-  palabrasPorMinuto Float?   @map("palabras_por_minuto")
-  cantidadPausas    Int      @default(0) @map("cantidad_pausas")
-  duracionPausasMs  Int      @default(0) @map("duracion_pausas_ms")
-  pausaPromedioMs   Float?   @map("pausa_promedio_ms")
-  pausaMaximaMs     Int?     @map("pausa_maxima_ms")
-  muletillasTotal   Int      @default(0) @map("muletillas_total")
-  muletillasDetalle Json?    @map("muletillas_detalle")
-  repeticiones      Int      @default(0)
-  puntajeRitmo      Int?     @map("puntaje_ritmo")
-  puntajePausas     Int?     @map("puntaje_pausas")
-  puntajeMuletillas Int?     @map("puntaje_muletillas")
-  puntajeGeneral    Int?     @map("puntaje_general")
-  pausasDetalle     Json?    @map("pausas_detalle")
-  creadoEn          DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
-  actualizadoEn     DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+  id                     String   @id @default(uuid()) @db.Uuid
+  sesionId               String   @unique @map("sesion_id") @db.Uuid
+  palabras               Int      @default(0)
+  palabrasPorMinuto      Float?   @map("palabras_por_minuto")
+  cantidadPausas         Int      @default(0) @map("cantidad_pausas")
+  duracionPausasMs       Int      @default(0) @map("duracion_pausas_ms")
+  pausaPromedioMs        Float?   @map("pausa_promedio_ms")
+  pausaMaximaMs          Int?     @map("pausa_maxima_ms")
+  muletillasTotal        Int      @default(0) @map("muletillas_total")
+  muletillasDetalle      Json?    @map("muletillas_detalle")
+  repeticiones           Int      @default(0)
+  puntajeRitmo           Int?     @map("puntaje_ritmo")
+  puntajePausas          Int?     @map("puntaje_pausas")
+  puntajeMuletillas      Int?     @map("puntaje_muletillas")
+  puntajeGeneral         Int?     @map("puntaje_general")
+  pausasDetalle          Json?    @map("pausas_detalle")
+  creadoEn               DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn          DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
 
   sesion Sesion @relation(fields: [sesionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
