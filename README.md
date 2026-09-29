@@ -1,92 +1,43 @@
 # Dale
 
-Dale es una plataforma web gratuita y de código abierto para practicar comunicación en situaciones reales y medir la evolución del usuario.
+Dale es una plataforma web gratuita, responsive y de código abierto para practicar comunicación en situaciones reales y medir el progreso de forma gradual.
 
-## Estado del proyecto
+## Estado actual
 
-Versión actual: **v0.4.0 — Etapa 4**.
+Versión `0.5.0` — frontend base conectado al catálogo real de escenarios.
 
-El backend ya dispone de un catálogo funcional de escenarios almacenado en PostgreSQL. Incluye cuatro categorías, tres niveles por situación, filtros de consulta, detalle por `slug` y resumen por categoría.
+- Frontend: Astro + Vue + Tailwind CSS.
+- Backend: Node.js + Express + TypeScript.
+- Base de datos: PostgreSQL + Prisma ORM.
+- Desarrollo local: Docker Compose.
+- Imagen única del proyecto: `frontend/public/DaleConTodoMiKing.png`.
 
-## Arquitectura
+## Desarrollo local
 
-- `frontend/`: Astro + Vue + Tailwind CSS.
-- `backend/`: Node.js + Express + TypeScript + Prisma.
-- `backend/prisma/`: esquema, migraciones y seed PostgreSQL.
-- `docs/`: documentación técnica.
-- `.github/workflows/`: automatizaciones que se incorporarán por etapas.
+1. Crear `backend/.env` y `frontend/.env` desde sus respectivos `.env.example`.
+2. En este equipo se recomienda `POSTGRES_PORT=5433` para evitar colisión con PostgreSQL local.
+3. Instalar dependencias con `npm install`.
+4. Levantar PostgreSQL con `npm run db:up`.
+5. Aplicar migraciones con `npm run prisma:deploy`.
+6. Cargar escenarios con `npm run db:seed`.
+7. Ejecutar backend con `npm run dev:backend`.
+8. En otra terminal ejecutar frontend con `npm run dev:frontend`.
+9. Abrir `http://localhost:4321`.
 
-## Preparación local
+## Endpoints actuales
 
-1. Crear variables locales si todavía no existen:
-
-```bash
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
-```
-
-2. Reemplazar los `CHANGE_ME` de `backend/.env`. La contraseña de `POSTGRES_PASSWORD` debe ser la misma de `DATABASE_URL`.
-
-3. Instalar dependencias:
-
-```bash
-npm install
-```
-
-4. Levantar PostgreSQL:
-
-```bash
-npm run db:up
-```
-
-5. Aplicar migraciones:
-
-```bash
-npm run prisma:deploy
-npm run prisma:status
-```
-
-6. Cargar el catálogo inicial:
-
-```bash
-npm run db:seed
-```
-
-El seed es idempotente y puede ejecutarse nuevamente sin duplicar escenarios.
-
-7. Ejecutar backend:
-
-```bash
-npm run dev:backend
-```
-
-8. Probar salud:
-
-```bash
-curl http://localhost:3000/ping
-```
-
-9. Probar catálogo:
-
-```bash
-curl http://localhost:3000/api/escenarios/status
-curl http://localhost:3000/api/escenarios/categorias
-curl "http://localhost:3000/api/escenarios?categoria=LABORAL&nivel=BASICO"
-curl http://localhost:3000/api/escenarios/entrevista-trabajo-basico
-```
-
-## Endpoints de escenarios
-
+- `GET /ping`
+- `GET /api/escenarios/status`
 - `GET /api/escenarios`
-- `GET /api/escenarios?categoria=...&nivel=...&q=...`
 - `GET /api/escenarios/categorias`
 - `GET /api/escenarios/:slug`
-- `GET /api/escenarios/status`
 
-## Seguridad
+## Variables públicas
 
-Los `.env`, dumps y datos persistentes no se versionan. El frontend nunca recibe `DATABASE_URL`. El seed solo contiene escenarios públicos de práctica y no contiene datos de usuarios.
+El frontend usa únicamente:
 
-## Identidad visual
+```env
+PUBLIC_API_URL=http://localhost:3000
+```
 
-Dale mantiene una sola imagen de marca: `frontend/public/DaleConTodoMiKing.png`. No se generan logos alternativos.
+Las credenciales PostgreSQL y secretos permanecen exclusivamente en el backend.

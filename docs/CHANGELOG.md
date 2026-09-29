@@ -2,6 +2,19 @@
 
 Todos los cambios relevantes de Dale se documentan en este archivo siguiendo versionado semántico.
 
+## [0.5.0] - 2026-09-29
+
+### Agregado
+
+- Página principal responsive en Astro, reemplazando el `404` inicial.
+- Catálogo interactivo Vue conectado a `GET /api/escenarios`.
+- Filtros por categoría, nivel y búsqueda desde el frontend.
+- Estados de carga, vacío, error y detalle de escenario.
+- Componente reutilizable `ScenarioCard.vue` y documentación copiable.
+- Layout base, footer y páginas legales iniciales de privacidad y términos.
+- Consumo del backend mediante `PUBLIC_API_URL`, sin URLs hardcodeadas en componentes.
+- Reutilización exclusiva de `DaleConTodoMiKing.png` como imagen y favicon.
+
 ## [0.4.0] - 2026-09-29
 
 ### Agregado
