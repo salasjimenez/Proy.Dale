@@ -2,6 +2,19 @@
 
 Todos los cambios relevantes de Dale se documentan en este archivo siguiendo versionado semántico.
 
+## [0.4.0] - 2026-09-29
+
+### Agregado
+
+- Catálogo funcional de escenarios mediante Express + Prisma.
+- 12 situaciones base con tres niveles cada una: 36 registros iniciales.
+- Seed idempotente de escenarios con `upsert`.
+- Filtros por categoría, nivel y búsqueda textual.
+- Detalle de escenario por `slug`.
+- Resumen de categorías y disponibilidad por nivel.
+- Puerto PostgreSQL del host configurable; ejemplo local movido a `5433`.
+
+
 ## [0.3.0] - 2026-09-29
 
 ### Agregado

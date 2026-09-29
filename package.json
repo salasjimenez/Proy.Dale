@@ -1,6 +1,6 @@
 {
   "name": "dale",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "Dale - plataforma abierta para practicar comunicacion en situaciones reales.",
   "workspaces": [
@@ -17,7 +17,8 @@
     "db:down": "docker compose --env-file backend/.env down",
     "db:logs": "docker compose --env-file backend/.env logs -f postgres",
     "prisma:deploy": "npm run prisma:deploy --workspace=backend",
-    "prisma:status": "npm run prisma:status --workspace=backend"
+    "prisma:status": "npm run prisma:status --workspace=backend",
+    "db:seed": "npm run prisma:seed --workspace=backend"
   },
   "engines": {
     "node": ">=22 <27",

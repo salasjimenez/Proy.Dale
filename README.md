@@ -4,28 +4,28 @@ Dale es una plataforma web gratuita y de código abierto para practicar comunica
 
 ## Estado del proyecto
 
-Versión actual: **v0.3.0 — Etapa 3**.
+Versión actual: **v0.4.0 — Etapa 4**.
 
-La base del backend ya es funcional: Express se conecta a PostgreSQL mediante Prisma, expone `GET /ping` y deja montados los módulos de rutas para autenticación, escenarios y sesiones.
+El backend ya dispone de un catálogo funcional de escenarios almacenado en PostgreSQL. Incluye cuatro categorías, tres niveles por situación, filtros de consulta, detalle por `slug` y resumen por categoría.
 
 ## Arquitectura
 
 - `frontend/`: Astro + Vue + Tailwind CSS.
 - `backend/`: Node.js + Express + TypeScript + Prisma.
-- `backend/prisma/`: esquema y migraciones PostgreSQL versionadas.
+- `backend/prisma/`: esquema, migraciones y seed PostgreSQL.
 - `docs/`: documentación técnica.
 - `.github/workflows/`: automatizaciones que se incorporarán por etapas.
 
 ## Preparación local
 
-1. Crear variables locales:
+1. Crear variables locales si todavía no existen:
 
 ```bash
 cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
 ```
 
-2. Reemplazar todos los `CHANGE_ME` de `backend/.env` por valores locales seguros. La contraseña de `POSTGRES_PASSWORD` debe coincidir con la usada dentro de `DATABASE_URL`.
+2. Reemplazar los `CHANGE_ME` de `backend/.env`. La contraseña de `POSTGRES_PASSWORD` debe ser la misma de `DATABASE_URL`.
 
 3. Instalar dependencias:
 
@@ -39,49 +39,53 @@ npm install
 npm run db:up
 ```
 
-5. Aplicar la migración inicial:
+5. Aplicar migraciones:
 
 ```bash
 npm run prisma:deploy
 npm run prisma:status
 ```
 
-6. Ejecutar backend:
+6. Cargar el catálogo inicial:
+
+```bash
+npm run db:seed
+```
+
+El seed es idempotente y puede ejecutarse nuevamente sin duplicar escenarios.
+
+7. Ejecutar backend:
 
 ```bash
 npm run dev:backend
 ```
 
-7. En otra terminal probar:
+8. Probar salud:
 
 ```bash
 curl http://localhost:3000/ping
 ```
 
-Respuesta esperada:
+9. Probar catálogo:
 
-```json
-{
-  "status": "ok",
-  "service": "dale-backend",
-  "version": "0.3.0",
-  "database": "ok"
-}
+```bash
+curl http://localhost:3000/api/escenarios/status
+curl http://localhost:3000/api/escenarios/categorias
+curl "http://localhost:3000/api/escenarios?categoria=LABORAL&nivel=BASICO"
+curl http://localhost:3000/api/escenarios/entrevista-trabajo-basico
 ```
 
-El objeto también incluye un `timestamp` en formato ISO.
+## Endpoints de escenarios
 
-## Rutas preparadas
-
-- `GET /api/auth/status`
+- `GET /api/escenarios`
+- `GET /api/escenarios?categoria=...&nivel=...&q=...`
+- `GET /api/escenarios/categorias`
+- `GET /api/escenarios/:slug`
 - `GET /api/escenarios/status`
-- `GET /api/sesiones/status`
-
-Estas rutas confirman que los módulos están correctamente montados; la funcionalidad de negocio se agregará en las siguientes etapas.
 
 ## Seguridad
 
-Los `.env`, dumps y datos persistentes no se versionan. El frontend nunca recibe `DATABASE_URL`. Los archivos `migration.sql` bajo `backend/prisma/migrations/` son definición de esquema, no dumps de datos, y sí forman parte del código fuente.
+Los `.env`, dumps y datos persistentes no se versionan. El frontend nunca recibe `DATABASE_URL`. El seed solo contiene escenarios públicos de práctica y no contiene datos de usuarios.
 
 ## Identidad visual
 
