@@ -226,8 +226,15 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="mt-7 rounded-2xl bg-blue-50 p-4 text-sm leading-6 text-blue-950">
-          En la siguiente etapa conectaremos este escenario con el simulador de práctica por texto y voz.
+          En esta versión puedes practicar por texto y guardar una primera medición. El análisis de voz se incorporará de forma separada.
         </div>
+
+        <a
+          :href="`/practicar?escenario=${encodeURIComponent(selected.slug)}`"
+          class="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-slate-950 px-5 py-3 font-black text-white transition hover:bg-blue-700"
+        >
+          Practicar por texto
+        </a>
       </section>
     </div>
   </section>

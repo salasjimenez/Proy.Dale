@@ -73,7 +73,14 @@ async function submit() {
         };
 
     await apiPost<AuthResponse>(endpoint, payload);
-    window.location.assign("/cuenta");
+
+    const requestedNext = new URLSearchParams(window.location.search).get("next");
+    const safeNext =
+      requestedNext && requestedNext.startsWith("/") && !requestedNext.startsWith("//")
+        ? requestedNext
+        : "/cuenta";
+
+    window.location.assign(safeNext);
   } catch (error) {
     if (error instanceof ApiError) {
       generalError.value = error.message;

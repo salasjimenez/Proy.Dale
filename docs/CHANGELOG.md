@@ -2,6 +2,20 @@
 
 Todos los cambios relevantes de Dale se documentan en este archivo siguiendo versionado semántico.
 
+## [0.7.0] - 2026-10-01
+
+### Agregado
+
+- Simulador funcional de práctica por texto.
+- Creación y persistencia de sesiones autenticadas.
+- Finalización de sesiones con transcripción y duración.
+- Métricas iniciales de palabras, muletillas y repeticiones.
+- Puntaje textual preliminar y retroalimentación accionable.
+- Historial reciente de prácticas en `/cuenta`.
+- Redirección segura al escenario solicitado después de login o registro.
+- Página `/practicar` y componente reutilizable `PracticeSimulator.vue`.
+- Documentación técnica y ejemplo completo de uso del simulador.
+
 ## [0.6.0] - 2026-10-01
 
 ### Agregado
