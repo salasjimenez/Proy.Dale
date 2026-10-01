@@ -1,9 +1,10 @@
+import { ModalidadRespuesta } from "@prisma/client";
 import { Router, type Response } from "express";
 import { requireAuth } from "../middleware/auth.js";
 import {
   SessionServiceError,
-  completeTextSession,
-  createTextSession,
+  completeSession,
+  createSession,
   getUserSession,
   listUserSessions,
 } from "../services/sesiones.service.js";
@@ -18,6 +19,7 @@ type StartSessionBody = {
 type CompleteSessionBody = {
   transcripcion?: unknown;
   duracionMs?: unknown;
+  pausasDetalle?: unknown;
 };
 
 function handleSessionError(error: unknown, res: Response): boolean {
@@ -37,8 +39,9 @@ sesionesRouter.get("/status", (_req, res) => {
     implemented: true,
     modes: {
       texto: true,
-      voz: false,
+      voz: true,
     },
+    voiceMetrics: ["palabras_por_minuto", "pausas", "muletillas", "repeticiones"],
   });
 });
 
@@ -57,17 +60,21 @@ sesionesRouter.post("/", requireAuth, async (req, res, next) => {
   try {
     const body = (req.body ?? {}) as StartSessionBody;
     const escenarioSlug = typeof body.escenarioSlug === "string" ? body.escenarioSlug : "";
-    const modalidad = typeof body.modalidad === "string" ? body.modalidad.toUpperCase() : "TEXTO";
+    const rawMode = typeof body.modalidad === "string" ? body.modalidad.toUpperCase() : "TEXTO";
 
-    if (modalidad !== "TEXTO") {
+    if (rawMode !== ModalidadRespuesta.TEXTO && rawMode !== ModalidadRespuesta.VOZ) {
       res.status(400).json({
-        error: "MODE_NOT_AVAILABLE",
-        message: "La práctica por voz se habilitará en una siguiente etapa. Usa el modo texto por ahora.",
+        error: "INVALID_MODE",
+        message: "La modalidad debe ser TEXTO o VOZ.",
       });
       return;
     }
 
-    const session = await createTextSession(req.authUser!.id, escenarioSlug);
+    const session = await createSession(
+      req.authUser!.id,
+      escenarioSlug,
+      rawMode as ModalidadRespuesta,
+    );
     res.status(201).json({ data: { session } });
   } catch (error) {
     if (!handleSessionError(error, res)) next(error);
@@ -89,11 +96,12 @@ sesionesRouter.post("/:id/completar", requireAuth, async (req, res, next) => {
     const transcripcion = typeof body.transcripcion === "string" ? body.transcripcion : "";
     const duracionMs = typeof body.duracionMs === "number" ? body.duracionMs : undefined;
 
-    const session = await completeTextSession(
+    const session = await completeSession(
       req.authUser!.id,
       req.params.id,
       transcripcion,
       duracionMs,
+      body.pausasDetalle,
     );
 
     res.status(200).json({ data: { session } });

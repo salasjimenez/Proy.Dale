@@ -1,3 +1,8 @@
+export type PracticePause = {
+  inicioMs: number;
+  duracionMs: number;
+};
+
 export type PracticeMetric = {
   id: string;
   palabras: number;
@@ -13,6 +18,7 @@ export type PracticeMetric = {
   puntajePausas: number | null;
   puntajeMuletillas: number | null;
   puntajeGeneral: number | null;
+  pausasDetalle?: PracticePause[] | null;
 };
 
 export type PracticeFeedback = {

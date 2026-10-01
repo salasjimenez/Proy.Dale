@@ -4,6 +4,15 @@ import { ApiError, apiGet, apiPost } from "../../lib/api";
 import type { AuthResponse, AuthUser } from "../../types/auth";
 import type { ScenarioCardData } from "../../types/scenario";
 import type { PracticeSession, PracticeSessionResponse } from "../../types/session";
+import VoiceCapture, { type VoiceCaptureResult } from "./VoiceCapture.vue";
+
+type PracticeMode = "TEXTO" | "VOZ";
+
+type WindowWithSpeechRecognition = Window &
+  typeof globalThis & {
+    SpeechRecognition?: unknown;
+    webkitSpeechRecognition?: unknown;
+  };
 
 const user = ref<AuthUser | null>(null);
 const scenario = ref<ScenarioCardData | null>(null);
@@ -15,6 +24,8 @@ const finishing = ref(false);
 const error = ref("");
 const authRequired = ref(false);
 const startedAt = ref<number | null>(null);
+const selectedMode = ref<PracticeMode>("TEXTO");
+const voiceSupported = ref(false);
 
 const slug = ref("");
 
@@ -24,37 +35,37 @@ const wordCount = computed(() => {
 });
 
 const isCompleted = computed(() => session.value?.estado === "COMPLETADA");
+const activeMode = computed<PracticeMode>(() => session.value?.modalidad ?? selectedMode.value);
+const modeLabel = computed(() => (activeMode.value === "VOZ" ? "Voz" : "Texto"));
 
 const nextUrl = computed(() => `/practicar?escenario=${encodeURIComponent(slug.value)}`);
 const loginUrl = computed(() => `/login?next=${encodeURIComponent(nextUrl.value)}`);
 const registerUrl = computed(() => `/registro?next=${encodeURIComponent(nextUrl.value)}`);
 
-function categoryLabel(code: string): string {
-  return {
-    LABORAL: "Laboral",
-    TRAMITES_CALLE: "Trámites y calle",
-    SOCIAL: "Social",
-    JOVENES_ESTUDIANTES: "Jóvenes y estudiantes",
-  }[code] || code;
-}
-
-function levelLabel(code: string): string {
-  return {
-    BASICO: "Básico",
-    INTERMEDIO: "Intermedio",
-    DIFICIL: "Difícil",
-  }[code] || code;
-}
-
 function formatDuration(durationMs: number | null): string {
-  if (!durationMs) return "—";
+  if (durationMs === null || durationMs === undefined) return "—";
   const totalSeconds = Math.max(0, Math.round(durationMs / 1000));
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
 }
 
+function formatPause(durationMs: number | null): string {
+  if (durationMs === null || durationMs === undefined) return "—";
+  return `${(durationMs / 1000).toFixed(1)} s`;
+}
+
+function detectVoiceSupport(): boolean {
+  if (typeof window === "undefined") return false;
+  const speechWindow = window as WindowWithSpeechRecognition;
+  return Boolean(
+    (speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition) &&
+      navigator.mediaDevices?.getUserMedia,
+  );
+}
+
 async function initialize(): Promise<void> {
+  voiceSupported.value = detectVoiceSupport();
   const params = new URLSearchParams(window.location.search);
   slug.value = params.get("escenario")?.trim() || "";
 
@@ -93,6 +104,22 @@ async function initialize(): Promise<void> {
   }
 }
 
+async function verifyMicrophonePermission(): Promise<boolean> {
+  if (!voiceSupported.value) {
+    error.value = "Este navegador no ofrece Web Speech API con acceso al micrófono. Usa Chrome o Edge actualizado, o practica por texto.";
+    return false;
+  }
+
+  try {
+    const permissionStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    permissionStream.getTracks().forEach((track) => track.stop());
+    return true;
+  } catch {
+    error.value = "No pudimos acceder al micrófono. Habilita el permiso del sitio antes de iniciar una práctica por voz.";
+    return false;
+  }
+}
+
 async function startPractice(): Promise<void> {
   if (!scenario.value) return;
 
@@ -100,10 +127,16 @@ async function startPractice(): Promise<void> {
   error.value = "";
 
   try {
+    if (selectedMode.value === "VOZ") {
+      const microphoneAllowed = await verifyMicrophonePermission();
+      if (!microphoneAllowed) return;
+    }
+
     const response = await apiPost<PracticeSessionResponse>("/api/sesiones", {
       escenarioSlug: scenario.value.slug,
-      modalidad: "TEXTO",
+      modalidad: selectedMode.value,
     });
+
     session.value = response.data.session;
     transcript.value = "";
     startedAt.value = Date.now();
@@ -118,7 +151,7 @@ async function startPractice(): Promise<void> {
   }
 }
 
-async function finishPractice(): Promise<void> {
+async function finishTextPractice(): Promise<void> {
   if (!session.value) return;
 
   if (transcript.value.trim().length < 3) {
@@ -146,7 +179,32 @@ async function finishPractice(): Promise<void> {
   }
 }
 
+async function finishVoicePractice(payload: VoiceCaptureResult): Promise<void> {
+  if (!session.value) return;
+
+  finishing.value = true;
+  error.value = "";
+
+  try {
+    const response = await apiPost<PracticeSessionResponse>(
+      `/api/sesiones/${session.value.id}/completar`,
+      payload,
+    );
+    transcript.value = payload.transcripcion;
+    session.value = response.data.session;
+  } catch (caught) {
+    error.value = caught instanceof ApiError ? caught.message : "No pudimos guardar el resultado de la práctica por voz.";
+  } finally {
+    finishing.value = false;
+  }
+}
+
+function handleVoiceError(message: string): void {
+  error.value = message;
+}
+
 function retryPractice(): void {
+  if (session.value) selectedMode.value = session.value.modalidad;
   session.value = null;
   transcript.value = "";
   startedAt.value = null;
@@ -160,7 +218,7 @@ onMounted(() => void initialize());
   <section class="mx-auto max-w-5xl">
     <div v-if="loading" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
       <div class="h-5 w-32 animate-pulse rounded bg-slate-200"></div>
-      <div class="mt-4 h-9 w-2/3 animate-pulse rounded bg-slate-200"></div>
+      <div class="mt-4 h-10 w-2/3 animate-pulse rounded bg-slate-200"></div>
       <div class="mt-5 h-28 animate-pulse rounded-2xl bg-slate-100"></div>
     </div>
 
@@ -181,7 +239,7 @@ onMounted(() => void initialize());
             {{ scenario.nivel.nombre }}
           </span>
           <span class="rounded-full bg-violet-50 px-3 py-1 text-xs font-black text-violet-700 ring-1 ring-inset ring-violet-200">
-            Texto
+            {{ modeLabel }}
           </span>
         </div>
         <h1 class="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">{{ scenario.titulo }}</h1>
@@ -211,26 +269,68 @@ onMounted(() => void initialize());
               <p class="mt-2 leading-7 text-blue-950">{{ scenario.instrucciones }}</p>
             </div>
 
+            <div class="mt-7">
+              <p class="text-sm font-black text-slate-950">¿Cómo quieres practicar?</p>
+              <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                <button
+                  type="button"
+                  class="rounded-2xl border p-4 text-left transition"
+                  :class="selectedMode === 'TEXTO' ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-100' : 'border-slate-200 bg-white hover:border-slate-300'"
+                  @click="selectedMode = 'TEXTO'; error = ''"
+                >
+                  <strong class="block text-slate-950">Texto</strong>
+                  <span class="mt-1 block text-sm leading-5 text-slate-600">Escribe lo que dirías y compara muletillas, repeticiones y extensión.</span>
+                </button>
+
+                <button
+                  type="button"
+                  :disabled="!voiceSupported"
+                  class="rounded-2xl border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-50"
+                  :class="selectedMode === 'VOZ' ? 'border-violet-500 bg-violet-50 ring-2 ring-violet-100' : 'border-slate-200 bg-white hover:border-slate-300'"
+                  @click="selectedMode = 'VOZ'; error = ''"
+                >
+                  <strong class="block text-slate-950">Voz</strong>
+                  <span class="mt-1 block text-sm leading-5 text-slate-600">Habla con tu micrófono y mide ritmo, pausas, muletillas y duración.</span>
+                </button>
+              </div>
+              <p v-if="!voiceSupported" class="mt-3 text-xs leading-5 text-amber-700">
+                Tu navegador no expone Web Speech API. La práctica por texto sigue disponible; para voz usa Chrome o Edge actualizado.
+              </p>
+            </div>
+
+            <div v-if="error" role="alert" class="mt-5 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-900">
+              {{ error }}
+            </div>
+
             <button
               type="button"
-              :disabled="starting"
+              :disabled="starting || (selectedMode === 'VOZ' && !voiceSupported)"
               class="mt-7 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-slate-950 px-6 py-3 font-black text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
               @click="startPractice"
             >
-              {{ starting ? "Preparando práctica..." : "Comenzar práctica por texto" }}
+              {{ starting ? "Preparando práctica..." : `Comenzar práctica por ${selectedMode === 'VOZ' ? 'voz' : 'texto'}` }}
             </button>
           </article>
 
           <aside class="rounded-3xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
-            <p class="text-sm font-black text-slate-950">Qué mediremos en esta versión</p>
-            <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+            <p class="text-sm font-black text-slate-950">Qué mediremos</p>
+            <ul v-if="selectedMode === 'VOZ'" class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+              <li>• Palabras y palabras por minuto.</li>
+              <li>• Pausas de al menos 0.6 segundos.</li>
+              <li>• Muletillas detectadas en la transcripción.</li>
+              <li>• Repeticiones consecutivas.</li>
+              <li>• Puntajes de ritmo, pausas y resultado general.</li>
+            </ul>
+            <ul v-else class="mt-4 space-y-3 text-sm leading-6 text-slate-600">
               <li>• Cantidad de palabras.</li>
               <li>• Muletillas escritas detectadas.</li>
               <li>• Repeticiones consecutivas.</li>
               <li>• Puntaje preliminar para comparar intentos.</li>
             </ul>
             <p class="mt-5 text-xs leading-5 text-slate-500">
-              Ritmo real, pausas y características acústicas requieren práctica por voz y no se infieren desde texto.
+              {{ selectedMode === 'VOZ'
+                ? 'Las pausas son estimaciones basadas en actividad del micrófono. Dale no guarda el audio.'
+                : 'Las propiedades reales de voz no se infieren a partir de texto.' }}
             </p>
           </aside>
         </div>
@@ -247,39 +347,58 @@ onMounted(() => void initialize());
           </aside>
 
           <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p class="text-xs font-black uppercase tracking-[0.16em] text-blue-700">Tu respuesta</p>
-                <h2 class="mt-1 text-2xl font-black text-slate-950">Responde como lo harías en la situación real</h2>
+            <template v-if="session.modalidad === 'TEXTO'">
+              <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p class="text-xs font-black uppercase tracking-[0.16em] text-blue-700">Tu respuesta</p>
+                  <h2 class="mt-1 text-2xl font-black text-slate-950">Responde como lo harías en la situación real</h2>
+                </div>
+                <span class="text-sm font-semibold text-slate-500">{{ wordCount }} palabras</span>
               </div>
-              <span class="text-sm font-semibold text-slate-500">{{ wordCount }} palabras</span>
-            </div>
 
-            <textarea
-              v-model="transcript"
-              maxlength="5000"
-              rows="12"
-              autofocus
-              placeholder="Escribe aquí lo que dirías..."
-              class="mt-6 w-full resize-y rounded-2xl border border-slate-300 bg-white p-4 leading-7 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-            ></textarea>
-            <div class="mt-2 flex justify-between gap-3 text-xs text-slate-500">
-              <span>No busques perfección. Practica una respuesta natural.</span>
-              <span>{{ transcript.length }}/5000</span>
-            </div>
+              <textarea
+                v-model="transcript"
+                maxlength="5000"
+                rows="12"
+                autofocus
+                placeholder="Escribe aquí lo que dirías..."
+                class="mt-6 w-full resize-y rounded-2xl border border-slate-300 bg-white p-4 leading-7 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              ></textarea>
+              <div class="mt-2 flex justify-between gap-3 text-xs text-slate-500">
+                <span>No busques perfección. Practica una respuesta natural.</span>
+                <span>{{ transcript.length }}/5000</span>
+              </div>
 
-            <div v-if="error" role="alert" class="mt-5 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-900">
-              {{ error }}
-            </div>
+              <div v-if="error" role="alert" class="mt-5 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-900">
+                {{ error }}
+              </div>
 
-            <button
-              type="button"
-              :disabled="finishing || transcript.trim().length < 3"
-              class="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-slate-950 px-6 py-3 font-black text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
-              @click="finishPractice"
-            >
-              {{ finishing ? "Analizando..." : "Finalizar y ver resultado" }}
-            </button>
+              <button
+                type="button"
+                :disabled="finishing || transcript.trim().length < 3"
+                class="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-slate-950 px-6 py-3 font-black text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                @click="finishTextPractice"
+              >
+                {{ finishing ? "Analizando..." : "Finalizar y ver resultado" }}
+              </button>
+            </template>
+
+            <template v-else>
+              <div>
+                <p class="text-xs font-black uppercase tracking-[0.16em] text-violet-700">Tu respuesta por voz</p>
+                <h2 class="mt-1 text-2xl font-black text-slate-950">Habla como lo harías en la situación real</h2>
+                <p class="mt-2 text-sm leading-6 text-slate-600">Cuando termines, Dale enviará únicamente la transcripción y las métricas temporales al backend.</p>
+              </div>
+
+              <div v-if="error" role="alert" class="mt-5 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-900">
+                {{ error }}
+              </div>
+
+              <div v-if="finishing" class="mt-6 rounded-2xl border border-blue-200 bg-blue-50 p-5 text-sm font-bold text-blue-900">
+                Analizando tu práctica por voz...
+              </div>
+              <VoiceCapture v-else class="mt-6" @complete="finishVoicePractice" @error="handleVoiceError" />
+            </template>
           </section>
         </div>
 
@@ -288,8 +407,8 @@ onMounted(() => void initialize());
             <p class="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Práctica guardada</p>
             <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h2 class="text-3xl font-black text-slate-950">Resultado preliminar</h2>
-                <p class="mt-2 text-sm leading-6 text-slate-700">Compara este resultado con tus próximos intentos; no es una evaluación de tu capacidad personal.</p>
+                <h2 class="text-3xl font-black text-slate-950">Resultado de {{ session.modalidad === 'VOZ' ? 'voz' : 'texto' }}</h2>
+                <p class="mt-2 text-sm leading-6 text-slate-700">Úsalo para comparar tus próximos intentos; no es una evaluación de tu capacidad personal.</p>
               </div>
               <div class="rounded-2xl bg-white px-5 py-3 text-center shadow-sm">
                 <span class="block text-xs font-black uppercase tracking-wide text-slate-500">Puntaje</span>
@@ -299,7 +418,30 @@ onMounted(() => void initialize());
             </div>
           </div>
 
-          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div v-if="session.modalidad === 'VOZ'" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            <article class="rounded-2xl border border-slate-200 bg-white p-5">
+              <p class="text-xs font-black uppercase tracking-wide text-slate-500">Palabras/min</p>
+              <strong class="mt-2 block text-3xl font-black text-slate-950">{{ session.metrica.palabrasPorMinuto ?? "—" }}</strong>
+            </article>
+            <article class="rounded-2xl border border-slate-200 bg-white p-5">
+              <p class="text-xs font-black uppercase tracking-wide text-slate-500">Pausas</p>
+              <strong class="mt-2 block text-3xl font-black text-slate-950">{{ session.metrica.cantidadPausas }}</strong>
+            </article>
+            <article class="rounded-2xl border border-slate-200 bg-white p-5">
+              <p class="text-xs font-black uppercase tracking-wide text-slate-500">Pausa promedio</p>
+              <strong class="mt-2 block text-3xl font-black text-slate-950">{{ formatPause(session.metrica.pausaPromedioMs) }}</strong>
+            </article>
+            <article class="rounded-2xl border border-slate-200 bg-white p-5">
+              <p class="text-xs font-black uppercase tracking-wide text-slate-500">Muletillas</p>
+              <strong class="mt-2 block text-3xl font-black text-slate-950">{{ session.metrica.muletillasTotal }}</strong>
+            </article>
+            <article class="rounded-2xl border border-slate-200 bg-white p-5">
+              <p class="text-xs font-black uppercase tracking-wide text-slate-500">Duración</p>
+              <strong class="mt-2 block text-3xl font-black text-slate-950">{{ formatDuration(session.duracionMs) }}</strong>
+            </article>
+          </div>
+
+          <div v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <article class="rounded-2xl border border-slate-200 bg-white p-5">
               <p class="text-xs font-black uppercase tracking-wide text-slate-500">Palabras</p>
               <strong class="mt-2 block text-3xl font-black text-slate-950">{{ session.metrica.palabras }}</strong>
@@ -317,6 +459,26 @@ onMounted(() => void initialize());
               <strong class="mt-2 block text-3xl font-black text-slate-950">{{ formatDuration(session.duracionMs) }}</strong>
             </article>
           </div>
+
+          <div v-if="session.modalidad === 'VOZ'" class="grid gap-4 sm:grid-cols-3">
+            <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+              <p class="text-xs font-black uppercase tracking-wide text-slate-500">Ritmo</p>
+              <strong class="mt-2 block text-2xl font-black text-slate-950">{{ session.metrica.puntajeRitmo ?? "—" }}/100</strong>
+            </article>
+            <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+              <p class="text-xs font-black uppercase tracking-wide text-slate-500">Pausas</p>
+              <strong class="mt-2 block text-2xl font-black text-slate-950">{{ session.metrica.puntajePausas ?? "—" }}/100</strong>
+            </article>
+            <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+              <p class="text-xs font-black uppercase tracking-wide text-slate-500">Muletillas</p>
+              <strong class="mt-2 block text-2xl font-black text-slate-950">{{ session.metrica.puntajeMuletillas ?? "—" }}/100</strong>
+            </article>
+          </div>
+
+          <article v-if="session.modalidad === 'VOZ' && session.transcripcion" class="rounded-3xl border border-slate-200 bg-white p-6">
+            <p class="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Transcripción</p>
+            <p class="mt-3 whitespace-pre-wrap leading-7 text-slate-700">{{ session.transcripcion }}</p>
+          </article>
 
           <div class="grid gap-5 lg:grid-cols-2">
             <article class="rounded-3xl border border-slate-200 bg-white p-6">

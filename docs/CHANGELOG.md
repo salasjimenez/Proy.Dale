@@ -2,6 +2,20 @@
 
 Todos los cambios relevantes de Dale se documentan en este archivo siguiendo versionado semántico.
 
+## [0.8.0] - 2026-10-01
+
+### Agregado
+
+- Práctica por voz mediante Web Speech API y micrófono del navegador.
+- Transcripción en vivo en español (`es-PE`).
+- Detección aproximada de pausas con Web Audio API, sin almacenar audio.
+- Persistencia de palabras por minuto, pausas, muletillas y repeticiones.
+- Puntajes separados de ritmo, pausas y muletillas.
+- Retroalimentación específica para sesiones de voz.
+- Selector de modalidad Texto/Voz en `/practicar`.
+- Componente reutilizable `VoiceCapture.vue` y documentación con código completo.
+- Compatibilidad degradada: si Web Speech no está disponible, el modo texto continúa operativo.
+
 ## [0.7.0] - 2026-10-01
 
 ### Agregado

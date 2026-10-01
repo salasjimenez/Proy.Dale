@@ -226,14 +226,14 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="mt-7 rounded-2xl bg-blue-50 p-4 text-sm leading-6 text-blue-950">
-          En esta versión puedes practicar por texto y guardar una primera medición. El análisis de voz se incorporará de forma separada.
+          Puedes elegir texto o voz. En voz, Dale mide ritmo, pausas y muletillas sin almacenar el archivo de audio.
         </div>
 
         <a
           :href="`/practicar?escenario=${encodeURIComponent(selected.slug)}`"
           class="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-slate-950 px-5 py-3 font-black text-white transition hover:bg-blue-700"
         >
-          Practicar por texto
+          Practicar este escenario
         </a>
       </section>
     </div>

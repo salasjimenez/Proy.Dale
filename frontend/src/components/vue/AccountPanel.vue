@@ -59,8 +59,8 @@ async function logout() {
         </article>
         <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
           <p class="text-xs font-black uppercase tracking-wide text-slate-500">Modo disponible</p>
-          <strong class="mt-2 block text-lg font-black text-slate-950">Práctica por texto</strong>
-          <p class="mt-1 text-sm text-slate-600">El modo voz se incorporará en una siguiente versión.</p>
+          <strong class="mt-2 block text-lg font-black text-slate-950">Texto y voz</strong>
+          <p class="mt-1 text-sm text-slate-600">La voz mide ritmo, pausas y muletillas sin guardar el audio.</p>
         </article>
       </div>
 
@@ -75,7 +75,7 @@ async function logout() {
 
         <div v-if="sessions.length === 0" class="mt-5 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
           <p class="font-black text-slate-950">Todavía no tienes prácticas guardadas.</p>
-          <p class="mt-2 text-sm text-slate-600">Elige un escenario y completa tu primer intento por texto.</p>
+          <p class="mt-2 text-sm text-slate-600">Elige un escenario y completa tu primer intento por texto o voz.</p>
         </div>
 
         <div v-else class="mt-5 space-y-3">
