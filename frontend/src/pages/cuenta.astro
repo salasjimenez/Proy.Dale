@@ -1,0 +1,10 @@
+---
+import AccountPanel from "../components/vue/AccountPanel.vue";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Mi cuenta | Dale" description="Consulta tu cuenta y acceso a las prácticas de Dale.">
+  <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <AccountPanel client:load />
+  </section>
+</BaseLayout>

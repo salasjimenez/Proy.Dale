@@ -2,6 +2,21 @@
 
 Todos los cambios relevantes de Dale se documentan en este archivo siguiendo versionado semántico.
 
+## [0.6.0] - 2026-10-01
+
+### Agregado
+
+- Registro con correo, contraseña y nombre opcional.
+- Inicio y cierre de sesión mediante el backend propio.
+- Hash de contraseñas con bcrypt.
+- JWT con expiración configurable almacenado en cookie `HttpOnly`.
+- Endpoint protegido `GET /api/auth/me`.
+- Soporte opcional de `Authorization: Bearer` para pruebas de API.
+- Páginas `/login`, `/registro` y `/cuenta`.
+- Componentes Vue `AuthForm`, `AuthNav` y `AccountPanel`.
+- Documentación copiable de `AuthForm.vue`.
+- Variables de entorno para duración y política de cookie de autenticación.
+
 ## [0.5.0] - 2026-09-29
 
 ### Agregado
