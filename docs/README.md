@@ -10,6 +10,7 @@ La documentación se mantiene separada del sitio de producción de la aplicació
 - `autenticacion-etapa-06.md`: registro, login y sesión.
 - `simulador-texto-etapa-07.md`: primera práctica persistente.
 - `simulador-voz-etapa-08.md`: Web Speech, micrófono, ritmo y pausas.
+- `progreso-etapa-09.md`: dashboard personal y evolución temporal de métricas.
 
 ## Componentes
 

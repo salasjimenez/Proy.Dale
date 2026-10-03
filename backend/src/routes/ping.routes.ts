@@ -10,7 +10,7 @@ pingRouter.get("/", async (_req, res) => {
     res.status(200).json({
       status: "ok",
       service: "dale-backend",
-      version: "0.8.0",
+      version: "0.9.0",
       database: "ok",
       timestamp: new Date().toISOString(),
     });
@@ -18,7 +18,7 @@ pingRouter.get("/", async (_req, res) => {
     res.status(503).json({
       status: "error",
       service: "dale-backend",
-      version: "0.8.0",
+      version: "0.9.0",
       database: "unavailable",
       timestamp: new Date().toISOString(),
     });

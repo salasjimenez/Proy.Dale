@@ -2,6 +2,19 @@
 
 Todos los cambios relevantes de Dale se documentan en este archivo siguiendo versionado semántico.
 
+## [0.9.0] - 2026-10-02
+
+### Agregado
+
+- Dashboard autenticado `Mi voz, mi progreso` en `/progreso`.
+- Endpoint protegido `GET /api/progreso` con filtros por modalidad.
+- Serie cronológica de puntaje general, ritmo, pausas y muletillas.
+- Resumen de puntaje promedio, último puntaje, mejor puntaje y cambio dentro del período visible.
+- Indicadores de prácticas por voz/texto y promedio de palabras por minuto.
+- Gráfico de línea/área mediante SVG nativo, sin dependencia externa de charts.
+- Componente reutilizable `ProgressDashboard.vue` con documentación de código completo.
+- Accesos a Progreso desde la navegación y Mi cuenta.
+
 ## [0.8.0] - 2026-10-01
 
 ### Agregado

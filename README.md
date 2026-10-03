@@ -4,7 +4,7 @@ Dale es una plataforma web gratuita, responsive y de código abierto para practi
 
 ## Estado actual
 
-Versión `0.8.0` — autenticación propia, catálogo de escenarios y simulador persistente por texto o voz.
+Versión `0.9.0` — autenticación propia, catálogo de escenarios, simulador persistente por texto/voz y primer dashboard de progreso.
 
 - Frontend: Astro + Vue + Tailwind CSS.
 - Backend: Node.js + Express + TypeScript.
@@ -12,6 +12,7 @@ Versión `0.8.0` — autenticación propia, catálogo de escenarios y simulador 
 - Autenticación: email/contraseña, bcrypt, JWT y cookie `HttpOnly`.
 - Práctica: texto y voz con Web Speech API.
 - Métricas de voz: palabras por minuto, pausas estimadas, muletillas, repeticiones y puntajes de ritmo/pausas.
+- Dashboard: `Mi voz, mi progreso` con serie temporal y filtros Texto/Voz.
 - Privacidad de voz: Dale no almacena archivos de audio; persiste transcripción y métricas.
 - Desarrollo local: Docker Compose.
 - Imagen única del proyecto: `frontend/public/DaleConTodoMiKing.png`.
@@ -48,6 +49,14 @@ Para práctica por voz se recomienda Chrome o Edge actualizado. El sitio necesit
 - `POST /api/sesiones`
 - `GET /api/sesiones/:id`
 - `POST /api/sesiones/:id/completar`
+- `GET /api/progreso/status`
+- `GET /api/progreso`
+
+## Dashboard de progreso
+
+`/progreso` consume las sesiones completadas del usuario autenticado y construye una serie cronológica de hasta 30 intentos por defecto. Permite filtrar `TODAS`, `VOZ` o `TEXTO` y alternar entre puntaje general, ritmo, pausas y muletillas.
+
+El gráfico se genera con SVG nativo en Vue. Las métricas inexistentes para una modalidad se muestran como no disponibles; Dale no rellena esos datos artificialmente.
 
 ## Práctica por voz
 

@@ -107,6 +107,7 @@ async function logout() {
       </div>
 
       <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href="/progreso" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-blue-700 px-5 py-3 font-black text-white hover:bg-blue-800">Ver mi progreso</a>
         <a href="/#escenarios" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-slate-950 px-5 py-3 font-black text-white hover:bg-blue-700">Practicar otro escenario</a>
         <button type="button" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 px-5 py-3 font-bold text-slate-700 hover:bg-slate-50" @click="logout">Cerrar sesión</button>
       </div>
