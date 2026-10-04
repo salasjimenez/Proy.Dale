@@ -1,0 +1,10 @@
+---
+import AuthForm from "../components/vue/AuthForm.vue";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Iniciar sesión | Dale" description="Inicia sesión en Dale para conservar tus prácticas y progreso.">
+  <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <AuthForm client:load mode="login" />
+  </section>
+</BaseLayout>

@@ -1,0 +1,13 @@
+---
+import ScenarioMapDashboard from "../components/vue/ScenarioMapDashboard.vue";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Mapa de escenarios | Dale"
+  description="Compara tus fortalezas y áreas por practicar entre las categorías de escenarios de Dale."
+>
+  <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+    <ScenarioMapDashboard client:load />
+  </section>
+</BaseLayout>
