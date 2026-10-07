@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Componente `ProgressDashboard.vue`"
+---
+
 # Componente `ProgressDashboard.vue`
 
 Dashboard reutilizable de evolución de prácticas. Consume `GET /api/progreso`, incluye filtros y genera un gráfico SVG sin librerías externas.

@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Documentación técnica de Dale"
+---
+
 # Documentación técnica de Dale
 
 La documentación se mantiene separada del sitio de producción de la aplicación y está preparada para publicarse desde `/docs` mediante GitHub Pages.
@@ -12,6 +17,7 @@ La documentación se mantiene separada del sitio de producción de la aplicació
 - `simulador-voz-etapa-08.md`: Web Speech, micrófono, ritmo y pausas.
 - `progreso-etapa-09.md`: dashboard personal y evolución temporal de métricas.
 - `mapa-escenarios-etapa-10.md`: radar de fortalezas y cobertura por categoría.
+- `ci-cd-etapa-11.md`: pruebas automatizadas, pipeline `test -> build -> deploy` y publicación de `/docs` en GitHub Pages.
 
 ## Componentes
 

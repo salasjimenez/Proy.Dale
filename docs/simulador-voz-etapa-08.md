@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Etapa 8 — Simulador por voz"
+---
+
 # Etapa 8 — Simulador por voz
 
 Versión: `0.8.0`

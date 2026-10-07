@@ -1,3 +1,8 @@
+---
+layout: default
+title: "AuthForm.vue"
+---
+
 # AuthForm.vue
 
 Formulario reutilizable para registro e inicio de sesión. El modo se controla con la propiedad `mode`.

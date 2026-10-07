@@ -1,3 +1,8 @@
+---
+layout: default
+title: "`PracticeSimulator.vue`"
+---
+
 # `PracticeSimulator.vue`
 
 Isla Vue que gestiona una práctica completa: autenticación, selección Texto/Voz, creación de sesión, captura, finalización y visualización de métricas.

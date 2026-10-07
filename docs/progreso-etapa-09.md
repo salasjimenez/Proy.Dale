@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Etapa 09 — Mi voz, mi progreso"
+---
+
 # Etapa 09 — Mi voz, mi progreso
 
 Versión: `0.9.0`

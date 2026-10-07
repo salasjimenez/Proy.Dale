@@ -1,3 +1,8 @@
+---
+layout: default
+title: "ScenarioMapDashboard.vue"
+---
+
 # ScenarioMapDashboard.vue
 
 Dashboard reutilizable que representa el desempeño por categoría mediante un radar SVG y tarjetas de detalle.

@@ -49,3 +49,9 @@ Thumbs.db
 # Temporary files
 .tmp/
 tmp/
+
+# Local authentication test artifacts
+dale-cookies.txt
+
+# Local documentation build
+_site/

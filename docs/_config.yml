@@ -1,0 +1,6 @@
+title: Dale - Documentación técnica
+description: Arquitectura, componentes y decisiones técnicas de Dale.
+markdown: kramdown
+theme: minima
+exclude:
+  - components/.gitkeep

@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Etapa 7 — simulador por texto"
+---
+
 # Etapa 7 — simulador por texto
 
 La versión `0.7.0` incorpora la primera práctica completa y persistente de Dale.

@@ -1,3 +1,8 @@
+---
+layout: default
+title: "`VoiceCapture.vue`"
+---
+
 # `VoiceCapture.vue`
 
 Componente Vue reutilizable para capturar una práctica por voz. Solicita el micrófono, transcribe con Web Speech API, estima pausas con Web Audio API y emite únicamente transcripción, duración y marcas de pausa.

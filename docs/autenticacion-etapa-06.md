@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Etapa 6 — Autenticación"
+---
+
 # Etapa 6 — Autenticación
 
 Versión: `0.6.0`

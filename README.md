@@ -4,7 +4,7 @@ Dale es una plataforma web gratuita, responsive y de código abierto para practi
 
 ## Estado actual
 
-Versión `0.10.0` — autenticación propia, catálogo de escenarios, simulador por texto/voz y los dos dashboards principales de progreso.
+Versión `0.11.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
 
 - Frontend: Astro + Vue + Tailwind CSS.
 - Backend: Node.js + Express + TypeScript.
@@ -17,6 +17,9 @@ Versión `0.10.0` — autenticación propia, catálogo de escenarios, simulador 
 - Privacidad de voz: Dale no almacena archivos de audio; persiste transcripción y métricas.
 - Desarrollo local: Docker Compose.
 - Imagen única del proyecto: `frontend/public/DaleConTodoMiKing.png`.
+- Calidad: pruebas automatizadas de rutas críticas del backend con Vitest + Supertest.
+- CI/CD: workflow `test -> build -> deploy`, con migraciones Prisma antes del despliegue.
+- Documentación: `/docs` publicable de forma independiente mediante GitHub Pages.
 
 ## Desarrollo local
 
@@ -87,3 +90,18 @@ PUBLIC_API_URL=http://localhost:3000
 ```
 
 Las credenciales PostgreSQL, `JWT_SECRET` y cualquier otro secreto permanecen exclusivamente en el backend.
+
+## Calidad y CI/CD
+
+La versión `0.11.0` agrega pruebas automatizadas del backend y los workflows de GitHub Actions:
+
+- `.github/workflows/ci-cd.yml`: ejecuta `test`, luego `build` y deja `deploy` condicionado a `DEPLOY_ENABLED=true`.
+- `.github/workflows/deploy-docs.yml`: publica exclusivamente `/docs` en GitHub Pages.
+
+Para ejecutar las pruebas localmente:
+
+```bash
+npm run test --workspace=backend
+```
+
+El despliegue de producción permanece desactivado hasta configurar `DATABASE_URL`, `BACKEND_DEPLOY_HOOK_URL`, `FRONTEND_DEPLOY_HOOK_URL` y habilitar la variable `DEPLOY_ENABLED=true` en GitHub.

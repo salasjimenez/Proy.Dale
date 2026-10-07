@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Etapa 10 — Mapa de escenarios"
+---
+
 # Etapa 10 — Mapa de escenarios
 
 La versión `0.10.0` incorpora el segundo dashboard requerido por Dale: **Mapa de escenarios**.

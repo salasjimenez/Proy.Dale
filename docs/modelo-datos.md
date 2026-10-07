@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Modelo de datos — Etapa 2"
+---
+
 # Modelo de datos — Etapa 2
 
 Dale usa PostgreSQL a través de Prisma ORM. El frontend nunca accede directamente a la base de datos.

@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Frontend base — Etapa 05"
+---
+
 # Frontend base — Etapa 05
 
 ## Objetivo

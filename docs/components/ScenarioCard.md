@@ -1,3 +1,8 @@
+---
+layout: default
+title: "ScenarioCard.vue"
+---
+
 # ScenarioCard.vue
 
 Tarjeta reutilizable para presentar un escenario de práctica. Recibe un objeto `scenario` y emite `select` cuando el usuario desea revisar cómo practicar ese escenario.

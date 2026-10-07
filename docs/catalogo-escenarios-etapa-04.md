@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Etapa 4 - Catálogo de escenarios"
+---
+
 # Etapa 4 - Catálogo de escenarios
 
 La versión `v0.4.0` convierte el módulo `escenarios` en el primer módulo de negocio funcional de Dale.

@@ -1,0 +1,133 @@
+name: CI/CD
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: dale-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "24"
+  NODE_ENV: test
+  FRONTEND_URL: http://localhost:4321
+  DATABASE_URL: postgresql://dale_app:ci_only@127.0.0.1:5432/dale?schema=public
+  JWT_SECRET: ci-only-secret-with-more-than-32-characters
+  JWT_EXPIRES_IN_SECONDS: "3600"
+  AUTH_COOKIE_NAME: dale_session
+  AUTH_COOKIE_SAME_SITE: lax
+  AUTH_COOKIE_SECURE: "false"
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate Prisma Client
+        run: npm run prisma:generate --workspace=backend
+
+      - name: Validate Prisma schema
+        run: npm run prisma:validate --workspace=backend
+
+      - name: Run automated tests
+        run: npm run ci:test
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    needs: test
+    env:
+      NODE_ENV: production
+      PUBLIC_API_URL: http://localhost:3000
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build backend and frontend
+        run: npm run ci:build
+
+      - name: Upload frontend build
+        uses: actions/upload-artifact@v4
+        with:
+          name: dale-frontend-dist
+          path: frontend/dist
+          if-no-files-found: error
+
+      - name: Upload backend build
+        uses: actions/upload-artifact@v4
+        with:
+          name: dale-backend-dist
+          path: backend/dist
+          if-no-files-found: error
+
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    needs: build
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      vars.DEPLOY_ENABLED == 'true'
+    environment: production
+    env:
+      NODE_ENV: production
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install backend dependencies
+        run: npm install
+
+      - name: Validate deploy configuration
+        env:
+          BACKEND_DEPLOY_HOOK_URL: ${{ secrets.BACKEND_DEPLOY_HOOK_URL }}
+          FRONTEND_DEPLOY_HOOK_URL: ${{ secrets.FRONTEND_DEPLOY_HOOK_URL }}
+        run: |
+          test -n "$DATABASE_URL" || { echo "DATABASE_URL is required"; exit 1; }
+          test -n "$BACKEND_DEPLOY_HOOK_URL" || { echo "BACKEND_DEPLOY_HOOK_URL is required"; exit 1; }
+          test -n "$FRONTEND_DEPLOY_HOOK_URL" || { echo "FRONTEND_DEPLOY_HOOK_URL is required"; exit 1; }
+
+      - name: Apply Prisma migrations
+        run: npm run prisma:deploy
+
+      - name: Trigger backend deployment
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.BACKEND_DEPLOY_HOOK_URL }}
+        run: curl --fail-with-body --silent --show-error --request POST "$DEPLOY_HOOK_URL"
+
+      - name: Trigger frontend deployment
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.FRONTEND_DEPLOY_HOOK_URL }}
+        run: curl --fail-with-body --silent --show-error --request POST "$DEPLOY_HOOK_URL"

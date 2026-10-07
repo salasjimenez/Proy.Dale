@@ -1,6 +1,26 @@
+---
+layout: default
+title: "Changelog"
+---
+
 # Changelog
 
 Todos los cambios relevantes de Dale se documentan en este archivo siguiendo versionado semántico.
+
+## [0.11.0] - 2026-10-07
+
+### Agregado
+
+- Pruebas automatizadas del backend con Vitest y Supertest para rutas de estado, protección de autenticación y respuesta 404.
+- Workflow principal de GitHub Actions con etapas explícitas `test`, `build` y `deploy`.
+- Validación de Prisma y generación de Prisma Client dentro de CI.
+- Compilación automatizada de frontend y backend con artefactos de build.
+- Migraciones automáticas mediante `prisma migrate deploy` antes del despliegue de producción.
+- Activación segura del job de producción mediante la variable `DEPLOY_ENABLED=true`.
+- Deploy hooks desacoplados para frontend y backend, sin fijar Dale a un proveedor específico.
+- Workflow `deploy-docs.yml` para publicar `/docs` de forma independiente en GitHub Pages.
+- Portada `docs/index.md` y configuración mínima de Jekyll.
+- Documentación de configuración, secretos y activación del pipeline.
 
 ## [0.10.0] - 2026-10-03
 

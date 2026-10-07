@@ -1,6 +1,6 @@
 {
   "name": "dale-backend",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,7 +13,10 @@
     "prisma:status": "prisma migrate status",
     "prisma:format": "prisma format",
     "prisma:validate": "prisma validate",
-    "prisma:seed": "tsx prisma/seed.ts"
+    "prisma:seed": "tsx prisma/seed.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run prisma:validate && npm run test && npm run build"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
@@ -31,6 +34,9 @@
     "prisma": "^6.19.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.2",
-    "@types/jsonwebtoken": "^9.0.10"
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/supertest": "^6.0.3",
+    "supertest": "^7.1.4",
+    "vitest": "^3.2.4"
   }
 }
