@@ -3,6 +3,7 @@ import vue from '@astrojs/vue';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
+  publicDir: './public-assets',
   integrations: [vue()],
   vite: {
     plugins: [tailwindcss()],

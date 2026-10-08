@@ -3,6 +3,9 @@ layout: default
 title: "AuthForm.vue"
 ---
 
+{% raw %}
+
+
 # AuthForm.vue
 
 Formulario reutilizable para registro e inicio de sesión. El modo se controla con la propiedad `mode`.
@@ -82,3 +85,5 @@ async function submit() {
 ```
 
 La implementación real incluye validación de cliente, mensajes por campo, estados de carga y estilos responsive.
+
+{% endraw %}

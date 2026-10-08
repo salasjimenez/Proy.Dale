@@ -32,6 +32,11 @@ function handleSessionError(error: unknown, res: Response): boolean {
   return true;
 }
 
+function readRouteParam(value: string | string[] | undefined): string {
+  if (Array.isArray(value)) return value[0] ?? "";
+  return value ?? "";
+}
+
 sesionesRouter.get("/status", (_req, res) => {
   res.status(200).json({
     module: "sesiones",
@@ -83,7 +88,13 @@ sesionesRouter.post("/", requireAuth, async (req, res, next) => {
 
 sesionesRouter.get("/:id", requireAuth, async (req, res, next) => {
   try {
-    const session = await getUserSession(req.authUser!.id, req.params.id);
+    const sessionId = readRouteParam(req.params.id);
+    if (!sessionId) {
+      res.status(400).json({ error: "INVALID_SESSION_ID", message: "El identificador de sesión no es válido." });
+      return;
+    }
+
+    const session = await getUserSession(req.authUser!.id, sessionId);
     res.status(200).json({ data: { session } });
   } catch (error) {
     if (!handleSessionError(error, res)) next(error);
@@ -96,9 +107,15 @@ sesionesRouter.post("/:id/completar", requireAuth, async (req, res, next) => {
     const transcripcion = typeof body.transcripcion === "string" ? body.transcripcion : "";
     const duracionMs = typeof body.duracionMs === "number" ? body.duracionMs : undefined;
 
+    const sessionId = readRouteParam(req.params.id);
+    if (!sessionId) {
+      res.status(400).json({ error: "INVALID_SESSION_ID", message: "El identificador de sesión no es válido." });
+      return;
+    }
+
     const session = await completeSession(
       req.authUser!.id,
-      req.params.id,
+      sessionId,
       transcripcion,
       duracionMs,
       body.pausasDetalle,

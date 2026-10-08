@@ -4,7 +4,7 @@ Dale es una plataforma web gratuita, responsive y de código abierto para practi
 
 ## Estado actual
 
-Versión `0.11.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
+Versión `0.12.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
 
 - Frontend: Astro + Vue + Tailwind CSS.
 - Backend: Node.js + Express + TypeScript.
@@ -39,6 +39,8 @@ Para práctica por voz se recomienda Chrome o Edge actualizado. El sitio necesit
 ## Endpoints actuales
 
 - `GET /ping`
+- `GET /health/live`
+- `GET /health/ready`
 - `GET /api/auth/status`
 - `POST /api/auth/register`
 - `POST /api/auth/login`

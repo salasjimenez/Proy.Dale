@@ -11,6 +11,12 @@ const {
   title = "Dale | Practica hablar con seguridad",
   description = "Practica conversaciones reales y mejora tu forma de comunicarte con métricas claras.",
 } = Astro.props;
+
+const pathname = Astro.url.pathname;
+const isHome = pathname === "/";
+const isProgress = pathname === "/progreso";
+const isMap = pathname === "/mapa";
+const isAccount = pathname === "/cuenta";
 ---
 
 <!doctype html>
@@ -20,10 +26,13 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#172554" />
+    <meta name="color-scheme" content="light" />
     <link rel="icon" type="image/png" href="/DaleConTodoMiKing.png" />
     <title>{title}</title>
   </head>
   <body>
+    <a href="#contenido-principal" class="skip-link">Saltar al contenido principal</a>
+
     <div class="min-h-screen text-slate-800">
       <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur">
         <div class="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-3 px-4 py-2 sm:px-6 lg:px-8">
@@ -42,25 +51,41 @@ const {
           <nav aria-label="Navegación principal" class="flex min-w-0 items-center gap-1 sm:gap-2">
             <a
               href="/#escenarios"
-              class="hidden rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950 md:inline-flex"
+              aria-current={isHome ? "page" : undefined}
+              class:list={[
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition md:inline-flex",
+                isHome ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
+              ]}
             >
               Escenarios
             </a>
             <a
               href="/progreso"
-              class="hidden rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950 md:inline-flex"
+              aria-current={isProgress ? "page" : undefined}
+              class:list={[
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition md:inline-flex",
+                isProgress ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
+              ]}
             >
               Progreso
             </a>
             <a
               href="/mapa"
-              class="hidden rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950 md:inline-flex"
+              aria-current={isMap ? "page" : undefined}
+              class:list={[
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition md:inline-flex",
+                isMap ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
+              ]}
             >
               Mapa
             </a>
             <a
               href="/cuenta"
-              class="hidden rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950 lg:inline-flex"
+              aria-current={isAccount ? "page" : undefined}
+              class:list={[
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex",
+                isAccount ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
+              ]}
             >
               Mis prácticas
             </a>
@@ -69,7 +94,7 @@ const {
         </div>
       </header>
 
-      <main>
+      <main id="contenido-principal" tabindex="-1">
         <slot />
       </main>
 

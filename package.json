@@ -1,6 +1,6 @@
 {
   "name": "dale",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "private": true,
   "description": "Dale - plataforma abierta para practicar comunicacion en situaciones reales.",
   "workspaces": [
@@ -20,7 +20,8 @@
     "prisma:status": "npm run prisma:status --workspace=backend",
     "db:seed": "npm run prisma:seed --workspace=backend",
     "ci:test": "npm run test --workspace=backend",
-    "ci:build": "npm run prisma:generate --workspace=backend && npm run build"
+    "ci:build": "npm run prisma:generate --workspace=backend && npm run build",
+    "check": "npm run prisma:validate --workspace=backend && npm run test --workspace=backend && npm run build"
   },
   "engines": {
     "node": ">=22 <27",

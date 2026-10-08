@@ -3,6 +3,9 @@ layout: default
 title: "`PracticeSimulator.vue`"
 ---
 
+{% raw %}
+
+
 # `PracticeSimulator.vue`
 
 Isla Vue que gestiona una práctica completa: autenticación, selección Texto/Voz, creación de sesión, captura, finalización y visualización de métricas.
@@ -542,3 +545,5 @@ onMounted(() => void initialize());
 </template>
 
 ```
+
+{% endraw %}

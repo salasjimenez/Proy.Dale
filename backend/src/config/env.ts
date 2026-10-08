@@ -87,4 +87,14 @@ export const env = {
     process.env.AUTH_COOKIE_SECURE,
     nodeEnv === "production",
   ),
+  authRateLimitWindowMs: parsePositiveInteger(
+    process.env.AUTH_RATE_LIMIT_WINDOW_MS,
+    15 * 60 * 1000,
+    "AUTH_RATE_LIMIT_WINDOW_MS",
+  ),
+  authRateLimitMax: parsePositiveInteger(
+    process.env.AUTH_RATE_LIMIT_MAX,
+    10,
+    "AUTH_RATE_LIMIT_MAX",
+  ),
 } as const;

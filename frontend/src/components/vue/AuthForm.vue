@@ -84,9 +84,7 @@ async function submit() {
   } catch (error) {
     if (error instanceof ApiError) {
       generalError.value = error.message;
-      if (error.fields) {
-        Object.assign(fieldErrors, error.fields);
-      }
+      if (error.fields) Object.assign(fieldErrors, error.fields);
     } else {
       generalError.value = "No pudimos conectar con Dale. Intenta nuevamente.";
     }
@@ -106,9 +104,11 @@ async function submit() {
       <p class="mt-2 text-sm leading-6 text-slate-600">{{ subtitle }}</p>
     </div>
 
-    <form class="space-y-5" @submit.prevent="submit" novalidate>
+    <form class="space-y-5" @submit.prevent="submit" novalidate :aria-busy="submitting">
       <div v-if="isRegister">
-        <label for="nombre" class="mb-2 block text-sm font-bold text-slate-800">Nombre <span class="font-normal text-slate-500">(opcional)</span></label>
+        <label for="nombre" class="mb-2 block text-sm font-bold text-slate-800">
+          Nombre <span class="font-normal text-slate-500">(opcional)</span>
+        </label>
         <input
           id="nombre"
           v-model="form.nombre"
@@ -117,8 +117,11 @@ async function submit() {
           maxlength="100"
           class="min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-950 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
           :aria-invalid="Boolean(fieldErrors.nombre)"
+          :aria-describedby="fieldErrors.nombre ? 'nombre-error' : undefined"
         />
-        <p v-if="fieldErrors.nombre" class="mt-2 text-sm font-semibold text-red-700">{{ fieldErrors.nombre }}</p>
+        <p v-if="fieldErrors.nombre" id="nombre-error" role="alert" class="mt-2 text-sm font-semibold text-red-700">
+          {{ fieldErrors.nombre }}
+        </p>
       </div>
 
       <div>
@@ -128,12 +131,16 @@ async function submit() {
           v-model="form.email"
           type="email"
           autocomplete="email"
+          inputmode="email"
           required
           maxlength="254"
           class="min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-950 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
           :aria-invalid="Boolean(fieldErrors.email)"
+          :aria-describedby="fieldErrors.email ? 'email-error' : undefined"
         />
-        <p v-if="fieldErrors.email" class="mt-2 text-sm font-semibold text-red-700">{{ fieldErrors.email }}</p>
+        <p v-if="fieldErrors.email" id="email-error" role="alert" class="mt-2 text-sm font-semibold text-red-700">
+          {{ fieldErrors.email }}
+        </p>
       </div>
 
       <div>
@@ -146,9 +153,14 @@ async function submit() {
           required
           class="min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-950 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
           :aria-invalid="Boolean(fieldErrors.password)"
+          :aria-describedby="isRegister ? (fieldErrors.password ? 'password-help password-error' : 'password-help') : (fieldErrors.password ? 'password-error' : undefined)"
         />
-        <p v-if="isRegister" class="mt-2 text-xs leading-5 text-slate-500">Mínimo 8 caracteres, con al menos una letra y un número.</p>
-        <p v-if="fieldErrors.password" class="mt-2 text-sm font-semibold text-red-700">{{ fieldErrors.password }}</p>
+        <p v-if="isRegister" id="password-help" class="mt-2 text-xs leading-5 text-slate-500">
+          Mínimo 8 caracteres, con al menos una letra y un número.
+        </p>
+        <p v-if="fieldErrors.password" id="password-error" role="alert" class="mt-2 text-sm font-semibold text-red-700">
+          {{ fieldErrors.password }}
+        </p>
       </div>
 
       <div v-if="isRegister">
@@ -161,17 +173,26 @@ async function submit() {
           required
           class="min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-950 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
           :aria-invalid="Boolean(fieldErrors.confirmPassword)"
+          :aria-describedby="fieldErrors.confirmPassword ? 'confirm-password-error' : undefined"
         />
-        <p v-if="fieldErrors.confirmPassword" class="mt-2 text-sm font-semibold text-red-700">{{ fieldErrors.confirmPassword }}</p>
+        <p v-if="fieldErrors.confirmPassword" id="confirm-password-error" role="alert" class="mt-2 text-sm font-semibold text-red-700">
+          {{ fieldErrors.confirmPassword }}
+        </p>
       </div>
 
-      <div v-if="generalError" role="alert" class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
+      <div
+        v-if="generalError"
+        role="alert"
+        aria-live="assertive"
+        class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800"
+      >
         {{ generalError }}
       </div>
 
       <button
         type="submit"
         :disabled="submitting"
+        :aria-busy="submitting"
         class="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-slate-950 px-5 py-3 font-black text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {{ submitting ? "Procesando..." : isRegister ? "Crear cuenta" : "Iniciar sesión" }}

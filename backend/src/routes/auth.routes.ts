@@ -1,5 +1,6 @@
 import { Router, type Response } from "express";
 import { env } from "../config/env.js";
+import { authRateLimit } from "../middleware/auth-rate-limit.js";
 import { requireAuth } from "../middleware/auth.js";
 import {
   AuthServiceError,
@@ -75,7 +76,7 @@ authRouter.get("/status", (_req, res) => {
   });
 });
 
-authRouter.post("/register", async (req, res, next) => {
+authRouter.post("/register", authRateLimit, async (req, res, next) => {
   try {
     const input = readCredentials((req.body ?? {}) as CredentialsBody, true);
 
@@ -101,7 +102,7 @@ authRouter.post("/register", async (req, res, next) => {
   }
 });
 
-authRouter.post("/login", async (req, res, next) => {
+authRouter.post("/login", authRateLimit, async (req, res, next) => {
   try {
     const input = readCredentials((req.body ?? {}) as CredentialsBody, false);
 

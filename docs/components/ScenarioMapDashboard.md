@@ -3,6 +3,9 @@ layout: default
 title: "ScenarioMapDashboard.vue"
 ---
 
+{% raw %}
+
+
 # ScenarioMapDashboard.vue
 
 Dashboard reutilizable que representa el desempeño por categoría mediante un radar SVG y tarjetas de detalle.
@@ -333,3 +336,5 @@ onMounted(() => void loadMap());
 </template>
 
 ```
+
+{% endraw %}

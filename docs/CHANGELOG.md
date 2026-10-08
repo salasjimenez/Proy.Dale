@@ -1,3 +1,24 @@
+## [0.11.1] - Correccion CI/CD y GitHub Pages
+
+## [0.12.0] - Robustez, seguridad y accesibilidad
+
+### Added
+- Endpoints `/health/live` y `/health/ready`.
+- `X-Request-Id` en respuestas del backend.
+- Rate limit configurable para login y registro.
+- Página 404 propia.
+- Skip link, `aria-current` y soporte para `prefers-reduced-motion`.
+- Pruebas automatizadas para liveness, request id y rate limiting.
+
+### Changed
+- Formularios de autenticación con relaciones `aria-describedby` y estados anunciables.
+- La versión del backend se centraliza en `src/version.ts`.
+### Fixed
+- El job de build instala devDependencies antes de compilar en modo production.
+- CI usa npm ci con package-lock sincronizado.
+- Prisma CLI queda disponible durante el job de deploy.
+- La documentacion de componentes Vue queda protegida de Liquid con raw/endraw.
+- GitHub Pages mantiene un unico workflow personalizado para /docs.
 ---
 layout: default
 title: "Changelog"

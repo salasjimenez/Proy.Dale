@@ -3,6 +3,9 @@ layout: default
 title: "ScenarioCard.vue"
 ---
 
+{% raw %}
+
+
 # ScenarioCard.vue
 
 Tarjeta reutilizable para presentar un escenario de práctica. Recibe un objeto `scenario` y emite `select` cuando el usuario desea revisar cómo practicar ese escenario.
@@ -74,3 +77,5 @@ function handleSelect(selected: ScenarioCardData) {
   <ScenarioCard :scenario="scenario" @select="handleSelect" />
 </template>
 ```
+
+{% endraw %}

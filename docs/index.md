@@ -19,6 +19,7 @@ Dale es una plataforma abierta para practicar comunicación en situaciones reale
 - [Mi voz, mi progreso](progreso-etapa-09.html)
 - [Mapa de escenarios](mapa-escenarios-etapa-10.html)
 - [CI/CD y GitHub Pages](ci-cd-etapa-11.html)
+- [Etapa 12: Robustez, seguridad y accesibilidad](etapa-12-calidad-seguridad-accesibilidad.html)
 - [CHANGELOG](CHANGELOG.html)
 
 ## Componentes Vue documentados
