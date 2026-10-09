@@ -4,7 +4,7 @@ Dale es una plataforma web gratuita, responsive y de código abierto para practi
 
 ## Estado actual
 
-Versión `0.12.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
+Versión `0.13.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
 
 - Frontend: Astro + Vue + Tailwind CSS.
 - Backend: Node.js + Express + TypeScript.
@@ -15,8 +15,9 @@ Versión `0.12.0` — funcionalidades principales de práctica y progreso, prueb
 - Dashboard 1: `Mi voz, mi progreso` con serie temporal y filtros Texto/Voz.
 - Dashboard 2: `Mapa de escenarios` con radar por categoría, cobertura y siguiente foco sugerido.
 - Privacidad de voz: Dale no almacena archivos de audio; persiste transcripción y métricas.
+- Control de datos: exportación JSON, eliminación de prácticas e eliminación de cuenta desde `/cuenta`.
 - Desarrollo local: Docker Compose.
-- Imagen única del proyecto: `frontend/public/DaleConTodoMiKing.png`.
+- Imagen única del proyecto: `frontend/public-assets/DaleConTodoMiKing.png`.
 - Calidad: pruebas automatizadas de rutas críticas del backend con Vitest + Supertest.
 - CI/CD: workflow `test -> build -> deploy`, con migraciones Prisma antes del despliegue.
 - Documentación: `/docs` publicable de forma independiente mediante GitHub Pages.
@@ -45,6 +46,8 @@ Para práctica por voz se recomienda Chrome o Edge actualizado. El sitio necesit
 - `POST /api/auth/register`
 - `POST /api/auth/login`
 - `GET /api/auth/me`
+- `GET /api/auth/export`
+- `DELETE /api/auth/me`
 - `POST /api/auth/logout`
 - `GET /api/escenarios/status`
 - `GET /api/escenarios`
@@ -52,8 +55,10 @@ Para práctica por voz se recomienda Chrome o Edge actualizado. El sitio necesit
 - `GET /api/escenarios/:slug`
 - `GET /api/sesiones/status`
 - `GET /api/sesiones`
+- `DELETE /api/sesiones`
 - `POST /api/sesiones`
 - `GET /api/sesiones/:id`
+- `DELETE /api/sesiones/:id`
 - `POST /api/sesiones/:id/completar`
 - `GET /api/progreso/status`
 - `GET /api/progreso`

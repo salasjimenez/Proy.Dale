@@ -20,7 +20,7 @@ export class ApiError extends Error {
 }
 
 type ApiOptions = {
-  method?: "GET" | "POST";
+  method?: "GET" | "POST" | "DELETE";
   body?: unknown;
   signal?: AbortSignal;
 };
@@ -67,4 +67,8 @@ export function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> {
 
 export function apiPost<T>(path: string, body?: unknown): Promise<T> {
   return apiRequest<T>(path, { method: "POST", body });
+}
+
+export function apiDelete<T>(path: string, body?: unknown): Promise<T> {
+  return apiRequest<T>(path, { method: "DELETE", body });
 }

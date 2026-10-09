@@ -205,3 +205,86 @@ export async function getUserById(userId: string): Promise<PublicUser | null> {
     select: userSelect,
   });
 }
+
+
+export async function exportUserData(userId: string) {
+  const user = await prisma.usuario.findUnique({
+    where: { id: userId },
+    select: userSelect,
+  });
+
+  if (!user) {
+    throw new AuthServiceError(404, "ACCOUNT_NOT_FOUND", "La cuenta ya no existe.");
+  }
+
+  const sessions = await prisma.sesion.findMany({
+    where: { usuarioId: userId },
+    orderBy: { creadoEn: "asc" },
+    select: {
+      id: true,
+      modalidad: true,
+      estado: true,
+      transcripcion: true,
+      duracionMs: true,
+      iniciadaEn: true,
+      finalizadaEn: true,
+      creadoEn: true,
+      escenario: {
+        select: {
+          slug: true,
+          titulo: true,
+          categoria: true,
+          nivel: true,
+        },
+      },
+      metrica: {
+        select: {
+          palabras: true,
+          palabrasPorMinuto: true,
+          cantidadPausas: true,
+          duracionPausasMs: true,
+          pausaPromedioMs: true,
+          pausaMaximaMs: true,
+          muletillasTotal: true,
+          muletillasDetalle: true,
+          repeticiones: true,
+          puntajeRitmo: true,
+          puntajePausas: true,
+          puntajeMuletillas: true,
+          puntajeGeneral: true,
+          pausasDetalle: true,
+          creadoEn: true,
+        },
+      },
+    },
+  });
+
+  return {
+    exportVersion: "1",
+    exportedAt: new Date().toISOString(),
+    account: user,
+    sessions,
+  };
+}
+
+export async function deleteUserAccount(userId: string, password: string): Promise<void> {
+  if (!password || Buffer.byteLength(password, "utf8") > 72) {
+    throw new AuthServiceError(400, "PASSWORD_REQUIRED", "Ingresa tu contraseña actual para continuar.");
+  }
+
+  const user = await prisma.usuario.findUnique({
+    where: { id: userId },
+    select: { id: true, passwordHash: true },
+  });
+
+  if (!user) {
+    throw new AuthServiceError(404, "ACCOUNT_NOT_FOUND", "La cuenta ya no existe.");
+  }
+
+  const passwordMatches = await bcrypt.compare(password, user.passwordHash);
+  if (!passwordMatches) {
+    throw new AuthServiceError(401, "INVALID_PASSWORD", "La contraseña actual no es correcta.");
+  }
+
+  await prisma.usuario.delete({ where: { id: user.id } });
+}

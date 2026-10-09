@@ -5,6 +5,8 @@ import {
   SessionServiceError,
   completeSession,
   createSession,
+  deleteAllUserSessions,
+  deleteUserSession,
   getUserSession,
   listUserSessions,
 } from "../services/sesiones.service.js";
@@ -61,6 +63,18 @@ sesionesRouter.get("/", requireAuth, async (req, res, next) => {
   }
 });
 
+sesionesRouter.delete("/", requireAuth, async (req, res, next) => {
+  try {
+    const deletedCount = await deleteAllUserSessions(req.authUser!.id);
+    res.status(200).json({
+      data: { deletedCount },
+      message: "Historial de prácticas eliminado correctamente.",
+    });
+  } catch (error) {
+    if (!handleSessionError(error, res)) next(error);
+  }
+});
+
 sesionesRouter.post("/", requireAuth, async (req, res, next) => {
   try {
     const body = (req.body ?? {}) as StartSessionBody;
@@ -96,6 +110,21 @@ sesionesRouter.get("/:id", requireAuth, async (req, res, next) => {
 
     const session = await getUserSession(req.authUser!.id, sessionId);
     res.status(200).json({ data: { session } });
+  } catch (error) {
+    if (!handleSessionError(error, res)) next(error);
+  }
+});
+
+sesionesRouter.delete("/:id", requireAuth, async (req, res, next) => {
+  try {
+    const sessionId = readRouteParam(req.params.id);
+    if (!sessionId) {
+      res.status(400).json({ error: "INVALID_SESSION_ID", message: "El identificador de sesión no es válido." });
+      return;
+    }
+
+    await deleteUserSession(req.authUser!.id, sessionId);
+    res.status(200).json({ message: "Práctica eliminada correctamente." });
   } catch (error) {
     if (!handleSessionError(error, res)) next(error);
   }

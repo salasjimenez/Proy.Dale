@@ -4,6 +4,8 @@ import { authRateLimit } from "../middleware/auth-rate-limit.js";
 import { requireAuth } from "../middleware/auth.js";
 import {
   AuthServiceError,
+  deleteUserAccount,
+  exportUserData,
   loginUser,
   registerUser,
   validateEmail,
@@ -132,6 +134,26 @@ authRouter.post("/logout", (_req, res) => {
   res.status(200).json({ message: "Sesión cerrada correctamente." });
 });
 
+authRouter.get("/export", requireAuth, async (req, res, next) => {
+  try {
+    const exported = await exportUserData(req.authUser!.id);
+    res.status(200).json({ data: exported });
+  } catch (error) {
+    if (!handleAuthError(error, res)) next(error);
+  }
+});
+
 authRouter.get("/me", requireAuth, (req, res) => {
   res.status(200).json({ data: { user: req.authUser } });
+});
+
+authRouter.delete("/me", requireAuth, authRateLimit, async (req, res, next) => {
+  try {
+    const password = typeof req.body?.password === "string" ? req.body.password : "";
+    await deleteUserAccount(req.authUser!.id, password);
+    clearSessionCookie(res);
+    res.status(200).json({ message: "Cuenta eliminada correctamente." });
+  } catch (error) {
+    if (!handleAuthError(error, res)) next(error);
+  }
 });

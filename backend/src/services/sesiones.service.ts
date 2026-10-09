@@ -578,3 +578,22 @@ export async function completeSession(
 
   return serializeSession(completed);
 }
+
+
+export async function deleteUserSession(userId: string, sessionId: string): Promise<void> {
+  const result = await prisma.sesion.deleteMany({
+    where: { id: sessionId, usuarioId: userId },
+  });
+
+  if (result.count === 0) {
+    throw new SessionServiceError(404, "SESSION_NOT_FOUND", "La práctica solicitada no existe.");
+  }
+}
+
+export async function deleteAllUserSessions(userId: string): Promise<number> {
+  const result = await prisma.sesion.deleteMany({
+    where: { usuarioId: userId },
+  });
+
+  return result.count;
+}

@@ -1,24 +1,3 @@
-## [0.11.1] - Correccion CI/CD y GitHub Pages
-
-## [0.12.0] - Robustez, seguridad y accesibilidad
-
-### Added
-- Endpoints `/health/live` y `/health/ready`.
-- `X-Request-Id` en respuestas del backend.
-- Rate limit configurable para login y registro.
-- Página 404 propia.
-- Skip link, `aria-current` y soporte para `prefers-reduced-motion`.
-- Pruebas automatizadas para liveness, request id y rate limiting.
-
-### Changed
-- Formularios de autenticación con relaciones `aria-describedby` y estados anunciables.
-- La versión del backend se centraliza en `src/version.ts`.
-### Fixed
-- El job de build instala devDependencies antes de compilar en modo production.
-- CI usa npm ci con package-lock sincronizado.
-- Prisma CLI queda disponible durante el job de deploy.
-- La documentacion de componentes Vue queda protegida de Liquid con raw/endraw.
-- GitHub Pages mantiene un unico workflow personalizado para /docs.
 ---
 layout: default
 title: "Changelog"
@@ -26,7 +5,40 @@ title: "Changelog"
 
 # Changelog
 
+## [0.13.0] - 2026-10-09
+
+### Agregado
+
+- Exportación autenticada de datos personales en JSON.
+- Eliminación de prácticas individuales y del historial completo.
+- Eliminación definitiva de cuenta con confirmación de contraseña.
+- Controles de privacidad integrados en /cuenta.
+- Pruebas de protección para las nuevas rutas sensibles.
+
+### Cambiado
+
+- Política de privacidad con acceso, portabilidad y eliminación de datos.
+- Cliente HTTP del frontend con soporte DELETE.
+
+
 Todos los cambios relevantes de Dale se documentan en este archivo siguiendo versionado semántico.
+
+## [0.12.0] - 2026-10-08
+
+### Agregado
+
+- Endpoints /health/live y /health/ready.
+- X-Request-Id en respuestas del backend.
+- Rate limit configurable para login y registro.
+- Página 404 propia y mejoras de accesibilidad.
+
+## [0.11.1] - 2026-10-08
+
+### Corregido
+
+- Build CI/CD con devDependencies disponibles.
+- Conflictos entre Jekyll/Liquid y ejemplos Vue.
+- Generación correcta de la home de Astro manteniendo index.html aislado.
 
 ## [0.11.0] - 2026-10-07
 
