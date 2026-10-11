@@ -1,33 +1,46 @@
 ---
 layout: default
-title: "`PracticeSimulator.vue`"
+title: "PracticeSimulator.vue | Dale"
 ---
+
+# PracticeSimulator.vue
+
+Orquesta practicas de texto y voz, consulta escenarios, crea y completa sesiones y muestra metricas.
+
+**Archivo fuente:** `frontend/src/components/vue/PracticeSimulator.vue`  
+**Interfaz:** Sin props publicas. Obtiene el escenario desde /practicar?escenario=slug.
+
+## Requisitos y dependencias
+
+- [`frontend/src/lib/api.ts`](../codigo/lib-api.html)
+- [`frontend/src/types/auth.ts`](../codigo/types-auth.html)
+- [`frontend/src/types/scenario.ts`](../codigo/types-scenario.html)
+- [`frontend/src/types/session.ts`](../codigo/types-session.html)
+- [VoiceCapture.vue](VoiceCapture.html)
+
+En Dale se usa Astro + Vue + Tailwind CSS. Los imports relativos del codigo completo suponen la estructura original `frontend/src`; copia tambien las dependencias indicadas o adapta esas rutas a tu proyecto. Para las islas Astro, `client:load` habilita la interaccion en el navegador.
+
+## Ejemplos de uso
+
+### Pagina de practica (Astro)
 
 {% raw %}
 
-
-# `PracticeSimulator.vue`
-
-Isla Vue que gestiona una práctica completa: autenticación, selección Texto/Voz, creación de sesión, captura, finalización y visualización de métricas.
-
-## Uso
-
 ```astro
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
 import PracticeSimulator from "../components/vue/PracticeSimulator.vue";
 ---
 
-<BaseLayout title="Practicar | Dale">
-  <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-    <PracticeSimulator client:load />
-  </section>
-</BaseLayout>
+<PracticeSimulator client:load />
 ```
 
-El escenario se obtiene de `/practicar?escenario=<slug>`. Toda comunicación de red usa `src/lib/api.ts` y `PUBLIC_API_URL`.
+{% endraw %}
 
-## Código completo
+## Codigo fuente completo — v0.15.0
+
+El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `PracticeSimulator.vue`.
+
+{% raw %}
 
 ```vue
 <script setup lang="ts">
@@ -543,7 +556,13 @@ onMounted(() => void initialize());
     </template>
   </section>
 </template>
-
 ```
 
 {% endraw %}
+
+## Consideraciones
+
+- Abre /practicar?escenario=entrevista-trabajo-basico para elegir un escenario valido.
+- La modalidad de voz depende de permiso de microfono y Web Speech API; Dale no guarda audio.
+
+Consulta [todos los componentes](index.html) y el [codigo auxiliar reutilizable](../codigo/index.html).

@@ -1,36 +1,51 @@
 ---
 layout: default
-title: "`VoiceCapture.vue`"
+title: "VoiceCapture.vue | Dale"
 ---
 
+# VoiceCapture.vue
+
+Captura de voz con Web Speech API y estimacion de pausas con Web Audio API, sin almacenar audio.
+
+**Archivo fuente:** `frontend/src/components/vue/VoiceCapture.vue`  
+**Interfaz:** Sin props. Eventos: complete(payload: VoiceCaptureResult) y error(message: string).
+
+## Requisitos y dependencias
+
+No utiliza archivos locales adicionales.
+
+En Dale se usa Astro + Vue + Tailwind CSS. Los imports relativos del codigo completo suponen la estructura original `frontend/src`; copia tambien las dependencias indicadas o adapta esas rutas a tu proyecto. Para las islas Astro, `client:load` habilita la interaccion en el navegador.
+
+## Ejemplos de uso
+
+### Uso y eventos (Vue)
+
 {% raw %}
-
-
-# `VoiceCapture.vue`
-
-Componente Vue reutilizable para capturar una práctica por voz. Solicita el micrófono, transcribe con Web Speech API, estima pausas con Web Audio API y emite únicamente transcripción, duración y marcas de pausa.
-
-## Uso
 
 ```vue
 <script setup lang="ts">
 import VoiceCapture, { type VoiceCaptureResult } from "./VoiceCapture.vue";
 
-function onComplete(result: VoiceCaptureResult) {
+function completar(result: VoiceCaptureResult) {
   console.log(result.transcripcion, result.duracionMs, result.pausasDetalle);
 }
-
-function onError(message: string) {
-  console.error(message);
+function manejarError(mensaje: string) {
+  console.error(mensaje);
 }
 </script>
 
 <template>
-  <VoiceCapture @complete="onComplete" @error="onError" />
+  <VoiceCapture @complete="completar" @error="manejarError" />
 </template>
 ```
 
-## Código completo
+{% endraw %}
+
+## Codigo fuente completo — v0.15.0
+
+El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `VoiceCapture.vue`.
+
+{% raw %}
 
 ```vue
 <script setup lang="ts">
@@ -408,7 +423,13 @@ onBeforeUnmount(() => {
     </p>
   </div>
 </template>
-
 ```
 
 {% endraw %}
+
+## Consideraciones
+
+- Solicita permiso de microfono; para produccion requiere HTTPS.
+- El navegador puede procesar audio mediante servicios de su proveedor. Dale solo persiste transcripciones y metricas.
+
+Consulta [todos los componentes](index.html) y el [codigo auxiliar reutilizable](../codigo/index.html).

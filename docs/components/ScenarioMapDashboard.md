@@ -1,16 +1,27 @@
 ---
 layout: default
-title: "ScenarioMapDashboard.vue"
+title: "ScenarioMapDashboard.vue | Dale"
 ---
-
-{% raw %}
-
 
 # ScenarioMapDashboard.vue
 
-Dashboard reutilizable que representa el desempeño por categoría mediante un radar SVG y tarjetas de detalle.
+Mapa radar SVG de las categorias practicadas, cobertura y sugerencia de siguiente foco.
 
-## Uso
+**Archivo fuente:** `frontend/src/components/vue/ScenarioMapDashboard.vue`  
+**Interfaz:** Sin props publicas. Consume GET /api/mapa.
+
+## Requisitos y dependencias
+
+- [`frontend/src/lib/api.ts`](../codigo/lib-api.html)
+- [`frontend/src/types/map.ts`](../codigo/types-map.html)
+
+En Dale se usa Astro + Vue + Tailwind CSS. Los imports relativos del codigo completo suponen la estructura original `frontend/src`; copia tambien las dependencias indicadas o adapta esas rutas a tu proyecto. Para las islas Astro, `client:load` habilita la interaccion en el navegador.
+
+## Ejemplos de uso
+
+### Pagina /mapa (Astro)
+
+{% raw %}
 
 ```astro
 ---
@@ -20,9 +31,13 @@ import ScenarioMapDashboard from "../components/vue/ScenarioMapDashboard.vue";
 <ScenarioMapDashboard client:load />
 ```
 
-El componente consume `GET /api/mapa` usando la sesión autenticada del navegador.
+{% endraw %}
 
-## Código completo
+## Codigo fuente completo — v0.15.0
+
+El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `ScenarioMapDashboard.vue`.
+
+{% raw %}
 
 ```vue
 <script setup lang="ts">
@@ -334,7 +349,12 @@ onMounted(() => void loadMap());
     </div>
   </section>
 </template>
-
 ```
 
 {% endraw %}
+
+## Consideraciones
+
+- Las categorias sin datos se distinguen de las categorias con puntaje cero.
+
+Consulta [todos los componentes](index.html) y el [codigo auxiliar reutilizable](../codigo/index.html).

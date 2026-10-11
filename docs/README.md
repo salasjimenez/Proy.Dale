@@ -21,4 +21,4 @@ La documentación se mantiene separada del sitio de producción de la aplicació
 
 ## Componentes
 
-Los ejemplos copiables se encuentran en `/docs/components`.
+Consulta el [catalogo de componentes](components/index.html) y el [codigo auxiliar](codigo/index.html). Ejecuta `npm run docs:sync` tras modificar archivos Vue o TypeScript; `npm run docs:check` detecta diferencias en CI.

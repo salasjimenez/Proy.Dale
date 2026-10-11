@@ -22,15 +22,23 @@ Dale es una plataforma abierta para practicar comunicación en situaciones reale
 - [Etapa 12: Robustez, seguridad y accesibilidad](etapa-12-calidad-seguridad-accesibilidad.html)
 - [Etapa 13: Control de datos y privacidad](etapa-13-control-de-datos.html)
 - [Etapa 14: Páginas legales y registro](etapa-14-paginas-legales.html)
+- [Etapa 15: Componentes Vue copiables](etapa-15-componentes-vue.html)
 - [CHANGELOG](CHANGELOG.html)
 
 ## Componentes Vue documentados
 
-- [ScenarioCard](components/ScenarioCard.html)
+El [catalogo completo de nueve componentes](components/index.html) incluye codigo Vue integro, ejemplos de montaje y dependencias TypeScript descargables por copia.
+
+- [AccountPanel](components/AccountPanel.html)
 - [AuthForm](components/AuthForm.html)
+- [AuthNav](components/AuthNav.html)
 - [PracticeSimulator](components/PracticeSimulator.html)
-- [VoiceCapture](components/VoiceCapture.html)
 - [ProgressDashboard](components/ProgressDashboard.html)
+- [ScenarioCard](components/ScenarioCard.html)
+- [ScenarioCatalog](components/ScenarioCatalog.html)
 - [ScenarioMapDashboard](components/ScenarioMapDashboard.html)
+- [VoiceCapture](components/VoiceCapture.html)
+
+[Codigo auxiliar: tipos y cliente API](codigo/index.html).
 
 La documentación se publica de forma independiente de la aplicación mediante GitHub Pages.

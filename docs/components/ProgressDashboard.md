@@ -1,16 +1,27 @@
 ---
 layout: default
-title: "Componente `ProgressDashboard.vue`"
+title: "ProgressDashboard.vue | Dale"
 ---
 
+# ProgressDashboard.vue
+
+Dashboard de evolucion cronologica de puntajes y metricas; SVG nativo y filtros por modalidad.
+
+**Archivo fuente:** `frontend/src/components/vue/ProgressDashboard.vue`  
+**Interfaz:** Sin props ni eventos publicos. Consume GET /api/progreso.
+
+## Requisitos y dependencias
+
+- [`frontend/src/lib/api.ts`](../codigo/lib-api.html)
+- [`frontend/src/types/progress.ts`](../codigo/types-progress.html)
+
+En Dale se usa Astro + Vue + Tailwind CSS. Los imports relativos del codigo completo suponen la estructura original `frontend/src`; copia tambien las dependencias indicadas o adapta esas rutas a tu proyecto. Para las islas Astro, `client:load` habilita la interaccion en el navegador.
+
+## Ejemplos de uso
+
+### Pagina /progreso (Astro)
+
 {% raw %}
-
-
-# Componente `ProgressDashboard.vue`
-
-Dashboard reutilizable de evolución de prácticas. Consume `GET /api/progreso`, incluye filtros y genera un gráfico SVG sin librerías externas.
-
-## Uso
 
 ```astro
 ---
@@ -20,7 +31,13 @@ import ProgressDashboard from "../components/vue/ProgressDashboard.vue";
 <ProgressDashboard client:load />
 ```
 
-## Código completo
+{% endraw %}
+
+## Codigo fuente completo — v0.15.0
+
+El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `ProgressDashboard.vue`.
+
+{% raw %}
 
 ```vue
 <script setup lang="ts">
@@ -380,3 +397,9 @@ onMounted(loadProgress);
 ```
 
 {% endraw %}
+
+## Consideraciones
+
+- Requiere sesion; las metricas no disponibles no se reemplazan por ceros.
+
+Consulta [todos los componentes](index.html) y el [codigo auxiliar reutilizable](../codigo/index.html).

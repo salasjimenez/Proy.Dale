@@ -4,7 +4,7 @@ Dale es una plataforma web gratuita, responsive y de código abierto para practi
 
 ## Estado actual
 
-Versión `0.14.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
+Versión `0.15.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
 
 - Frontend: Astro + Vue + Tailwind CSS.
 - Backend: Node.js + Express + TypeScript.
@@ -28,6 +28,19 @@ Versión `0.14.0` — funcionalidades principales de práctica y progreso, prueb
 El registro `POST /api/auth/register` requiere ahora `aceptaTerminos: true` (booleano). El backend almacena la fecha y la versión legal aceptada. Las cuentas existentes conservan `null` en ambos campos hasta que se implemente un flujo de reaceptación. El aviso de cookies explica la única cookie técnica de sesión, cuya duración depende de `JWT_EXPIRES_IN_SECONDS` (valor predeterminado: siete días).
 
 Los textos legales son borradores técnicos y requieren revisión jurídica antes de lanzar el servicio al público.
+
+## Componentes Vue copiables (v0.15.0)
+
+`/docs/components/index.md` ofrece la documentacion de los nueve componentes Vue utilizados por Dale (autenticacion, catalogo, practica por voz/texto, dashboards y cuenta), con ejemplos Astro/Vue y codigo completo generado desde las fuentes. Los archivos auxiliares TypeScript se documentan en `/docs/codigo/index.md`.
+
+Para mantener el contenido actualizado al modificar un componente:
+
+```bash
+npm run docs:sync
+npm run docs:check
+```
+
+La validacion de consistencia de la documentacion se ejecuta tambien en `npm run check` y en CI. Las paginas documentan componentes reales, no sustituyen el backend ni requieren servicios o dependencias adicionales.
 
 ## Desarrollo local
 
