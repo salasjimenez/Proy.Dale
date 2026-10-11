@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { LEGAL_LAST_UPDATED, LEGAL_VERSION } from "../lib/legal";
+---
+
+<BaseLayout title="Aviso de cookies | Dale" description="Descubre la cookie técnica de sesión utilizada por Dale.">
+  <article class="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
+    <p class="text-sm font-bold uppercase tracking-wide text-blue-700">Información legal</p>
+    <h1 class="mt-3 break-words text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Aviso de cookies</h1>
+    <p class="mt-4 text-sm text-slate-600">Última actualización: <time datetime={LEGAL_VERSION}>{LEGAL_LAST_UPDATED}</time>.</p>
+    <div class="mt-9 space-y-9 break-words leading-7 text-slate-700">
+      <section><h2 class="text-xl font-bold text-slate-950">1. ¿Qué cookie utiliza Dale?</h2>
+        <p class="mt-2">Dale usa una única cookie técnica para mantener la sesión iniciada. Su nombre predeterminado es <code>dale_session</code> y puede configurarse por entorno desde el backend. Contiene un token de autenticación firmado; no contiene tu contraseña.</p></section>
+      <section><h2 class="text-xl font-bold text-slate-950">2. Finalidad y duración</h2>
+        <p class="mt-2">La cookie permite identificar la sesión de tu cuenta en las solicitudes a la API. Su vigencia se configura con <code>JWT_EXPIRES_IN_SECONDS</code>, con un valor predeterminado de siete días. Al cerrar sesión, el navegador recibe una instrucción para eliminarla. El token también deja de ser válido al vencer su plazo.</p></section>
+      <section><h2 class="text-xl font-bold text-slate-950">3. Protecciones</h2>
+        <p class="mt-2">La cookie lleva el atributo <code>HttpOnly</code> para impedir su lectura por JavaScript y usa <code>SameSite=Lax</code> por defecto. Sobre HTTPS en producción se utiliza <code>Secure</code>. La configuración puede variar según el despliegue autorizado.</p></section>
+      <section><h2 class="text-xl font-bold text-slate-950">4. Consentimiento y control</h2>
+        <p class="mt-2">En esta versión no utilizamos cookies de publicidad, seguimiento ni analítica. Como solo se usa una cookie de autenticación necesaria para la funcionalidad solicitada, no incorporamos un banner de consentimiento de cookies no esenciales. Puedes bloquearla o borrarla desde tu navegador, pero dejarás de poder mantener la sesión iniciada. Los requisitos concretos dependen de la normativa aplicable.</p></section>
+    </div>
+  </article>
+</BaseLayout>

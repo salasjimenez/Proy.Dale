@@ -39,7 +39,7 @@ import { ApiError, apiPost } from "../../lib/api";
 import type { AuthResponse } from "../../types/auth";
 
 const props = defineProps<{ mode: "login" | "register" }>();
-const form = reactive({ nombre: "", email: "", password: "", confirmPassword: "" });
+const form = reactive({ nombre: "", email: "", password: "", confirmPassword: "", aceptaTerminos: false });
 const submitting = ref(false);
 const generalError = ref("");
 const fieldErrors = reactive<Record<string, string>>({});
@@ -52,7 +52,7 @@ async function submit() {
   try {
     const endpoint = isRegister.value ? "/api/auth/register" : "/api/auth/login";
     const payload = isRegister.value
-      ? { nombre: form.nombre.trim() || undefined, email: form.email.trim(), password: form.password }
+      ? { nombre: form.nombre.trim() || undefined, email: form.email.trim(), password: form.password, aceptaTerminos: form.aceptaTerminos }
       : { email: form.email.trim(), password: form.password };
 
     await apiPost<AuthResponse>(endpoint, payload);
@@ -76,6 +76,7 @@ async function submit() {
     <input v-model="form.email" type="email" autocomplete="email" required />
     <input v-model="form.password" type="password" required />
     <input v-if="isRegister" v-model="form.confirmPassword" type="password" />
+    <label v-if="isRegister"><input v-model="form.aceptaTerminos" type="checkbox" required /> He leído y acepto los términos y la privacidad</label>
     <p v-if="generalError">{{ generalError }}</p>
     <button type="submit" :disabled="submitting">
       {{ isRegister ? "Crear cuenta" : "Iniciar sesión" }}
@@ -83,6 +84,8 @@ async function submit() {
   </form>
 </template>
 ```
+
+El ejemplo abreviado anterior es ilustrativo y omite la validación detallada; en producción la casilla obligatoria debe verificarse en el cliente y en el backend. Nunca se debe asumir la aceptación sin acción expresa del usuario. Consulta la [etapa 14](../etapa-14-paginas-legales.html).
 
 La implementación real incluye validación de cliente, mensajes por campo, estados de carga y estilos responsive.
 

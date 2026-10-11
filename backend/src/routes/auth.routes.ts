@@ -19,6 +19,7 @@ type CredentialsBody = {
   email?: unknown;
   password?: unknown;
   nombre?: unknown;
+  aceptaTerminos?: unknown;
 };
 
 function setSessionCookie(res: Response, token: string): void {
@@ -80,7 +81,11 @@ authRouter.get("/status", (_req, res) => {
 
 authRouter.post("/register", authRateLimit, async (req, res, next) => {
   try {
-    const input = readCredentials((req.body ?? {}) as CredentialsBody, true);
+    const body = (req.body ?? {}) as CredentialsBody;
+    const input = readCredentials(body, true);
+    if (body.aceptaTerminos !== true) {
+      input.errors.aceptaTerminos = "Debes aceptar los términos y la política de privacidad.";
+    }
 
     if (Object.keys(input.errors).length > 0) {
       res.status(400).json({
@@ -94,6 +99,7 @@ authRouter.post("/register", authRateLimit, async (req, res, next) => {
     const result = await registerUser({
       email: input.email,
       password: input.password,
+      aceptaTerminos: true,
       ...(input.nombre ? { nombre: input.nombre } : {}),
     });
 

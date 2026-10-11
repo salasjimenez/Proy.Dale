@@ -21,6 +21,7 @@ Dale es una plataforma abierta para practicar comunicación en situaciones reale
 - [CI/CD y GitHub Pages](ci-cd-etapa-11.html)
 - [Etapa 12: Robustez, seguridad y accesibilidad](etapa-12-calidad-seguridad-accesibilidad.html)
 - [Etapa 13: Control de datos y privacidad](etapa-13-control-de-datos.html)
+- [Etapa 14: Páginas legales y registro](etapa-14-paginas-legales.html)
 - [CHANGELOG](CHANGELOG.html)
 
 ## Componentes Vue documentados

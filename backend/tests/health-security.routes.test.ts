@@ -1,6 +1,7 @@
 import request from "supertest";
 import { beforeEach, describe, expect, it } from "vitest";
 import { app } from "../src/app.js";
+import { APP_VERSION } from "../src/version.js";
 import { resetAuthRateLimitForTests } from "../src/middleware/auth-rate-limit.js";
 
 describe("health and security", () => {
@@ -14,7 +15,7 @@ describe("health and security", () => {
     expect(response.status).toBe(200);
     expect(response.body.status).toBe("ok");
     expect(response.body.check).toBe("live");
-    expect(response.body.version).toBe("0.12.0");
+    expect(response.body.version).toBe(APP_VERSION);
   });
 
   it("returns a request id header", async () => {

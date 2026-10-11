@@ -5,6 +5,18 @@ title: "Changelog"
 
 # Changelog
 
+## [0.14.0] - 2026-10-10
+
+### Agregado
+
+- Políticas actualizadas `/privacidad` y `/terminos`, nueva página `/cookies` y enlaces en el footer.
+- Fecha legal única compartida entre las tres páginas.
+- Consentimiento explícito obligatorio en el registro, validado en frontend y backend.
+- Registro de fecha/versión de aceptación mediante migración Prisma compatible con usuarios anteriores.
+- Pruebas con Vitest/Supertest para solicitudes con y sin aceptación.
+- Guía técnica en `/docs` y actualización del README.
+
+
 ## [0.13.0] - 2026-10-09
 
 ### Agregado

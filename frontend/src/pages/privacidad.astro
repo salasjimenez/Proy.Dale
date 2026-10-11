@@ -1,33 +1,32 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { LEGAL_LAST_UPDATED, LEGAL_VERSION } from "../lib/legal";
 ---
 
-<BaseLayout title="Privacidad | Dale" description="Política de privacidad base del proyecto Dale.">
-  <article class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:py-16">
-    <p class="text-sm font-bold uppercase tracking-[0.18em] text-blue-700">Documento editable</p>
-    <h1 class="mt-3 text-4xl font-black tracking-tight text-slate-950">Política de privacidad</h1>
-    <p class="mt-5 leading-7 text-slate-600">Última actualización: 9 de octubre de 2026.</p>
-
-    <div class="mt-8 space-y-8 leading-7 text-slate-700">
-      <section>
-        <h2 class="text-xl font-black text-slate-950">1. Datos utilizados por Dale</h2>
-        <p class="mt-2">Dale puede procesar datos de cuenta, transcripciones de práctica y métricas de comunicación necesarias para ofrecer las funciones de la plataforma. El alcance concreto deberá ajustarse antes de una publicación pública.</p>
+<BaseLayout title="Política de privacidad | Dale" description="Conoce los datos que Dale almacena, cómo trata la voz y cómo gestionar tu información.">
+  <article class="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
+    <p class="text-sm font-bold uppercase tracking-wide text-blue-700">Información legal</p>
+    <h1 class="mt-3 break-words text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Política de privacidad</h1>
+    <p class="mt-4 text-sm text-slate-600">Última actualización: <time datetime={LEGAL_VERSION}>{LEGAL_LAST_UPDATED}</time>.</p>
+    <div class="mt-9 space-y-9 break-words leading-7 text-slate-700">
+      <section aria-labelledby="datos"><h2 id="datos" class="text-xl font-bold text-slate-950">1. Datos que tratamos</h2>
+        <p class="mt-2">Al crear una cuenta, Dale guarda tu correo electrónico, el nombre si lo proporcionas, la contraseña únicamente como hash seguro con bcrypt y las fechas asociadas a la cuenta. Al registrarte también se conserva la fecha y versión de los textos legales que aceptaste.</p>
+        <p class="mt-2">Al practicar, Dale puede guardar el escenario, modalidad, transcripción, duración, puntajes y métricas como ritmo, pausas estimadas, muletillas y repeticiones. Estos datos permiten mostrar tu historial y progreso.</p>
       </section>
-      <section>
-        <h2 class="text-xl font-black text-slate-950">2. Audio y prácticas</h2>
-        <p class="mt-2">Dale no almacena archivos de audio. En una práctica por voz se conservan la transcripción y las métricas derivadas, como duración, ritmo y pausas estimadas. El reconocimiento de voz usa capacidades del navegador; según el navegador, el procesamiento puede involucrar servicios de su proveedor.</p>
+      <section aria-labelledby="audio"><h2 id="audio" class="text-xl font-bold text-slate-950">2. Reconocimiento de voz y audio</h2>
+        <p class="mt-2"><strong>Dale no graba ni almacena archivos de audio.</strong> El audio del micrófono se utiliza en el navegador para reconocimiento y estimación de pausas; al backend de Dale solo llegan datos derivados, como transcripción y marcas temporales. La Web Speech API puede enviar audio a servicios externos del proveedor del navegador, conforme a sus propias políticas. Si no deseas ese posible tratamiento externo, utiliza la práctica por texto.</p>
       </section>
-      <section>
-        <h2 class="text-xl font-black text-slate-950">3. Acceso, portabilidad y eliminación</h2>
-        <p class="mt-2">Desde <a href="/cuenta" class="font-bold text-blue-700 hover:text-blue-900">Mi cuenta</a> puedes descargar una copia JSON de los datos que Dale conserva, eliminar prácticas individuales, borrar todo tu historial o eliminar definitivamente tu cuenta. La eliminación de una cuenta borra también sus sesiones y métricas relacionadas.</p>
+      <section aria-labelledby="finalidades"><h2 id="finalidades" class="text-xl font-bold text-slate-950">3. Finalidades y acceso</h2>
+        <p class="mt-2">Usamos tus datos para autenticar tu cuenta, guardar prácticas y generar estadísticas de mejora. El acceso a los datos persistentes se realiza desde el backend de Dale, con PostgreSQL. No se incorporan herramientas de publicidad ni analítica basadas en cookies en esta versión.</p>
       </section>
-      <section>
-        <h2 class="text-xl font-black text-slate-950">4. Seguridad</h2>
-        <p class="mt-2">Las credenciales de base de datos y secretos de infraestructura no se incluyen en el repositorio. Todo acceso persistente a datos se realiza a través del backend de Dale. La eliminación de una cuenta requiere una sesión válida y la contraseña actual.</p>
+      <section aria-labelledby="derechos"><h2 id="derechos" class="text-xl font-bold text-slate-950">4. Exportación y eliminación</h2>
+        <p class="mt-2">Desde <a href="/cuenta" class="font-semibold text-blue-700 underline underline-offset-4 hover:text-blue-900">Mi cuenta</a> puedes descargar tus datos en JSON, eliminar una práctica, borrar todo tu historial o eliminar tu cuenta. Para borrar la cuenta se solicita tu contraseña actual. Las sesiones y métricas asociadas se eliminan junto con la cuenta en la base de datos activa; las copias de seguridad, si existieran, requieren una política de retención específica antes del lanzamiento público.</p>
       </section>
-      <section>
-        <h2 class="text-xl font-black text-slate-950">5. Cambios</h2>
-        <p class="mt-2">Este contenido es una base técnica editable y no sustituye una revisión legal aplicable a la jurisdicción donde Dale sea publicado.</p>
+      <section aria-labelledby="seguridad"><h2 id="seguridad" class="text-xl font-bold text-slate-950">5. Seguridad y sesión</h2>
+        <p class="mt-2">La sesión se mantiene mediante una cookie de autenticación <code>HttpOnly</code>, que JavaScript no puede leer. En producción se configura como <code>Secure</code> sobre HTTPS. No publicamos contraseñas, hashes ni secretos del backend en la exportación. Consulta el <a href="/cookies" class="font-semibold text-blue-700 underline underline-offset-4">aviso de cookies</a>.</p>
+      </section>
+      <section aria-labelledby="cambios"><h2 id="cambios" class="text-xl font-bold text-slate-950">6. Cambios y contacto</h2>
+        <p class="mt-2">Esta política puede actualizarse al cambiar las funciones o la operación del servicio. Antes de publicar Dale es necesario identificar al responsable del tratamiento, establecer un canal de contacto, concretar plazos de conservación y verificar los requisitos legales aplicables.</p>
       </section>
     </div>
   </article>

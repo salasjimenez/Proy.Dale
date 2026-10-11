@@ -4,6 +4,7 @@ import {
   PrismaClient,
 } from "@prisma/client";
 
+// El seed crea solo escenarios. Nunca crea usuarios ni elude su aceptación legal.
 const prisma = new PrismaClient();
 
 type ScenarioTemplate = {

@@ -27,7 +27,8 @@ Dale incorpora registro, inicio de sesión, consulta de sesión y cierre de sesi
 {
   "nombre": "Ana",
   "email": "ana@example.com",
-  "password": "Clave1234"
+  "password": "Clave1234",
+  "aceptaTerminos": true
 }
 ```
 
@@ -62,6 +63,8 @@ Requiere la cookie de sesión o un `Authorization: Bearer <token>` válido.
 ### POST `/api/auth/logout`
 
 Elimina la cookie de sesión.
+
+> Desde la versión 0.14.0, el registro requiere `aceptaTerminos: true`. El backend rechaza la omisión o valores no booleanos y guarda la fecha y versión de la aceptación.
 
 ## Seguridad aplicada
 

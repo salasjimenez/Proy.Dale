@@ -12,6 +12,7 @@ const form = reactive({
   email: "",
   password: "",
   confirmPassword: "",
+  aceptaTerminos: false,
 });
 
 const submitting = ref(false);
@@ -50,6 +51,10 @@ function validateClient(): boolean {
     fieldErrors.confirmPassword = "Las contraseñas no coinciden.";
   }
 
+  if (isRegister.value && form.aceptaTerminos !== true) {
+    fieldErrors.aceptaTerminos = "Debes aceptar los términos y la política de privacidad.";
+  }
+
   return Object.keys(fieldErrors).length === 0;
 }
 
@@ -66,6 +71,7 @@ async function submit() {
           nombre: form.nombre.trim() || undefined,
           email: form.email.trim(),
           password: form.password,
+          aceptaTerminos: form.aceptaTerminos,
         }
       : {
           email: form.email.trim(),
@@ -177,6 +183,32 @@ async function submit() {
         />
         <p v-if="fieldErrors.confirmPassword" id="confirm-password-error" role="alert" class="mt-2 text-sm font-semibold text-red-700">
           {{ fieldErrors.confirmPassword }}
+        </p>
+      </div>
+
+      <div v-if="isRegister">
+        <div class="flex items-start gap-3">
+          <input
+            id="aceptaTerminos"
+            v-model="form.aceptaTerminos"
+            type="checkbox"
+            required
+            class="mt-1 h-5 w-5 shrink-0 accent-blue-700"
+            :aria-invalid="Boolean(fieldErrors.aceptaTerminos)"
+            :aria-describedby="fieldErrors.aceptaTerminos ? 'acepta-terminos-error acepta-terminos-ayuda' : 'acepta-terminos-ayuda'"
+          />
+          <div>
+            <label for="aceptaTerminos" class="text-sm font-semibold leading-6 text-slate-800">
+              He leído y acepto los términos y la política de privacidad.
+            </label>
+            <p id="acepta-terminos-ayuda" class="mt-1 text-sm leading-6 text-slate-600">
+              Consulta los <a href="/terminos" target="_blank" rel="noopener noreferrer" class="font-semibold text-blue-700 underline underline-offset-4">términos</a>
+              y la <a href="/privacidad" target="_blank" rel="noopener noreferrer" class="font-semibold text-blue-700 underline underline-offset-4">política de privacidad</a> (se abren en otra pestaña).
+            </p>
+          </div>
+        </div>
+        <p v-if="fieldErrors.aceptaTerminos" id="acepta-terminos-error" role="alert" class="mt-2 text-sm font-semibold text-red-700">
+          {{ fieldErrors.aceptaTerminos }}
         </p>
       </div>
 

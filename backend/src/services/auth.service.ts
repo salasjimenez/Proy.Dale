@@ -32,6 +32,7 @@ export type RegisterInput = {
   email: string;
   password: string;
   nombre?: string;
+  aceptaTerminos: boolean;
 };
 
 export type LoginInput = {
@@ -121,6 +122,9 @@ export async function registerUser(input: RegisterInput): Promise<{
   user: PublicUser;
   token: string;
 }> {
+  if (input.aceptaTerminos !== true) {
+    throw new AuthServiceError(400, "LEGAL_ACCEPTANCE_REQUIRED", "Debes aceptar los términos y la política de privacidad.");
+  }
   const email = normalizeEmail(input.email);
   const nombre = input.nombre?.trim() || null;
 
@@ -145,6 +149,8 @@ export async function registerUser(input: RegisterInput): Promise<{
         email,
         passwordHash,
         nombre,
+        terminosAceptadosEn: new Date(),
+        versionLegalAceptada: "2026-10-10",
       },
       select: userSelect,
     });
@@ -210,7 +216,11 @@ export async function getUserById(userId: string): Promise<PublicUser | null> {
 export async function exportUserData(userId: string) {
   const user = await prisma.usuario.findUnique({
     where: { id: userId },
-    select: userSelect,
+    select: {
+      ...userSelect,
+      terminosAceptadosEn: true,
+      versionLegalAceptada: true,
+    },
   });
 
   if (!user) {

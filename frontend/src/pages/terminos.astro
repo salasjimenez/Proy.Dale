@@ -1,30 +1,28 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { LEGAL_LAST_UPDATED, LEGAL_VERSION } from "../lib/legal";
 ---
 
-<BaseLayout title="Términos | Dale" description="Términos y condiciones base del proyecto Dale.">
-  <article class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:py-16">
-    <p class="text-sm font-bold uppercase tracking-[0.18em] text-blue-700">Documento editable</p>
-    <h1 class="mt-3 text-4xl font-black tracking-tight text-slate-950">Términos y condiciones</h1>
-    <p class="mt-5 leading-7 text-slate-600">Última actualización: 29 de septiembre de 2026.</p>
-
-    <div class="mt-8 space-y-8 leading-7 text-slate-700">
-      <section>
-        <h2 class="text-xl font-black text-slate-950">1. Finalidad</h2>
-        <p class="mt-2">Dale es una herramienta de práctica de comunicación. Sus resultados y métricas tienen fines orientativos y de entrenamiento.</p>
-      </section>
-      <section>
-        <h2 class="text-xl font-black text-slate-950">2. Uso responsable</h2>
-        <p class="mt-2">El usuario debe emplear la plataforma de forma lícita y no utilizarla para vulnerar derechos de terceros ni introducir contenido malicioso.</p>
-      </section>
-      <section>
-        <h2 class="text-xl font-black text-slate-950">3. Disponibilidad</h2>
-        <p class="mt-2">Durante el desarrollo pueden existir cambios, interrupciones o funciones experimentales. Las condiciones definitivas deberán revisarse antes de la publicación pública.</p>
-      </section>
-      <section>
-        <h2 class="text-xl font-black text-slate-950">4. Alcance legal</h2>
-        <p class="mt-2">Este texto constituye una plantilla técnica inicial y debe adaptarse a la operación real de Dale y a la normativa aplicable.</p>
-      </section>
+<BaseLayout title="Términos y condiciones | Dale" description="Condiciones de uso de la plataforma gratuita Dale.">
+  <article class="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
+    <p class="text-sm font-bold uppercase tracking-wide text-blue-700">Información legal</p>
+    <h1 class="mt-3 break-words text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Términos y condiciones</h1>
+    <p class="mt-4 text-sm text-slate-600">Última actualización: <time datetime={LEGAL_VERSION}>{LEGAL_LAST_UPDATED}</time>.</p>
+    <div class="mt-9 space-y-9 break-words leading-7 text-slate-700">
+      <section><h2 class="text-xl font-bold text-slate-950">1. Objeto del servicio</h2>
+        <p class="mt-2">Dale es una plataforma gratuita y de código abierto para ensayar conversaciones, recibir observaciones automáticas y seguir el progreso. Las métricas son orientativas, pueden contener errores y no garantizan resultados concretos.</p></section>
+      <section><h2 class="text-xl font-bold text-slate-950">2. Cuenta y seguridad</h2>
+        <p class="mt-2">Para guardar prácticas necesitas una cuenta con un correo válido y una contraseña. Eres responsable de proteger tus credenciales y del uso realizado con tu sesión. Puedes cerrar sesión, exportar información y eliminar tu cuenta desde <a href="/cuenta" class="font-semibold text-blue-700 underline underline-offset-4">Mi cuenta</a>.</p></section>
+      <section><h2 class="text-xl font-bold text-slate-950">3. Uso aceptable</h2>
+        <p class="mt-2">No utilices Dale para actividades ilícitas, hostigar a otras personas, infringir derechos de terceros, introducir código malicioso, eludir controles de seguridad o sobrecargar deliberadamente el servicio. Evita introducir datos personales de terceros sin autorización.</p></section>
+      <section><h2 class="text-xl font-bold text-slate-950">4. Límites y responsabilidad</h2>
+        <p class="mt-2">Dale es una herramienta de entrenamiento: <strong>no sustituye asesoría profesional</strong> psicológica, médica, jurídica, académica ni laboral. Durante el desarrollo pueden existir interrupciones o cambios en las funciones. El servicio se ofrece sin una garantía de disponibilidad permanente, sin perjuicio de los derechos irrenunciables establecidos en la legislación aplicable.</p></section>
+      <section><h2 class="text-xl font-bold text-slate-950">5. Datos y privacidad</h2>
+        <p class="mt-2">El tratamiento de datos y la posible intervención de proveedores de reconocimiento de voz se explican en la <a href="/privacidad" class="font-semibold text-blue-700 underline underline-offset-4">política de privacidad</a>. La autenticación usa una cookie necesaria para la sesión.</p></section>
+      <section><h2 class="text-xl font-bold text-slate-950">6. Modificaciones de estos términos</h2>
+        <p class="mt-2">Podemos modificar las condiciones a medida que evolucione Dale. Publicaremos la fecha de actualización. Si un cambio requiere renovar la aceptación, se solicitará de forma expresa antes de aplicar las nuevas condiciones al usuario.</p></section>
+      <section><h2 class="text-xl font-bold text-slate-950">7. Revisión previa al lanzamiento</h2>
+        <p class="mt-2">El titular legal del servicio, la jurisdicción aplicable, los medios de contacto y los aspectos regulatorios deben concretarse y revisarse antes de abrir el servicio al público.</p></section>
     </div>
   </article>
 </BaseLayout>

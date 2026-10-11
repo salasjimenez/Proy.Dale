@@ -4,7 +4,7 @@ Dale es una plataforma web gratuita, responsive y de código abierto para practi
 
 ## Estado actual
 
-Versión `0.13.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
+Versión `0.14.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
 
 - Frontend: Astro + Vue + Tailwind CSS.
 - Backend: Node.js + Express + TypeScript.
@@ -21,6 +21,13 @@ Versión `0.13.0` — funcionalidades principales de práctica y progreso, prueb
 - Calidad: pruebas automatizadas de rutas críticas del backend con Vitest + Supertest.
 - CI/CD: workflow `test -> build -> deploy`, con migraciones Prisma antes del despliegue.
 - Documentación: `/docs` publicable de forma independiente mediante GitHub Pages.
+- Páginas legales `/privacidad`, `/terminos`, `/cookies`; aceptación obligatoria al registrarse, validada también en el backend y auditada con fecha y versión.
+
+## Páginas legales (v0.14.0)
+
+El registro `POST /api/auth/register` requiere ahora `aceptaTerminos: true` (booleano). El backend almacena la fecha y la versión legal aceptada. Las cuentas existentes conservan `null` en ambos campos hasta que se implemente un flujo de reaceptación. El aviso de cookies explica la única cookie técnica de sesión, cuya duración depende de `JWT_EXPIRES_IN_SECONDS` (valor predeterminado: siete días).
+
+Los textos legales son borradores técnicos y requieren revisión jurídica antes de lanzar el servicio al público.
 
 ## Desarrollo local
 
@@ -43,7 +50,7 @@ Para práctica por voz se recomienda Chrome o Edge actualizado. El sitio necesit
 - `GET /health/live`
 - `GET /health/ready`
 - `GET /api/auth/status`
-- `POST /api/auth/register`
+- `POST /api/auth/register` (`aceptaTerminos: true` obligatorio)
 - `POST /api/auth/login`
 - `GET /api/auth/me`
 - `GET /api/auth/export`

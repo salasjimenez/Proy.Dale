@@ -44,6 +44,8 @@ model Usuario {
   email        String   @unique @db.VarChar(254)
   passwordHash String   @map("password_hash") @db.VarChar(255)
   nombre       String?  @db.VarChar(100)
+  terminosAceptadosEn DateTime? @map("terminos_aceptados_en") @db.Timestamptz(6)
+  versionLegalAceptada String? @map("version_legal_aceptada") @db.VarChar(20)
   creadoEn     DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
   actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
 
