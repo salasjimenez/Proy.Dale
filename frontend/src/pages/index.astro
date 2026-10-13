@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ScenarioCatalog from "../components/vue/ScenarioCatalog.vue";
+import OnboardingGuide from "../components/vue/OnboardingGuide.vue";
 ---
 
 <BaseLayout>
@@ -24,6 +25,7 @@ import ScenarioCatalog from "../components/vue/ScenarioCatalog.vue";
             Cómo funciona
           </a>
         </div>
+        <OnboardingGuide client:load />
       </div>
 
       <div class="mx-auto w-full max-w-md rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm sm:p-7">

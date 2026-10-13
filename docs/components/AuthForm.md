@@ -47,7 +47,7 @@ import AuthForm from "../components/vue/AuthForm.vue";
 
 {% endraw %}
 
-## Codigo fuente completo — v0.15.0
+## Codigo fuente completo — v0.16.0
 
 El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `AuthForm.vue`.
 
@@ -55,7 +55,7 @@ El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. P
 
 ```vue
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { computed, nextTick, reactive, ref } from "vue";
 import { ApiError, apiPost } from "../../lib/api";
 import type { AuthResponse } from "../../types/auth";
 
@@ -115,7 +115,11 @@ function validateClient(): boolean {
 }
 
 async function submit() {
-  if (!validateClient()) return;
+  if (!validateClient()) {
+    await nextTick();
+    document.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+    return;
+  }
 
   submitting.value = true;
   resetErrors();

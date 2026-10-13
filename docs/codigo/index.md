@@ -7,6 +7,7 @@ title: "Codigo auxiliar | Dale"
 
 Archivos TypeScript que utilizan los componentes. Su contenido se sincroniza directamente con `frontend/src`, para que los ejemplos copiables no queden obsoletos.
 
+- [`frontend/src/lib/accessibility.ts`](lib-accessibility.html)
 - [`frontend/src/lib/api.ts`](lib-api.html)
 - [`frontend/src/lib/legal.ts`](lib-legal.html)
 - [`frontend/src/types/auth.ts`](types-auth.html)

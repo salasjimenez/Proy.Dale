@@ -34,7 +34,7 @@ import ScenarioCatalog from "../components/vue/ScenarioCatalog.vue";
 
 {% endraw %}
 
-## Codigo fuente completo — v0.15.0
+## Codigo fuente completo — v0.16.0
 
 El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `ScenarioCatalog.vue`.
 
@@ -42,7 +42,7 @@ El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. P
 
 ```vue
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { apiGet } from "../../lib/api";
 import ScenarioCard from "./ScenarioCard.vue";
 import type { ScenarioCardData } from "../../types/scenario";
@@ -76,6 +76,8 @@ const search = ref("");
 const loading = ref(true);
 const error = ref("");
 const selected = ref<ScenarioCardData | null>(null);
+const dialogRef = ref<HTMLElement | null>(null);
+let previousFocus: HTMLElement | null = null;
 let controller: AbortController | null = null;
 let debounceId: ReturnType<typeof setTimeout> | null = null;
 
@@ -119,11 +121,37 @@ function resetFilters(): void {
 }
 
 function openScenario(scenario: ScenarioCardData): void {
+  previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   selected.value = scenario;
+  void nextTick(() => dialogRef.value?.focus());
 }
 
 function closeScenario(): void {
   selected.value = null;
+  void nextTick(() => {
+    if (previousFocus?.isConnected) previousFocus.focus();
+    previousFocus = null;
+  });
+}
+
+function handleDialogKeydown(event: KeyboardEvent): void {
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeScenario();
+    return;
+  }
+  if (event.key !== "Tab" || !dialogRef.value) return;
+  const focusable = [...dialogRef.value.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')];
+  const first = focusable[0];
+  const last = focusable.at(-1);
+  if (!first || !last) return;
+  if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.value)) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === dialogRef.value)) {
+    event.preventDefault();
+    first.focus();
+  }
 }
 
 watch([category, level], () => void loadScenarios());
@@ -237,9 +265,13 @@ onBeforeUnmount(() => {
       @click.self="closeScenario"
     >
       <section
+        ref="dialogRef"
         role="dialog"
         aria-modal="true"
         aria-labelledby="scenario-dialog-title"
+        aria-describedby="scenario-dialog-description"
+        tabindex="-1"
+        @keydown="handleDialogKeydown"
         class="max-h-[90vh] w-full overflow-y-auto rounded-t-3xl bg-white p-6 shadow-2xl sm:max-w-xl sm:rounded-3xl"
       >
         <div class="flex items-start justify-between gap-4">
@@ -268,7 +300,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div class="mt-7 rounded-2xl bg-blue-50 p-4 text-sm leading-6 text-blue-950">
+        <div id="scenario-dialog-description" class="mt-7 rounded-2xl bg-blue-50 p-4 text-sm leading-6 text-blue-950">
           Puedes elegir texto o voz. En voz, Dale mide ritmo, pausas y muletillas sin almacenar el archivo de audio.
         </div>
 

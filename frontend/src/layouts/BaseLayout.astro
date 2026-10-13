@@ -1,5 +1,6 @@
 ---
 import AuthNav from "../components/vue/AuthNav.vue";
+import AccessibilityControls from "../components/vue/AccessibilityControls.vue";
 import "../styles/global.css";
 
 interface Props {
@@ -24,6 +25,21 @@ const isAccount = pathname === "/cuenta";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline>
+      // Aplicar ajustes antes del primer renderizado para evitar parpadeo.
+      (() => {
+        try {
+          const size = localStorage.getItem("dale-a11y-text-size");
+          const contrast = localStorage.getItem("dale-a11y-contrast");
+          document.documentElement.dataset.daleTextSize =
+            size === "large" || size === "extra" ? size : "normal";
+          document.documentElement.dataset.daleContrast = contrast === "high" ? "high" : "standard";
+        } catch {
+          document.documentElement.dataset.daleTextSize = "normal";
+          document.documentElement.dataset.daleContrast = "standard";
+        }
+      })();
+    </script>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#172554" />
     <meta name="color-scheme" content="light" />
@@ -104,7 +120,8 @@ const isAccount = pathname === "/cuenta";
             <p class="font-semibold text-slate-900">Dale</p>
             <p>Plataforma gratuita y abierta para practicar comunicación en situaciones reales.</p>
           </div>
-          <nav aria-label="Enlaces legales" class="flex flex-wrap gap-x-5 gap-y-2">
+          <nav aria-label="Ayuda y enlaces legales" class="flex flex-wrap gap-x-5 gap-y-2">
+            <a href="/?guia=1" class="font-medium hover:text-slate-950">Guía inicial</a>
             <a href="/privacidad" class="font-medium hover:text-slate-950">Privacidad</a>
             <a href="/terminos" class="font-medium hover:text-slate-950">Términos</a>
             <a href="/cookies" class="font-medium hover:text-slate-950">Cookies</a>
@@ -112,5 +129,6 @@ const isAccount = pathname === "/cuenta";
         </div>
       </footer>
     </div>
+    <AccessibilityControls client:load />
   </body>
 </html>

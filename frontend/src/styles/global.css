@@ -67,3 +67,47 @@ textarea {
     scroll-behavior: auto !important;
   }
 }
+
+/* Dale v0.16.0: escala relativa, compatible con zoom del navegador. */
+html[data-dale-text-size="normal"] { font-size: 100%; }
+html[data-dale-text-size="large"] { font-size: 112.5%; }
+html[data-dale-text-size="extra"] { font-size: 125%; }
+
+/* Modo de alto contraste: reglas explicitas para la paleta Tailwind actual. */
+html[data-dale-contrast="high"] {
+  color: #000;
+  background: #fff;
+}
+html[data-dale-contrast="high"] body {
+  background: #fff;
+  color: #000;
+}
+html[data-dale-contrast="high"] :is(.bg-white, .bg-slate-50, .bg-slate-100, .bg-blue-50, .bg-emerald-50, .bg-amber-50, .bg-rose-50, .bg-red-50) {
+  background-color: #fff !important;
+}
+html[data-dale-contrast="high"] :is(.text-slate-400, .text-slate-500, .text-slate-600, .text-slate-700, .text-slate-800, .text-slate-900, .text-slate-950, .text-blue-700, .text-blue-800, .text-blue-900, .text-emerald-700, .text-amber-700, .text-red-700, .text-rose-800, .text-rose-900) {
+  color: #000 !important;
+}
+html[data-dale-contrast="high"] :is(.border-slate-200, .border-slate-300, .border-slate-400, .border-blue-200, .border-rose-200, .border-red-200, .border-emerald-200) {
+  border-color: #111 !important;
+}
+html[data-dale-contrast="high"] :is(.bg-slate-950, .bg-blue-700, .bg-blue-800, .bg-rose-900) {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+html[data-dale-contrast="high"] :is(.text-white) { color: #fff !important; }
+html[data-dale-contrast="high"] :focus-visible {
+  outline: 4px solid #000 !important;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 3px #fff !important;
+}
+html[data-dale-contrast="high"] :is(button, a, input, select, textarea):focus-visible {
+  text-decoration-thickness: 3px;
+}
+/* Mantener focos y controles claramente visibles sobre fondos oscuros. */
+html[data-dale-contrast="high"] :is(.bg-slate-950, .bg-blue-700, .bg-blue-800) :focus-visible {
+  outline-color: #fff !important;
+}
+@media (forced-colors: active) {
+  .dale-access-widget button { forced-color-adjust: auto; }
+}

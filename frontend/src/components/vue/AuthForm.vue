@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { computed, nextTick, reactive, ref } from "vue";
 import { ApiError, apiPost } from "../../lib/api";
 import type { AuthResponse } from "../../types/auth";
 
@@ -59,7 +59,11 @@ function validateClient(): boolean {
 }
 
 async function submit() {
-  if (!validateClient()) return;
+  if (!validateClient()) {
+    await nextTick();
+    document.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+    return;
+  }
 
   submitting.value = true;
   resetErrors();

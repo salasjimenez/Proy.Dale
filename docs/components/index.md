@@ -5,11 +5,13 @@ title: "Catalogo Vue | Dale"
 
 # Catalogo de componentes Vue
 
-Documentacion de los **9 componentes Vue reales** de Dale v0.15.0, generada directamente desde `frontend/src/components/vue/` sin recortar el codigo.
+Documentacion de los **11 componentes Vue reales** de Dale v0.16.0, generada directamente desde `frontend/src/components/vue/` sin recortar el codigo.
 
+- [AccessibilityControls.vue](AccessibilityControls.html): Panel flotante de ajustes locales: tamano de texto y contraste, sin servidor ni cookies.
 - [AccountPanel.vue](AccountPanel.html): Panel autenticado de Mi cuenta: historial, exportacion JSON, borrado de practicas y eliminacion de cuenta.
 - [AuthForm.vue](AuthForm.html): Formulario de registro e inicio de sesion. Muestra validaciones por campo y envia la aceptacion legal obligatoria solo en registro.
 - [AuthNav.vue](AuthNav.html): Navegacion de autenticacion: muestra entrada, registro, cuenta o salida segun la sesion.
+- [OnboardingGuide.vue](OnboardingGuide.html): Guia voluntaria de cuatro pasos, con dialogo accesible y estado local.
 - [PracticeSimulator.vue](PracticeSimulator.html): Orquesta practicas de texto y voz, consulta escenarios, crea y completa sesiones y muestra metricas.
 - [ProgressDashboard.vue](ProgressDashboard.html): Dashboard de evolucion cronologica de puntajes y metricas; SVG nativo y filtros por modalidad.
 - [ScenarioCard.vue](ScenarioCard.html): Tarjeta reutilizable de escenario con categoria, nivel, descripcion y boton de seleccion.

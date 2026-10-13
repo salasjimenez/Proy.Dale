@@ -23,11 +23,12 @@ Dale es una plataforma abierta para practicar comunicación en situaciones reale
 - [Etapa 13: Control de datos y privacidad](etapa-13-control-de-datos.html)
 - [Etapa 14: Páginas legales y registro](etapa-14-paginas-legales.html)
 - [Etapa 15: Componentes Vue copiables](etapa-15-componentes-vue.html)
+- [Etapa 16: Accesibilidad y onboarding](etapa-16-accesibilidad-onboarding.html)
 - [CHANGELOG](CHANGELOG.html)
 
 ## Componentes Vue documentados
 
-El [catalogo completo de nueve componentes](components/index.html) incluye codigo Vue integro, ejemplos de montaje y dependencias TypeScript descargables por copia.
+El [catalogo completo de once componentes](components/index.html) incluye codigo Vue integro, ejemplos de montaje y dependencias TypeScript descargables por copia.
 
 - [AccountPanel](components/AccountPanel.html)
 - [AuthForm](components/AuthForm.html)

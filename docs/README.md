@@ -22,3 +22,5 @@ La documentación se mantiene separada del sitio de producción de la aplicació
 ## Componentes
 
 Consulta el [catalogo de componentes](components/index.html) y el [codigo auxiliar](codigo/index.html). Ejecuta `npm run docs:sync` tras modificar archivos Vue o TypeScript; `npm run docs:check` detecta diferencias en CI.
+
+Consulta tambien la [etapa 16: accesibilidad y onboarding](etapa-16-accesibilidad-onboarding.html).

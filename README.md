@@ -4,7 +4,7 @@ Dale es una plataforma web gratuita, responsive y de código abierto para practi
 
 ## Estado actual
 
-Versión `0.15.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
+Versión `0.16.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
 
 - Frontend: Astro + Vue + Tailwind CSS.
 - Backend: Node.js + Express + TypeScript.
@@ -41,6 +41,12 @@ npm run docs:check
 ```
 
 La validacion de consistencia de la documentacion se ejecuta tambien en `npm run check` y en CI. Las paginas documentan componentes reales, no sustituyen el backend ni requieren servicios o dependencias adicionales.
+
+## Accesibilidad y guia inicial (v0.16.0)
+
+La interfaz incorpora controles globales para ajustar el texto a 100 %, 112,5 % o 125 % y activar un modo de mayor contraste. Esas preferencias se guardan solo en el navegador, sin cookies adicionales ni llamadas a la API. La portada incluye una guia voluntaria de cuatro pasos para descubrir escenarios, practica y progreso; puede reabrirse con `/?guia=1`.
+
+Los dialogos del catalogo y de la guia gestionan foco y teclado; se mantiene el enlace para saltar al contenido y el respeto por movimiento reducido. Consulta [la guia tecnica de la etapa 16](docs/etapa-16-accesibilidad-onboarding.md). La revision manual con NVDA y con zoom sigue siendo necesaria; los tests no equivalen a una certificacion WCAG.
 
 ## Desarrollo local
 

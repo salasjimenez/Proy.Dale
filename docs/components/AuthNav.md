@@ -33,7 +33,7 @@ import AuthNav from "../components/vue/AuthNav.vue";
 
 {% endraw %}
 
-## Codigo fuente completo — v0.15.0
+## Codigo fuente completo — v0.16.0
 
 El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `AuthNav.vue`.
 

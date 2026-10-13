@@ -5,6 +5,25 @@ title: "Changelog"
 
 # Changelog
 
+## [0.16.0] - 2026-10-12
+
+### Agregado
+
+- Control global de tamano de letra y contraste que guarda ajustes solo en el navegador.
+- Guia voluntaria de cuatro pasos con navegacion por teclado y gestion de foco.
+- Pruebas unitarias para normalizacion de preferencias y pasos del recorrido.
+- Documentacion Vue sincronizada y guia tecnica de accesibilidad en /docs.
+
+### Mejorado
+
+- Dialogo del catalogo con Escape, ciclo de Tab y devolucion de foco.
+- Foco inicial en campos invalidos del registro; informacion sobre almacenamiento local en textos legales.
+- Versiones de frontend, backend, lockfiles y salud actualizadas a 0.16.0.
+
+### Sin cambios
+
+- No se modifican endpoints, persistencia PostgreSQL, migraciones, secretos ni politica de despliegue.
+
 ## [0.15.0] - 2026-10-11
 
 ### Agregado
