@@ -12,11 +12,11 @@ import {
 
 const goalId = ref<TrainingGoalId>("entrevista");
 const stage = ref<TrainingStage>("BASICO");
-const mode = ref<TrainingMode>("TEXTO");
+const mode = ref<TrainingMode>("VOZ");
 const shortSession = ref(false);
 const modeOptions: ReadonlyArray<{ value: TrainingMode; label: string }> = [
-  { value: "TEXTO", label: "Por texto" },
-  { value: "VOZ", label: "Por voz" },
+  { value: "VOZ", label: "Por voz · recomendado" },
+  { value: "TEXTO", label: "Por texto · alternativa" },
 ];
 
 const chosenGoal = computed(() => TRAINING_GOALS.find((goal) => goal.id === goalId.value) ?? TRAINING_GOALS[0]);
@@ -86,7 +86,7 @@ onMounted(() => {
             @click="mode = option.value"
           >{{ option.label }}</button>
         </div>
-        <p class="mt-2 text-xs leading-5 text-slate-600">La voz necesita un navegador compatible y acceso al micrófono. Puedes cambiar de modalidad antes de empezar.</p>
+        <p class="mt-2 text-xs leading-5 text-slate-600">La voz es la modalidad principal. Si tu navegador no la admite, elige texto como alternativa accesible.</p>
       </fieldset>
 
       <label class="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-300 bg-white p-4">

@@ -1,6 +1,7 @@
 ---
 import AuthNav from "../components/vue/AuthNav.vue";
 import AccessibilityControls from "../components/vue/AccessibilityControls.vue";
+import CreatorModal from "../components/vue/CreatorModal.vue";
 import "../styles/global.css";
 import "../styles/responsive.css";
 
@@ -123,6 +124,7 @@ const isAccount = pathname === "/cuenta";
                 <a href="/entrenar" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Preparar entrenamiento</a>
                 <a href="/#escenarios" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Todos los escenarios</a>
                 <a href="/progreso" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Mi progreso</a>
+                <a href="/analisis-voz" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Analítica de voz</a>
                 <a href="/mapa" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Mapa</a>
                 <a href="/cuenta" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Mis prácticas</a>
               </nav>
@@ -147,6 +149,8 @@ const isAccount = pathname === "/cuenta";
             <a href="/privacidad" class="font-medium hover:text-slate-950">Privacidad</a>
             <a href="/terminos" class="font-medium hover:text-slate-950">Términos</a>
             <a href="/cookies" class="font-medium hover:text-slate-950">Cookies</a>
+            <a href="/analisis-voz" class="font-medium hover:text-slate-950">Analítica de voz</a>
+            <CreatorModal client:load />
           </nav>
         </div>
       </footer>

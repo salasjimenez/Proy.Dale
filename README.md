@@ -4,7 +4,7 @@ Dale es una plataforma web gratuita, responsive y de código abierto para practi
 
 ## Estado actual
 
-Versión `0.16.3` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
+Versión `0.16.4` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
 
 - Frontend: Astro + Vue + Tailwind CSS.
 - Backend: Node.js + Express + TypeScript.
@@ -65,6 +65,12 @@ El progreso usa las rutas actuales `/progreso` y `/mapa`. No se agregan endpoint
 La interfaz se reorganiza con anchos fluidos desde 320 px, ventanas redimensionadas, modo horizontal y zoom. El menú móvil, las tarjetas del planificador, los filtros del catálogo y los controles del simulador se distribuyen según el espacio disponible. Los gráficos SVG conservan su legibilidad dentro de zonas desplazables por teclado en pantallas estrechas. Usa `npm run responsive:check` y revisa manualmente los anchos de la [guía de la etapa 16.3](docs/etapa-16-3-responsive.md).
 
 No se modificaron algoritmos, endpoints, tablas de PostgreSQL ni almacenamiento de datos.
+
+## Simulaciones por etapas y voz (v0.16.4)
+
+El flujo principal de `/entrenar` y del catálogo abre `/simulacion` en tres fases: apertura, objeción y presión contextual. La voz es la modalidad principal y el texto se mantiene para accesibilidad. Una sesión guarda una transcripción y métricas consolidadas; las respuestas por fase solo se muestran durante la visita. No se simula una IA conversacional ni se analizan emociones o expresiones faciales.
+
+`/analisis-voz` utiliza `GET /api/progreso?modalidad=VOZ&limit=30` para mostrar métricas reales con alternativas tabulares accesibles. El pie incluye un modal **Creador** con avatar ilustrado y enlace a Instagram `@pitx29`. Consulta [etapa 16.4](docs/etapa-16-4-simulacion-voz.md). No hay migraciones Prisma ni servicios de pago. Ejecuta `npm run voice:check`, `npm run docs:check` y `npm run check`.
 
 ## Desarrollo local
 

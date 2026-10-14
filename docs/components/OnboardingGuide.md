@@ -32,7 +32,7 @@ import OnboardingGuide from "../components/vue/OnboardingGuide.vue";
 
 {% endraw %}
 
-## Codigo fuente completo — v0.16.2
+## Codigo fuente completo — v0.16.4
 
 El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `OnboardingGuide.vue`.
 

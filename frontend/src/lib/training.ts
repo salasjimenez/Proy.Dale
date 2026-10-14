@@ -80,7 +80,7 @@ export function toTrainingSlug(baseSlug: string, stage: TrainingStage): string {
 export function trainingHref(
   baseSlug: string,
   stage: TrainingStage,
-  mode: TrainingMode = "TEXTO",
+  mode: TrainingMode = "VOZ",
   short = false,
 ): string {
   const params = new URLSearchParams({
@@ -88,7 +88,7 @@ export function trainingHref(
     modalidad: mode,
   });
   if (short) params.set("rapido", "1");
-  return `/practicar?${params.toString()}`;
+  return `/simulacion?${params.toString()}`;
 }
 
 export function stageFromSlug(slug: string): TrainingStage {

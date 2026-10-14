@@ -1,5 +1,22 @@
 # Dale - Historial de cambios
 
+## [0.16.4] - 2026-10-14
+
+### Agregado
+
+- Nueva simulación de tres fases con apertura, objeción y presión contextual, incluida presión elevada en los escenarios DIFICIL.
+- Estados orientativos de superado, en progreso, refuerzo recomendado y no completado.
+- Nueva analítica de voz con métricas reales, serie de puntajes y tabla accesible; ruta `/analisis-voz`.
+- Voz como modalidad recomendada; texto preservado para accesibilidad.
+- Modal Creador con avatar ilustrado, Jhonn Pether e Instagram `@pitx29`.
+- Comprobación `npm run voice:check` y documentación técnica sincronizable.
+
+### Compatibilidad y límites
+
+- Misma base de datos y API; se guarda una sesión consolidada por simulación, sin métricas persistentes por fase.
+- Sin IA conversacional ni análisis facial o de emociones; las puntuaciones son estimaciones y no diagnósticos.
+- Sin dependencias externas adicionales ni cambios en el despliegue de producción.
+
 ## [0.16.3] - 2026-10-14
 
 ### Mejorado

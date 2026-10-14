@@ -35,7 +35,7 @@ for (const goal of training.TRAINING_GOALS) {
     check(slug.startsWith(`${goal.baseSlug}-`), `Ruta inválida: ${slug}`);
   }
 }
-check(training.trainingHref("entrevista-trabajo", "BASICO", "VOZ", true) === "/practicar?escenario=entrevista-trabajo-basico&modalidad=VOZ&rapido=1", "La URL del entrenamiento breve no conserva modalidad y escenario");
+check(training.trainingHref("entrevista-trabajo", "BASICO", "VOZ", true) === "/simulacion?escenario=entrevista-trabajo-basico&modalidad=VOZ&rapido=1", "La URL del entrenamiento breve no conserva modalidad y escenario");
 check(training.recommendNextStage("entrevista-trabajo-basico", 74).slug === "entrevista-trabajo-basico", "No se debe avanzar con 74 puntos");
 check(training.recommendNextStage("entrevista-trabajo-basico", 75).slug === "entrevista-trabajo-intermedio", "No se recomienda la siguiente etapa con 75 puntos");
 check(training.recommendNextStage("entrevista-trabajo-intermedio", 82).slug === "entrevista-trabajo-dificil", "No avanza de práctica guiada a simulación real");
@@ -57,8 +57,8 @@ check(practice.includes("recommendNextStage") && practice.includes("focusSuggest
 check(practice.includes("finishVoicePractice") && practice.includes("finishTextPractice"), "Se alteró una modalidad de práctica");
 check(layout.includes("Navegación móvil") && layout.includes('href="/entrenar"'), "Falta navegación de entrenamiento en móvil");
 check(sourceGenerator.includes("TrainingPlanner:"), "Falta la ficha generada de TrainingPlanner en /docs");
-check(JSON.parse(read("package.json")).version === "0.16.3", "La versión raíz no es 0.16.3");
-check(read("backend/src/version.ts").includes('APP_VERSION = "0.16.3"'), "El health backend tiene versión distinta");
+check(JSON.parse(read("package.json")).version === "0.16.4", "La versión raíz no es 0.16.4");
+check(read("backend/src/version.ts").includes('APP_VERSION = "0.16.4"'), "El health backend tiene versión distinta");
 
 if (errors.length) {
   console.error(`Dale training:check FALLÓ (${errors.length} hallazgos)`);

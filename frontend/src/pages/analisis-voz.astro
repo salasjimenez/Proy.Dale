@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import VoiceAnalyticsDashboard from "../components/vue/VoiceAnalyticsDashboard.vue";
+---
+
+<BaseLayout
+  title="Analítica de voz | Dale"
+  description="Consulta tu ritmo, pausas, muletillas, puntajes y evolución en los entrenamientos de voz completados."
+>
+  <section class="mx-auto w-full max-w-7xl min-w-0 px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <VoiceAnalyticsDashboard client:load />
+  </section>
+</BaseLayout>

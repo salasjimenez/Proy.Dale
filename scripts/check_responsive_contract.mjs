@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Dale v0.16.3: verificacion estatica de los puntos de adaptacion. */
+/** Dale v0.16.4: verificacion estatica de los puntos de adaptacion. */
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,11 +14,11 @@ function includes(file, ...needles) {
 }
 
 const version = JSON.parse(read('package.json')).version;
-check(version === '0.16.3', `Version raiz incorrecta: ${version}`);
+check(version === '0.16.4', `Version raiz incorrecta: ${version}`);
 for (const p of ['frontend/package.json', 'backend/package.json']) {
   check(JSON.parse(read(p)).version === version, `Desalineado: ${p}`);
 }
-check(read('backend/src/version.ts').includes('APP_VERSION = "0.16.3"'), 'La version de salud del backend no coincide');
+check(read('backend/src/version.ts').includes('APP_VERSION = "0.16.4"'), 'La version de salud del backend no coincide');
 
 includes('frontend/src/layouts/BaseLayout.astro',
   'responsive.css', 'dale-header-inner', 'dale-primary-nav', 'dale-mobile-menu-panel', 'Navegación móvil',

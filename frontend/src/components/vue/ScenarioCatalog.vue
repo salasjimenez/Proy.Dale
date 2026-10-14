@@ -271,10 +271,10 @@ onBeforeUnmount(() => {
           <p class="mt-4 text-xs font-black uppercase tracking-wide text-blue-700">Tu objetivo</p>
           <p class="mt-2 text-sm leading-6 text-slate-800">{{ selectedTraining.instrucciones }}</p>
         </div>
-        <p class="mt-4 text-xs leading-5 text-slate-600">Al empezar podrás escoger texto o voz. Para guardar tu progreso necesitas iniciar sesión.</p>
+        <p class="mt-4 text-xs leading-5 text-slate-600">Voz es la opción recomendada; texto continúa disponible. Para guardar tu progreso necesitas iniciar sesión.</p>
         <a
           v-if="selectedTraining"
-          :href="`/practicar?escenario=${encodeURIComponent(selectedTraining.slug)}`"
+          :href="`/simulacion?escenario=${encodeURIComponent(selectedTraining.slug)}&modalidad=VOZ`"
           class="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-center font-black text-white hover:bg-blue-800"
         >
           Empezar este entrenamiento <span class="ml-2" aria-hidden="true">→</span>

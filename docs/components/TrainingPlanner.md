@@ -32,7 +32,7 @@ import TrainingPlanner from "../components/vue/TrainingPlanner.vue";
 
 {% endraw %}
 
-## Codigo fuente completo — v0.16.2
+## Codigo fuente completo — v0.16.4
 
 El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `TrainingPlanner.vue`.
 
@@ -53,11 +53,11 @@ import {
 
 const goalId = ref<TrainingGoalId>("entrevista");
 const stage = ref<TrainingStage>("BASICO");
-const mode = ref<TrainingMode>("TEXTO");
+const mode = ref<TrainingMode>("VOZ");
 const shortSession = ref(false);
 const modeOptions: ReadonlyArray<{ value: TrainingMode; label: string }> = [
-  { value: "TEXTO", label: "Por texto" },
-  { value: "VOZ", label: "Por voz" },
+  { value: "VOZ", label: "Por voz · recomendado" },
+  { value: "TEXTO", label: "Por texto · alternativa" },
 ];
 
 const chosenGoal = computed(() => TRAINING_GOALS.find((goal) => goal.id === goalId.value) ?? TRAINING_GOALS[0]);
@@ -75,12 +75,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="grid min-w-0 gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+  <div class="dale-plan-grid grid min-w-0 gap-6 xl:grid-cols-[1.15fr_0.85fr]">
     <div class="min-w-0 space-y-7">
       <fieldset>
         <legend class="text-lg font-black text-slate-950">1. ¿Qué quieres mejorar hoy?</legend>
         <p class="mt-2 text-sm leading-6 text-slate-600">Elige un objetivo. La recomendación utiliza situaciones que ya existen en Dale.</p>
-        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <div class="dale-goal-options grid gap-3">
           <button
             v-for="goal in TRAINING_GOALS"
             :key="goal.id"
@@ -98,7 +98,7 @@ onMounted(() => {
 
       <fieldset>
         <legend class="text-lg font-black text-slate-950">2. Elige tu forma de entrenamiento</legend>
-        <div class="mt-3 grid gap-2 sm:grid-cols-3">
+        <div class="dale-stage-options grid gap-2">
           <button
             v-for="option in TRAINING_STAGES"
             :key="option.code"
@@ -127,7 +127,7 @@ onMounted(() => {
             @click="mode = option.value"
           >{{ option.label }}</button>
         </div>
-        <p class="mt-2 text-xs leading-5 text-slate-600">La voz necesita un navegador compatible y acceso al micrófono. Puedes cambiar de modalidad antes de empezar.</p>
+        <p class="mt-2 text-xs leading-5 text-slate-600">La voz es la modalidad principal. Si tu navegador no la admite, elige texto como alternativa accesible.</p>
       </fieldset>
 
       <label class="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-300 bg-white p-4">
@@ -139,7 +139,7 @@ onMounted(() => {
       </label>
     </div>
 
-    <aside class="min-w-0 self-start overflow-hidden rounded-3xl border border-blue-200 bg-white shadow-md" aria-live="polite" aria-atomic="true">
+    <aside class="dale-plan-summary min-w-0 self-start overflow-hidden rounded-3xl border border-blue-200 bg-white shadow-md" aria-live="polite" aria-atomic="true">
       <img :src="chosenGoal.image" alt="" loading="lazy" decoding="async" width="660" height="324" class="aspect-[2/1] w-full object-cover" />
       <div class="p-5 sm:p-7">
         <p class="text-xs font-black uppercase tracking-[0.16em] text-blue-700">Tu próxima práctica</p>

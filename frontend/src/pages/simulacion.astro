@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ScenarioSequence from "../components/vue/ScenarioSequence.vue";
+---
+
+<BaseLayout
+  title="Simulación por etapas | Dale"
+  description="Practica situaciones reales por voz en tres fases: apertura, objeción y presión. Resultados orientativos y seguimiento de progreso."
+>
+  <section class="mx-auto w-full max-w-7xl min-w-0 px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <ScenarioSequence client:load />
+  </section>
+</BaseLayout>

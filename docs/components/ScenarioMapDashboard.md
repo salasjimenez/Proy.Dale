@@ -33,7 +33,7 @@ import ScenarioMapDashboard from "../components/vue/ScenarioMapDashboard.vue";
 
 {% endraw %}
 
-## Codigo fuente completo — v0.16.2
+## Codigo fuente completo — v0.16.4
 
 El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `ScenarioMapDashboard.vue`.
 
@@ -217,7 +217,8 @@ onMounted(() => void loadMap());
               <span class="text-xs font-bold text-slate-500">Escala 0–100</span>
             </div>
 
-            <div class="mt-5 overflow-x-auto">
+            <div class="dale-chart-scroll mt-5 overflow-x-auto" tabindex="0" role="region" aria-label="Mapa de escenarios: usa las flechas para desplazarte horizontalmente cuando sea necesario">
+              <p class="mb-3 text-xs font-semibold text-slate-600 sm:hidden">Desliza horizontalmente para explorar el mapa.</p>
               <svg
                 class="mx-auto h-auto min-w-[430px] max-w-[620px]"
                 :viewBox="`0 0 ${width} ${height}`"
