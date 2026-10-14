@@ -5,7 +5,7 @@ title: "Catalogo Vue | Dale"
 
 # Catalogo de componentes Vue
 
-Documentacion de los **11 componentes Vue reales** de Dale v0.16.1, generada directamente desde `frontend/src/components/vue/` sin recortar el codigo.
+Documentacion de los **12 componentes Vue reales** de Dale v0.16.2, generada directamente desde `frontend/src/components/vue/` sin recortar el codigo.
 
 - [AccessibilityControls.vue](AccessibilityControls.html): Panel flotante de ajustes locales: tamano de texto y contraste, sin servidor ni cookies.
 - [AccountPanel.vue](AccountPanel.html): Panel autenticado de Mi cuenta: historial, exportacion JSON, borrado de practicas y eliminacion de cuenta.
@@ -17,6 +17,7 @@ Documentacion de los **11 componentes Vue reales** de Dale v0.16.1, generada dir
 - [ScenarioCard.vue](ScenarioCard.html): Tarjeta ilustrada de situacion real con categoria y boton para elegir entrenamiento.
 - [ScenarioCatalog.vue](ScenarioCatalog.html): Catalogo agrupado por situacion con busqueda, filtro por categoria y tres formas de entrenamiento.
 - [ScenarioMapDashboard.vue](ScenarioMapDashboard.html): Mapa radar SVG de las categorias practicadas, cobertura y sugerencia de siguiente foco.
+- [TrainingPlanner.vue](TrainingPlanner.html): Selector de objetivos, etapa, modalidad y tiempo orientativo. Todas las sugerencias usan escenarios existentes.
 - [VoiceCapture.vue](VoiceCapture.html): Captura de voz con Web Speech API y estimacion de pausas con Web Audio API, sin almacenar audio.
 
 ## Como copiar e integrar

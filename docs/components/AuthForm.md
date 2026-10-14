@@ -47,7 +47,7 @@ import AuthForm from "../components/vue/AuthForm.vue";
 
 {% endraw %}
 
-## Codigo fuente completo — v0.16.1
+## Codigo fuente completo — v0.16.2
 
 El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `AuthForm.vue`.
 

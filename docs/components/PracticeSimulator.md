@@ -17,6 +17,7 @@ Orquesta practicas de texto y voz, consulta escenarios, crea y completa sesiones
 - [`frontend/src/types/scenario.ts`](../codigo/types-scenario.html)
 - [`frontend/src/types/session.ts`](../codigo/types-session.html)
 - [VoiceCapture.vue](VoiceCapture.html)
+- [`frontend/src/lib/training.ts`](../codigo/lib-training.html)
 
 En Dale se usa Astro + Vue + Tailwind CSS. Los imports relativos del codigo completo suponen la estructura original `frontend/src`; copia tambien las dependencias indicadas o adapta esas rutas a tu proyecto. Para las islas Astro, `client:load` habilita la interaccion en el navegador.
 
@@ -36,7 +37,7 @@ import PracticeSimulator from "../components/vue/PracticeSimulator.vue";
 
 {% endraw %}
 
-## Codigo fuente completo — v0.16.1
+## Codigo fuente completo — v0.16.2
 
 El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `PracticeSimulator.vue`.
 
@@ -44,12 +45,19 @@ El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. P
 
 ```vue
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { ApiError, apiGet, apiPost } from "../../lib/api";
 import type { AuthResponse, AuthUser } from "../../types/auth";
 import type { ScenarioCardData } from "../../types/scenario";
 import type { PracticeSession, PracticeSessionResponse } from "../../types/session";
 import VoiceCapture, { type VoiceCaptureResult } from "./VoiceCapture.vue";
+import {
+  focusSuggestion,
+  recommendNextStage,
+  remainingTimeLabel,
+  stageFromSlug,
+  trainingStageName,
+} from "../../lib/training";
 
 type PracticeMode = "TEXTO" | "VOZ";
 
@@ -73,6 +81,25 @@ const selectedMode = ref<PracticeMode>("TEXTO");
 const voiceSupported = ref(false);
 
 const slug = ref("");
+const shortSession = ref(false);
+const elapsedSeconds = ref(0);
+let intervalId: number | null = null;
+
+function stopClock(): void {
+  if (intervalId !== null) window.clearInterval(intervalId);
+  intervalId = null;
+}
+
+function startClock(): void {
+  stopClock();
+  elapsedSeconds.value = 0;
+  if (!shortSession.value || startedAt.value === null) return;
+  intervalId = window.setInterval(() => {
+    if (startedAt.value !== null) {
+      elapsedSeconds.value = Math.max(0, Math.floor((Date.now() - startedAt.value) / 1000));
+    }
+  }, 1000);
+}
 
 const wordCount = computed(() => {
   const value = transcript.value.trim();
@@ -83,7 +110,26 @@ const isCompleted = computed(() => session.value?.estado === "COMPLETADA");
 const activeMode = computed<PracticeMode>(() => session.value?.modalidad ?? selectedMode.value);
 const modeLabel = computed(() => (activeMode.value === "VOZ" ? "Voz" : "Texto"));
 
-const nextUrl = computed(() => `/practicar?escenario=${encodeURIComponent(slug.value)}`);
+const nextUrl = computed(() => {
+  const params = new URLSearchParams({ escenario: slug.value, modalidad: selectedMode.value });
+  if (shortSession.value) params.set("rapido", "1");
+  return `/practicar?${params.toString()}`;
+});
+const phase = computed(() => !session.value ? 0 : isCompleted.value ? 2 : 1);
+const nextRecommended = computed(() => {
+  if (!scenario.value || !session.value?.metrica || !isCompleted.value) return null;
+  return recommendNextStage(scenario.value.slug, session.value.metrica.puntajeGeneral);
+});
+const nextFocus = computed(() => {
+  if (!session.value?.metrica) return "";
+  return focusSuggestion(session.value.metrica, session.value.modalidad);
+});
+const nextTrainingHref = computed(() => {
+  if (!nextRecommended.value) return "/#escenarios";
+  const params = new URLSearchParams({ escenario: nextRecommended.value.slug, modalidad: activeMode.value });
+  if (shortSession.value) params.set("rapido", "1");
+  return `/practicar?${params.toString()}`;
+});
 const loginUrl = computed(() => `/login?next=${encodeURIComponent(nextUrl.value)}`);
 const registerUrl = computed(() => `/registro?next=${encodeURIComponent(nextUrl.value)}`);
 
@@ -113,6 +159,8 @@ async function initialize(): Promise<void> {
   voiceSupported.value = detectVoiceSupport();
   const params = new URLSearchParams(window.location.search);
   slug.value = params.get("escenario")?.trim() || "";
+  shortSession.value = params.get("rapido") === "1";
+  selectedMode.value = params.get("modalidad") === "VOZ" && voiceSupported.value ? "VOZ" : "TEXTO";
 
   if (!slug.value) {
     error.value = "No se indicó un escenario. Vuelve al catálogo y elige uno para practicar.";
@@ -185,6 +233,7 @@ async function startPractice(): Promise<void> {
     session.value = response.data.session;
     transcript.value = "";
     startedAt.value = Date.now();
+    startClock();
   } catch (caught) {
     if (caught instanceof ApiError && caught.status === 401) {
       authRequired.value = true;
@@ -217,6 +266,7 @@ async function finishTextPractice(): Promise<void> {
       },
     );
     session.value = response.data.session;
+    stopClock();
   } catch (caught) {
     error.value = caught instanceof ApiError ? caught.message : "No pudimos guardar el resultado de la práctica.";
   } finally {
@@ -237,6 +287,7 @@ async function finishVoicePractice(payload: VoiceCaptureResult): Promise<void> {
     );
     transcript.value = payload.transcripcion;
     session.value = response.data.session;
+    stopClock();
   } catch (caught) {
     error.value = caught instanceof ApiError ? caught.message : "No pudimos guardar el resultado de la práctica por voz.";
   } finally {
@@ -249,6 +300,8 @@ function handleVoiceError(message: string): void {
 }
 
 function retryPractice(): void {
+  stopClock();
+  elapsedSeconds.value = 0;
   if (session.value) selectedMode.value = session.value.modalidad;
   session.value = null;
   transcript.value = "";
@@ -257,6 +310,7 @@ function retryPractice(): void {
 }
 
 onMounted(() => void initialize());
+onBeforeUnmount(stopClock);
 </script>
 
 <template>
@@ -281,12 +335,22 @@ onMounted(() => void initialize());
             {{ scenario.categoria.nombre }}
           </span>
           <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700 ring-1 ring-inset ring-slate-200">
-            {{ scenario.nivel.nombre }}
+            {{ trainingStageName(stageFromSlug(scenario.slug)) }}
           </span>
           <span class="rounded-full bg-violet-50 px-3 py-1 text-xs font-black text-violet-700 ring-1 ring-inset ring-violet-200">
             {{ modeLabel }}
           </span>
         </div>
+        <nav aria-label="Etapas de entrenamiento" class="mt-5" >
+          <ol class="grid grid-cols-3 gap-2 text-center text-xs font-bold sm:text-sm">
+            <li v-for="(step, index) in ['Prepárate', 'Entrena', 'Revisa']" :key="step"
+              :aria-current="phase === index ? 'step' : undefined"
+              class="rounded-xl border px-2 py-3"
+              :class="phase === index ? 'border-blue-700 bg-blue-50 text-blue-950' : 'border-slate-200 bg-white text-slate-600'">
+              {{ index + 1 }}. {{ step }}
+            </li>
+          </ol>
+        </nav>
         <h1 class="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">{{ scenario.titulo }}</h1>
         <p class="mt-3 max-w-3xl leading-7 text-slate-600">{{ scenario.descripcion }}</p>
       </div>
@@ -312,6 +376,12 @@ onMounted(() => void initialize());
             <div class="mt-7 rounded-2xl bg-blue-50 p-5">
               <p class="text-xs font-black uppercase tracking-[0.16em] text-blue-700">Tu objetivo</p>
               <p class="mt-2 leading-7 text-blue-950">{{ scenario.instrucciones }}</p>
+            </div>
+
+            <div class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+              <h2 class="text-base font-black text-slate-950">Antes de comenzar</h2>
+              <p class="mt-2 text-sm leading-6 text-slate-700">Piensa en una idea principal, un ejemplo y un cierre breve. Puedes repetir el ejercicio cuantas veces quieras.</p>
+              <p v-if="shortSession" class="mt-3 text-sm font-bold text-blue-800">Práctica breve: tendrás una referencia de cinco minutos; podrás finalizar cuando tú decidas.</p>
             </div>
 
             <div class="mt-7">
@@ -392,6 +462,12 @@ onMounted(() => void initialize());
           </aside>
 
           <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <div v-if="shortSession" class="mb-6 rounded-2xl border border-blue-200 bg-blue-50 p-4">
+              <p class="text-xs font-black uppercase tracking-wide text-blue-800">Entrenamiento breve · Tiempo orientativo</p>
+              <p role="timer" aria-live="off" class="mt-1 text-2xl font-black tabular-nums text-blue-950">{{ remainingTimeLabel(elapsedSeconds) }}</p>
+              <p v-if="elapsedSeconds >= 300" role="status" class="mt-2 text-sm font-bold text-blue-950">Llegaste a los cinco minutos. Finaliza cuando hayas terminado; tu respuesta no se guarda automáticamente.</p>
+              <p v-else class="mt-1 text-xs text-blue-900">Puedes terminar antes o continuar después del tiempo.</p>
+            </div>
             <template v-if="session.modalidad === 'TEXTO'">
               <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
@@ -401,7 +477,9 @@ onMounted(() => void initialize());
                 <span class="text-sm font-semibold text-slate-500">{{ wordCount }} palabras</span>
               </div>
 
+              <label for="dale-training-response" class="sr-only">Tu respuesta escrita al escenario</label>
               <textarea
+                id="dale-training-response"
                 v-model="transcript"
                 maxlength="5000"
                 rows="12"
@@ -543,6 +621,17 @@ onMounted(() => void initialize());
           <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600">
             {{ session.feedback?.note }}
           </div>
+
+          <article v-if="nextRecommended" class="rounded-3xl border border-blue-200 bg-blue-50 p-6 sm:p-7">
+            <p class="text-xs font-black uppercase tracking-[0.16em] text-blue-800">Tu siguiente entrenamiento</p>
+            <h3 class="mt-2 text-2xl font-black text-slate-950">{{ nextRecommended.title }}</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-700">{{ nextRecommended.message }}</p>
+            <p class="mt-3 text-sm font-semibold leading-6 text-slate-800">Sugerencia basada en tus métricas: {{ nextFocus }}</p>
+            <p class="mt-2 text-xs leading-5 text-slate-600">Estas recomendaciones son orientativas y no evalúan capacidades personales.</p>
+            <a :href="nextTrainingHref" class="mt-5 inline-flex min-h-12 items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-center font-black text-white hover:bg-blue-800">
+              {{ nextRecommended.title }} <span class="ml-2" aria-hidden="true">→</span>
+            </a>
+          </article>
 
           <div class="flex flex-col gap-3 sm:flex-row">
             <button type="button" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-slate-950 px-5 py-3 font-black text-white hover:bg-blue-700" @click="retryPractice">

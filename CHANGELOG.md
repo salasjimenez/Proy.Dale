@@ -1,5 +1,20 @@
 # Dale - Historial de cambios
 
+## [0.16.2] - 2026-10-14
+
+### Agregado
+
+- Selector por seis objetivos personales y rutas de entrenamiento en `/entrenar` y portada.
+- Entrada de práctica breve con reloj de cinco minutos orientativos, sin guardar ni terminar automáticamente.
+- Guía Prepárate / Entrena / Revisa con foco en el contexto del escenario.
+- Sugerencias de repetición o siguiente etapa y foco de mejora basado solo en métricas existentes.
+- Menú móvil de navegación con Escape y controles accesibles.
+- `npm run training:check`, documentación Vue regenerada y guía de la etapa 16.2.
+
+### Sin cambios
+
+- No se modifican endpoints, Prisma, migraciones, datos existentes ni servicios externos.
+
 ## [0.16.1] - 2026-10-13
 
 ### Agregado

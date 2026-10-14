@@ -28,3 +28,7 @@ Consulta tambien la [etapa 16: accesibilidad y onboarding](etapa-16-accesibilida
 ## Experiencia de inicio v0.16.1
 
 Consulta [redisenio de la portada y selector de entrenamientos](etapa-16-1-redisenio-home.html).
+
+## Experiencia v0.16.2
+
+[Entrenamiento personalizado y recomendaciones deterministas](etapa-16-2-entrenamiento-personalizado.html).

@@ -25,11 +25,12 @@ Dale es una plataforma abierta para practicar comunicación en situaciones reale
 - [Etapa 15: Componentes Vue copiables](etapa-15-componentes-vue.html)
 - [Etapa 16: Accesibilidad y onboarding](etapa-16-accesibilidad-onboarding.html)
 - [Etapa 16.1: Portada y entrenamiento real](etapa-16-1-redisenio-home.html)
+- [Etapa 16.2: Entrenamiento personalizado](etapa-16-2-entrenamiento-personalizado.html)
 - [CHANGELOG](CHANGELOG.html)
 
 ## Componentes Vue documentados
 
-El [catalogo completo de once componentes](components/index.html) incluye codigo Vue integro, ejemplos de montaje y dependencias TypeScript descargables por copia.
+El [catalogo completo de doce componentes](components/index.html) incluye codigo Vue integro, ejemplos de montaje y dependencias TypeScript descargables por copia.
 
 - [AccountPanel](components/AccountPanel.html)
 - [AuthForm](components/AuthForm.html)
@@ -39,6 +40,7 @@ El [catalogo completo de once componentes](components/index.html) incluye codigo
 - [ScenarioCard](components/ScenarioCard.html)
 - [ScenarioCatalog](components/ScenarioCatalog.html)
 - [ScenarioMapDashboard](components/ScenarioMapDashboard.html)
+- [TrainingPlanner](components/TrainingPlanner.html)
 - [VoiceCapture](components/VoiceCapture.html)
 
 [Codigo auxiliar: tipos y cliente API](codigo/index.html).

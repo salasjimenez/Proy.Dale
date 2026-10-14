@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ScenarioCatalog from "../components/vue/ScenarioCatalog.vue";
 import OnboardingGuide from "../components/vue/OnboardingGuide.vue";
+import TrainingPlanner from "../components/vue/TrainingPlanner.vue";
 import { FEATURED_SCENARIOS, scenarioVisual } from "../lib/scenarioVisuals";
 
 const categoryChoices = [
@@ -89,13 +90,14 @@ const trainingSteps = [
           Elige tu escenario, practica por texto o voz y descubre cómo vas mejorando.
         </p>
         <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a href="#escenarios" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3 text-center font-extrabold text-white shadow-lg shadow-blue-700/15 transition hover:bg-blue-800 focus-visible:outline-blue-700">
-            Elegir mi entrenamiento <span aria-hidden="true">→</span>
+          <a href="/entrenar" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3 text-center font-extrabold text-white shadow-lg shadow-blue-700/15 transition hover:bg-blue-800 focus-visible:outline-blue-700">
+            Preparar mi entrenamiento <span aria-hidden="true">→</span>
           </a>
           <a href="#situaciones" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-blue-200 bg-white px-6 py-3 text-center font-extrabold text-slate-900 transition hover:bg-blue-50">
             Ver situaciones reales
           </a>
         </div>
+        <a href="/entrenar?rapido=1" class="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-extrabold text-blue-800 underline underline-offset-4 hover:text-blue-900">¿Solo tienes cinco minutos? Haz una práctica breve <span aria-hidden="true">→</span></a>
         <p class="mt-5 text-sm font-semibold text-slate-600">Gratuito · Sin anuncios · Audio no almacenado</p>
         <OnboardingGuide client:load />
       </div>
@@ -148,6 +150,17 @@ const trainingSteps = [
       <div class="flex items-center gap-3">
         <strong class="text-3xl font-black text-blue-700">4</strong>
         <span class="text-sm font-semibold leading-5 text-slate-700">ámbitos de comunicación cotidiana</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="entrenamiento-personalizado" class="dale-home-soft scroll-mt-24 border-b border-slate-200 bg-[#f5f8fd] py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p class="text-sm font-black uppercase tracking-[0.16em] text-blue-700">Una práctica para tu objetivo</p>
+      <h2 class="mt-2 max-w-3xl text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">¿Qué quieres mejorar hoy?</h2>
+      <p class="mt-3 max-w-3xl leading-7 text-slate-700">Selecciona tu objetivo, una etapa de entrenamiento y cómo responder. Dale te llevará a una situación concreta.</p>
+      <div class="mt-8">
+        <TrainingPlanner client:load />
       </div>
     </div>
   </section>

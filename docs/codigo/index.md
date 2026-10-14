@@ -11,6 +11,7 @@ Archivos TypeScript que utilizan los componentes. Su contenido se sincroniza dir
 - [`frontend/src/lib/api.ts`](lib-api.html)
 - [`frontend/src/lib/legal.ts`](lib-legal.html)
 - [`frontend/src/lib/scenarioVisuals.ts`](lib-scenarioVisuals.html)
+- [`frontend/src/lib/training.ts`](lib-training.html)
 - [`frontend/src/types/auth.ts`](types-auth.html)
 - [`frontend/src/types/map.ts`](types-map.html)
 - [`frontend/src/types/progress.ts`](types-progress.html)

@@ -41,7 +41,7 @@ function manejarError(mensaje: string) {
 
 {% endraw %}
 
-## Codigo fuente completo — v0.16.1
+## Codigo fuente completo — v0.16.2
 
 El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `VoiceCapture.vue`.
 

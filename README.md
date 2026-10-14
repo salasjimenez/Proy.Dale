@@ -4,7 +4,7 @@ Dale es una plataforma web gratuita, responsive y de código abierto para practi
 
 ## Estado actual
 
-Versión `0.16.1` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
+Versión `0.16.2` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
 
 - Frontend: Astro + Vue + Tailwind CSS.
 - Backend: Node.js + Express + TypeScript.
@@ -53,6 +53,12 @@ Los dialogos del catalogo y de la guia gestionan foco y teclado; se mantiene el 
 La portada permite elegir entre trabajo, estudios, vida social y tramites y ofrece seis situaciones destacadas con imagenes locales. El catalogo completo agrupa los 36 registros en 12 situaciones, evitando tarjetas repetidas. Dentro de cada situacion, el usuario escoge **Preparacion**, **Practica guiada** o **Simulacion real**; el backend mantiene los codigos `BASICO`, `INTERMEDIO` y `DIFICIL`. Los enlaces a `/practicar` siguen utilizando escenarios reales del seed.
 
 Las nuevas ilustraciones WebP no requieren conexiones externas. Se conservan la guia de onboarding, el panel de accesibilidad, las practicas por texto/voz, autenticacion y dashboards. No se agregan migraciones ni dependencias. Prueba `npm run home:check` y consulta [la etapa 16.1](docs/etapa-16-1-redisenio-home.md).
+
+## Entrenamiento personalizado (v0.16.2)
+
+La portada y `/entrenar` incorporan una selección por objetivos personales y seis escenarios recomendados basados en el seed existente. El usuario elige Preparación, Práctica guiada o Simulación real, con modalidad texto/voz. `/practicar` presenta Prepárate → Entrena → Revisa, temporizador orientativo de cinco minutos y una sugerencia de siguiente intento basada en métricas reales. El temporizador nunca termina ni guarda una sesión automáticamente; el usuario decide cuándo finalizar.
+
+El progreso usa las rutas actuales `/progreso` y `/mapa`. No se agregan endpoints, migraciones, cookies, secretos ni servicios externos. `npm run training:check` comprueba escenarios, URLs y recomendaciones. Consulta [etapa 16.2](docs/etapa-16-2-entrenamiento-personalizado.md).
 
 ## Desarrollo local
 

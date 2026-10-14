@@ -16,6 +16,7 @@ const {
 const pathname = Astro.url.pathname;
 const isHome = pathname === "/";
 const isProgress = pathname === "/progreso";
+const isTraining = pathname === "/entrenar";
 const isMap = pathname === "/mapa";
 const isAccount = pathname === "/cuenta";
 ---
@@ -66,10 +67,20 @@ const isAccount = pathname === "/cuenta";
 
           <nav aria-label="Navegación principal" class="flex min-w-0 items-center gap-1 sm:gap-2">
             <a
+              href="/entrenar"
+              aria-current={isTraining ? "page" : undefined}
+              class:list={[
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex",
+                isTraining ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
+              ]}
+            >
+              Entrenar
+            </a>
+            <a
               href="/#escenarios"
               aria-current={isHome ? "page" : undefined}
               class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition md:inline-flex",
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex",
                 isHome ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
               ]}
             >
@@ -79,7 +90,7 @@ const isAccount = pathname === "/cuenta";
               href="/progreso"
               aria-current={isProgress ? "page" : undefined}
               class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition md:inline-flex",
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex",
                 isProgress ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
               ]}
             >
@@ -89,7 +100,7 @@ const isAccount = pathname === "/cuenta";
               href="/mapa"
               aria-current={isMap ? "page" : undefined}
               class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition md:inline-flex",
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex",
                 isMap ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
               ]}
             >
@@ -105,6 +116,16 @@ const isAccount = pathname === "/cuenta";
             >
               Mis prácticas
             </a>
+            <details class="dale-mobile-menu relative lg:hidden">
+              <summary class="flex min-h-11 cursor-pointer list-none items-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-bold text-slate-900 focus-visible:outline focus-visible:outline-4 focus-visible:outline-blue-700">Menú</summary>
+              <nav aria-label="Navegación móvil" class="absolute right-0 top-full z-50 mt-2 flex w-[min(18rem,calc(100vw-2rem))] flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl">
+                <a href="/entrenar" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Preparar entrenamiento</a>
+                <a href="/#escenarios" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Todos los escenarios</a>
+                <a href="/progreso" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Mi progreso</a>
+                <a href="/mapa" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Mapa</a>
+                <a href="/cuenta" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Mis prácticas</a>
+              </nav>
+            </details>
             <AuthNav client:load />
           </nav>
         </div>
@@ -130,5 +151,14 @@ const isAccount = pathname === "/cuenta";
       </footer>
     </div>
     <AccessibilityControls client:load />
+    <script is:inline>
+      document.addEventListener("keydown", (event) => {
+        const menu = document.querySelector("details.dale-mobile-menu[open]");
+        if (event.key === "Escape" && menu) {
+          menu.open = false;
+          menu.querySelector("summary")?.focus();
+        }
+      });
+    </script>
   </body>
 </html>
