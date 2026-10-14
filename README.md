@@ -4,7 +4,7 @@ Dale es una plataforma web gratuita, responsive y de código abierto para practi
 
 ## Estado actual
 
-Versión `0.16.2` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
+Versión `0.16.3` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
 
 - Frontend: Astro + Vue + Tailwind CSS.
 - Backend: Node.js + Express + TypeScript.
@@ -59,6 +59,12 @@ Las nuevas ilustraciones WebP no requieren conexiones externas. Se conservan la 
 La portada y `/entrenar` incorporan una selección por objetivos personales y seis escenarios recomendados basados en el seed existente. El usuario elige Preparación, Práctica guiada o Simulación real, con modalidad texto/voz. `/practicar` presenta Prepárate → Entrena → Revisa, temporizador orientativo de cinco minutos y una sugerencia de siguiente intento basada en métricas reales. El temporizador nunca termina ni guarda una sesión automáticamente; el usuario decide cuándo finalizar.
 
 El progreso usa las rutas actuales `/progreso` y `/mapa`. No se agregan endpoints, migraciones, cookies, secretos ni servicios externos. `npm run training:check` comprueba escenarios, URLs y recomendaciones. Consulta [etapa 16.2](docs/etapa-16-2-entrenamiento-personalizado.md).
+
+## Diseño adaptable (v0.16.3)
+
+La interfaz se reorganiza con anchos fluidos desde 320 px, ventanas redimensionadas, modo horizontal y zoom. El menú móvil, las tarjetas del planificador, los filtros del catálogo y los controles del simulador se distribuyen según el espacio disponible. Los gráficos SVG conservan su legibilidad dentro de zonas desplazables por teclado en pantallas estrechas. Usa `npm run responsive:check` y revisa manualmente los anchos de la [guía de la etapa 16.3](docs/etapa-16-3-responsive.md).
+
+No se modificaron algoritmos, endpoints, tablas de PostgreSQL ni almacenamiento de datos.
 
 ## Desarrollo local
 

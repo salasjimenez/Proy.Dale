@@ -178,7 +178,7 @@ onBeforeUnmount(() => {
       <p class="text-sm font-bold text-slate-600" aria-live="polite" aria-atomic="true">{{ resultLabel }}</p>
     </div>
 
-    <div class="mt-7 grid gap-4 rounded-3xl border border-slate-200 bg-[#f4f8fd] p-4 shadow-sm sm:p-5 md:grid-cols-[minmax(0,1fr)_minmax(0,240px)_auto] md:items-end">
+    <div class="dale-catalog-filters mt-7 grid gap-4 rounded-3xl border border-slate-200 bg-[#f4f8fd] p-4 shadow-sm sm:p-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,240px)_auto] lg:items-end">
       <label class="block min-w-0">
         <span class="mb-2 block text-sm font-black text-slate-800">¿Qué te gustaría practicar?</span>
         <input
@@ -216,7 +216,7 @@ onBeforeUnmount(() => {
       <p class="mt-2 text-sm text-slate-600">Prueba con otra palabra o categoría.</p>
       <button type="button" class="mt-4 min-h-11 rounded-xl bg-slate-950 px-5 py-2 font-bold text-white" @click="resetFilters">Ver todas</button>
     </div>
-    <div v-else class="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <div v-else class="dale-catalog-grid dale-fluid-grid mt-7 grid gap-5">
       <ScenarioCard
         v-for="scenario in groupedScenarios"
         :key="scenario.id"
@@ -225,7 +225,7 @@ onBeforeUnmount(() => {
       />
     </div>
 
-    <div v-if="selected" class="fixed inset-0 z-[60] flex items-end justify-center bg-slate-950/75 p-0 sm:items-center sm:p-5" @click.self="closeScenario">
+    <div v-if="selected" class="dale-scenario-overlay fixed inset-0 z-[60] flex items-end justify-center bg-slate-950/75 p-0 sm:items-center sm:p-5" @click.self="closeScenario">
       <section
         ref="dialogRef"
         tabindex="-1"
@@ -233,7 +233,7 @@ onBeforeUnmount(() => {
         aria-modal="true"
         aria-labelledby="scenario-dialog-title"
         aria-describedby="scenario-dialog-description"
-        class="max-h-[95dvh] w-full overflow-y-auto rounded-t-3xl bg-white p-5 text-slate-950 shadow-2xl outline-none sm:max-w-2xl sm:rounded-3xl sm:p-7"
+        class="dale-scenario-dialog max-h-[95dvh] w-full overflow-y-auto rounded-t-3xl bg-white p-5 text-slate-950 shadow-2xl outline-none sm:max-w-2xl sm:rounded-3xl sm:p-7"
         @keydown="handleDialogKeydown"
       >
         <div class="flex items-start justify-between gap-3">
@@ -249,7 +249,7 @@ onBeforeUnmount(() => {
         </p>
         <fieldset class="mt-6">
           <legend class="text-sm font-black text-slate-950">¿Cómo quieres entrenar?</legend>
-          <div class="mt-3 grid gap-3 sm:grid-cols-3">
+          <div class="dale-dialog-stages grid gap-3">
             <button
               v-for="stage in trainingStages"
               :key="stage.code"

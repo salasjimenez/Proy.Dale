@@ -1,6 +1,6 @@
 {
   "name": "dale",
-  "version": "0.16.2",
+  "version": "0.16.3",
   "private": true,
   "description": "Dale - plataforma abierta para practicar comunicacion en situaciones reales.",
   "workspaces": [
@@ -19,13 +19,14 @@
     "prisma:deploy": "npm run prisma:deploy --workspace=backend",
     "prisma:status": "npm run prisma:status --workspace=backend",
     "db:seed": "npm run prisma:seed --workspace=backend",
-    "ci:test": "npm run docs:check && npm run home:check && npm run training:check && npm run test --workspace=backend",
+    "ci:test": "npm run docs:check && npm run home:check && npm run training:check && npm run responsive:check && npm run test --workspace=backend",
     "ci:build": "npm run prisma:generate --workspace=backend && npm run build",
-    "check": "npm run prisma:validate --workspace=backend && npm run docs:check && npm run home:check && npm run training:check && npm run test --workspace=backend && npm run build",
+    "check": "npm run prisma:validate --workspace=backend && npm run docs:check && npm run home:check && npm run training:check && npm run responsive:check && npm run test --workspace=backend && npm run build",
     "docs:sync": "node scripts/generar_docs_vue.mjs --write",
     "docs:check": "node scripts/generar_docs_vue.mjs --check",
     "home:check": "node scripts/check_home_contract.mjs",
-    "training:check": "node scripts/check_training_contract.mjs"
+    "training:check": "node scripts/check_training_contract.mjs",
+    "responsive:check": "node scripts/check_responsive_contract.mjs"
   },
   "engines": {
     "node": ">=22 <27",

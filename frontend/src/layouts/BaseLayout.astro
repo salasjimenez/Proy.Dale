@@ -2,6 +2,7 @@
 import AuthNav from "../components/vue/AuthNav.vue";
 import AccessibilityControls from "../components/vue/AccessibilityControls.vue";
 import "../styles/global.css";
+import "../styles/responsive.css";
 
 interface Props {
   title?: string;
@@ -50,10 +51,10 @@ const isAccount = pathname === "/cuenta";
   <body>
     <a href="#contenido-principal" class="skip-link">Saltar al contenido principal</a>
 
-    <div class="min-h-screen text-slate-800">
-      <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur">
-        <div class="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-3 px-4 py-2 sm:px-6 lg:px-8">
-          <a href="/" class="flex min-w-0 items-center gap-3" aria-label="Ir al inicio de Dale">
+    <div class="dale-site-shell min-h-screen text-slate-800">
+      <header class="dale-site-header sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur">
+        <div class="dale-header-inner mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-3 px-4 py-2 sm:px-6 lg:px-8">
+          <a href="/" class="dale-brand flex min-w-0 items-center gap-3" aria-label="Ir al inicio de Dale">
             <img
               src="/DaleConTodoMiKing.png"
               alt="Dale"
@@ -65,12 +66,12 @@ const isAccount = pathname === "/cuenta";
             </div>
           </a>
 
-          <nav aria-label="Navegación principal" class="flex min-w-0 items-center gap-1 sm:gap-2">
+          <nav aria-label="Navegación principal" class="dale-primary-nav flex min-w-0 items-center gap-1 sm:gap-2">
             <a
               href="/entrenar"
               aria-current={isTraining ? "page" : undefined}
               class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex",
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition xl:inline-flex",
                 isTraining ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
               ]}
             >
@@ -80,7 +81,7 @@ const isAccount = pathname === "/cuenta";
               href="/#escenarios"
               aria-current={isHome ? "page" : undefined}
               class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex",
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition xl:inline-flex",
                 isHome ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
               ]}
             >
@@ -90,7 +91,7 @@ const isAccount = pathname === "/cuenta";
               href="/progreso"
               aria-current={isProgress ? "page" : undefined}
               class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex",
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition xl:inline-flex",
                 isProgress ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
               ]}
             >
@@ -100,7 +101,7 @@ const isAccount = pathname === "/cuenta";
               href="/mapa"
               aria-current={isMap ? "page" : undefined}
               class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex",
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition xl:inline-flex",
                 isMap ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
               ]}
             >
@@ -110,15 +111,15 @@ const isAccount = pathname === "/cuenta";
               href="/cuenta"
               aria-current={isAccount ? "page" : undefined}
               class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex",
+                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition xl:inline-flex",
                 isAccount ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
               ]}
             >
               Mis prácticas
             </a>
-            <details class="dale-mobile-menu relative lg:hidden">
+            <details class="dale-mobile-menu relative xl:hidden">
               <summary class="flex min-h-11 cursor-pointer list-none items-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-bold text-slate-900 focus-visible:outline focus-visible:outline-4 focus-visible:outline-blue-700">Menú</summary>
-              <nav aria-label="Navegación móvil" class="absolute right-0 top-full z-50 mt-2 flex w-[min(18rem,calc(100vw-2rem))] flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl">
+              <nav aria-label="Navegación móvil" class="dale-mobile-menu-panel absolute right-0 top-full z-50 mt-2 flex w-[min(18rem,calc(100vw-2rem))] flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl">
                 <a href="/entrenar" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Preparar entrenamiento</a>
                 <a href="/#escenarios" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Todos los escenarios</a>
                 <a href="/progreso" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Mi progreso</a>
@@ -126,16 +127,16 @@ const isAccount = pathname === "/cuenta";
                 <a href="/cuenta" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Mis prácticas</a>
               </nav>
             </details>
-            <AuthNav client:load />
+            <div class="dale-auth-slot"><AuthNav client:load /></div>
           </nav>
         </div>
       </header>
 
-      <main id="contenido-principal" tabindex="-1">
+      <main id="contenido-principal" class="dale-main" tabindex="-1">
         <slot />
       </main>
 
-      <footer class="mt-16 border-t border-slate-200 bg-white">
+      <footer class="dale-site-footer mt-16 border-t border-slate-200 bg-white">
         <div class="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-8 text-sm text-slate-600 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
           <div>
             <p class="font-semibold text-slate-900">Dale</p>
@@ -152,13 +153,26 @@ const isAccount = pathname === "/cuenta";
     </div>
     <AccessibilityControls client:load />
     <script is:inline>
-      document.addEventListener("keydown", (event) => {
-        const menu = document.querySelector("details.dale-mobile-menu[open]");
-        if (event.key === "Escape" && menu) {
+      // Mantener sincronizado el menu cuando se redimensiona la ventana.
+      (() => {
+        const menu = document.querySelector("details.dale-mobile-menu");
+        if (!(menu instanceof HTMLDetailsElement)) return;
+        document.addEventListener("keydown", (event) => {
+          if (event.key !== "Escape" || !menu.open) return;
+          event.preventDefault();
           menu.open = false;
           menu.querySelector("summary")?.focus();
-        }
-      });
+        });
+        document.addEventListener("pointerdown", (event) => {
+          if (menu.open && event.target instanceof Node && !menu.contains(event.target)) {
+            menu.open = false;
+          }
+        });
+        const desktop = window.matchMedia("(min-width: 80rem)");
+        desktop.addEventListener("change", (event) => {
+          if (event.matches) menu.open = false;
+        });
+      })();
     </script>
   </body>
 </html>

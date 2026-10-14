@@ -268,7 +268,7 @@ onBeforeUnmount(stopClock);
 </script>
 
 <template>
-  <section class="mx-auto max-w-5xl">
+  <section class="dale-practice-shell mx-auto w-full max-w-5xl">
     <div v-if="loading" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
       <div class="h-5 w-32 animate-pulse rounded bg-slate-200"></div>
       <div class="mt-4 h-10 w-2/3 animate-pulse rounded bg-slate-200"></div>
@@ -296,7 +296,7 @@ onBeforeUnmount(stopClock);
           </span>
         </div>
         <nav aria-label="Etapas de entrenamiento" class="mt-5" >
-          <ol class="grid grid-cols-3 gap-2 text-center text-xs font-bold sm:text-sm">
+          <ol class="dale-practice-steps grid grid-cols-3 gap-2 text-center text-xs font-bold sm:text-sm">
             <li v-for="(step, index) in ['Prepárate', 'Entrena', 'Revisa']" :key="step"
               :aria-current="phase === index ? 'step' : undefined"
               class="rounded-xl border px-2 py-3"
@@ -322,7 +322,7 @@ onBeforeUnmount(stopClock);
       </div>
 
       <template v-else-if="user">
-        <div v-if="!session" class="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+        <div v-if="!session" class="dale-practice-grid grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
           <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             <p class="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Situación</p>
             <p class="mt-3 text-lg leading-8 text-slate-800">{{ scenario.situacion }}</p>
@@ -404,7 +404,7 @@ onBeforeUnmount(stopClock);
           </aside>
         </div>
 
-        <div v-else-if="!isCompleted" class="grid gap-5 lg:grid-cols-[0.82fr_1.18fr]">
+        <div v-else-if="!isCompleted" class="dale-practice-grid grid gap-5 xl:grid-cols-[0.82fr_1.18fr]">
           <aside class="rounded-3xl border border-slate-200 bg-slate-50 p-6">
             <p class="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Escenario activo</p>
             <h2 class="mt-2 text-xl font-black text-slate-950">{{ scenario.titulo }}</h2>
@@ -495,7 +495,7 @@ onBeforeUnmount(stopClock);
             </div>
           </div>
 
-          <div v-if="session.modalidad === 'VOZ'" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div v-if="session.modalidad === 'VOZ'" class="dale-practice-metrics grid gap-4">
             <article class="rounded-2xl border border-slate-200 bg-white p-5">
               <p class="text-xs font-black uppercase tracking-wide text-slate-500">Palabras/min</p>
               <strong class="mt-2 block text-3xl font-black text-slate-950">{{ session.metrica.palabrasPorMinuto ?? "—" }}</strong>
@@ -518,7 +518,7 @@ onBeforeUnmount(stopClock);
             </article>
           </div>
 
-          <div v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div v-else class="dale-practice-metrics grid gap-4">
             <article class="rounded-2xl border border-slate-200 bg-white p-5">
               <p class="text-xs font-black uppercase tracking-wide text-slate-500">Palabras</p>
               <strong class="mt-2 block text-3xl font-black text-slate-950">{{ session.metrica.palabras }}</strong>
@@ -587,7 +587,7 @@ onBeforeUnmount(stopClock);
             </a>
           </article>
 
-          <div class="flex flex-col gap-3 sm:flex-row">
+          <div class="dale-practice-actions flex flex-col gap-3 sm:flex-row">
             <button type="button" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-slate-950 px-5 py-3 font-black text-white hover:bg-blue-700" @click="retryPractice">
               Practicar de nuevo
             </button>

@@ -228,7 +228,8 @@ onMounted(loadProgress);
             Esta métrica no está disponible en las prácticas seleccionadas.
           </div>
 
-          <div v-else class="mt-6 overflow-x-auto">
+          <div v-else class="dale-chart-scroll mt-6 overflow-x-auto" tabindex="0" role="region" aria-label="Gráfico de progreso: usa las flechas para desplazarte horizontalmente cuando sea necesario">
+            <p class="mb-3 text-xs font-semibold text-slate-600 sm:hidden">Desliza horizontalmente para explorar el gráfico.</p>
             <svg
               class="min-w-[680px]"
               :viewBox="`0 0 ${chartWidth} ${chartHeight}`"

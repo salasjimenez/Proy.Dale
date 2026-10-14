@@ -57,8 +57,8 @@ check(practice.includes("recommendNextStage") && practice.includes("focusSuggest
 check(practice.includes("finishVoicePractice") && practice.includes("finishTextPractice"), "Se alteró una modalidad de práctica");
 check(layout.includes("Navegación móvil") && layout.includes('href="/entrenar"'), "Falta navegación de entrenamiento en móvil");
 check(sourceGenerator.includes("TrainingPlanner:"), "Falta la ficha generada de TrainingPlanner en /docs");
-check(JSON.parse(read("package.json")).version === "0.16.2", "La versión raíz no es 0.16.2");
-check(read("backend/src/version.ts").includes('APP_VERSION = "0.16.2"'), "El health backend tiene versión distinta");
+check(JSON.parse(read("package.json")).version === "0.16.3", "La versión raíz no es 0.16.3");
+check(read("backend/src/version.ts").includes('APP_VERSION = "0.16.3"'), "El health backend tiene versión distinta");
 
 if (errors.length) {
   console.error(`Dale training:check FALLÓ (${errors.length} hallazgos)`);

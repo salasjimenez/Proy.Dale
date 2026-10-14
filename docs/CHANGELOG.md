@@ -5,6 +5,20 @@ title: "Changelog"
 
 # Changelog
 
+## [0.16.3] - 2026-10-14
+
+### Mejorado
+
+- Cabecera y menú con reflujo al cambiar el ancho de ventana; Escape, clic externo y cierre al pasar a escritorio.
+- Rejillas fluidas para escenarios, pasos y objetivos; imágenes ajustadas para móvil y tablet.
+- Filtros, diálogos, métricas, editor y acciones del simulador compatibles con zoom y orientación.
+- Gráficos SVG en regiones desplazables y operables mediante teclado, conservando alternativas textuales.
+- `npm run responsive:check` en CI y guía de validación a 320-1920 px, zoom 200 % y landscape.
+
+### Sin cambios
+
+- Sin migraciones Prisma, servicios de pago, endpoints nuevos ni modificaciones de los resultados existentes.
+
 ## [0.16.2] - 2026-10-14
 
 ### Agregado

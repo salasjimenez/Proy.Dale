@@ -34,12 +34,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="grid min-w-0 gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+  <div class="dale-plan-grid grid min-w-0 gap-6 xl:grid-cols-[1.15fr_0.85fr]">
     <div class="min-w-0 space-y-7">
       <fieldset>
         <legend class="text-lg font-black text-slate-950">1. ¿Qué quieres mejorar hoy?</legend>
         <p class="mt-2 text-sm leading-6 text-slate-600">Elige un objetivo. La recomendación utiliza situaciones que ya existen en Dale.</p>
-        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <div class="dale-goal-options grid gap-3">
           <button
             v-for="goal in TRAINING_GOALS"
             :key="goal.id"
@@ -57,7 +57,7 @@ onMounted(() => {
 
       <fieldset>
         <legend class="text-lg font-black text-slate-950">2. Elige tu forma de entrenamiento</legend>
-        <div class="mt-3 grid gap-2 sm:grid-cols-3">
+        <div class="dale-stage-options grid gap-2">
           <button
             v-for="option in TRAINING_STAGES"
             :key="option.code"
@@ -98,7 +98,7 @@ onMounted(() => {
       </label>
     </div>
 
-    <aside class="min-w-0 self-start overflow-hidden rounded-3xl border border-blue-200 bg-white shadow-md" aria-live="polite" aria-atomic="true">
+    <aside class="dale-plan-summary min-w-0 self-start overflow-hidden rounded-3xl border border-blue-200 bg-white shadow-md" aria-live="polite" aria-atomic="true">
       <img :src="chosenGoal.image" alt="" loading="lazy" decoding="async" width="660" height="324" class="aspect-[2/1] w-full object-cover" />
       <div class="p-5 sm:p-7">
         <p class="text-xs font-black uppercase tracking-[0.16em] text-blue-700">Tu próxima práctica</p>

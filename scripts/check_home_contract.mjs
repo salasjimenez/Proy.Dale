@@ -43,7 +43,7 @@ assert(catalog.includes('get("categoria")'), "El catálogo no lee el filtro desd
 assert(card.includes("scenarioVisual(props.scenario.slug)"), "Las tarjetas no resuelven sus imágenes locales.");
 
 const rootVersion = JSON.parse(read("package.json")).version;
-assert(rootVersion === "0.16.2", `Versión raíz inesperada: ${rootVersion}`);
+assert(rootVersion === "0.16.3", `Versión raíz inesperada: ${rootVersion}`);
 
 if (errors.length > 0) {
   console.error("Dale home:check: FALLÓ");

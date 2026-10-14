@@ -1,0 +1,187 @@
+/* Dale v0.16.3 - Responsive fluido por ancho disponible y zoom.
+   Se importa DESPUES de global.css; no oculta el desbordamiento del documento. */
+
+:where(.dale-site-shell, .dale-main, .dale-home-hero-layout, .dale-plan-grid, .dale-practice-shell) {
+  min-inline-size: 0;
+}
+
+:where(.dale-fluid-grid, .dale-plan-grid, .dale-goal-options, .dale-stage-options, .dale-practice-metrics) > * {
+  min-inline-size: 0;
+}
+
+/* No usar overflow-x:hidden sobre html/body: ocultaria contenido inaccesible. */
+.dale-site-header {
+  isolation: isolate;
+}
+.dale-header-inner {
+  flex-wrap: wrap;
+  row-gap: .5rem;
+}
+.dale-brand, .dale-primary-nav, .dale-auth-slot { min-inline-size: 0; }
+.dale-primary-nav { margin-inline-start: auto; flex-wrap: wrap; justify-content: flex-end; }
+.dale-auth-slot { min-inline-size: 0; }
+.dale-auth-slot a[href="/cuenta"] {
+  max-inline-size: 10rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.dale-mobile-menu { z-index: 60; }
+.dale-mobile-menu-panel {
+  inline-size: min(19rem, calc(100vw - 2rem));
+  max-block-size: min(32rem, calc(100dvh - 6rem));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.dale-mobile-menu summary::-webkit-details-marker { display: none; }
+.dale-mobile-menu[open] summary { background-color: #eff6ff; border-color: #1d4ed8; }
+
+.dale-hero-heading { text-wrap: balance; overflow-wrap: normal; }
+.dale-hero-layout > *, .dale-hero-visual, .dale-hero-art { min-inline-size: 0; }
+.dale-hero-art { max-inline-size: 100%; }
+.dale-hero-visual img { max-inline-size: 100%; }
+.dale-hero-note, .dale-hero-summary, .dale-hero-bubble {
+  overflow-wrap: break-word;
+}
+
+/* Auto-fit responde al tamano real de la ventana sin depender de un dispositivo. */
+.dale-grid-categories, .dale-grid-steps {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+.dale-grid-featured {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}
+.dale-plan-grid { align-items: start; }
+.dale-goal-options {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+.dale-stage-options {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+}
+.dale-plan-summary {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.dale-plan-summary :is(img, a) { max-inline-size: 100%; }
+.dale-training-surface, .dale-planner-surface { min-inline-size: 0; }
+
+/* Formularios y modales tambien deben reacomodarse con zoom 200 %. */
+.dale-catalog-filters > *, .dale-catalog-grid > * { min-inline-size: 0; }
+.dale-catalog-filters :is(input, select, button) { max-inline-size: 100%; }
+.dale-catalog-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+}
+.dale-scenario-overlay { padding-block: env(safe-area-inset-top, 0px) env(safe-area-inset-bottom, 0px); }
+.dale-scenario-dialog {
+  max-inline-size: min(42rem, 100%);
+  max-block-size: min(95dvh, 55rem);
+  overflow-y: auto;
+  overflow-wrap: break-word;
+  overscroll-behavior: contain;
+}
+.dale-dialog-stages {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+}
+
+.dale-practice-shell { overflow-wrap: break-word; }
+.dale-practice-steps > li {
+  min-inline-size: 0;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.dale-practice-grid > *, .dale-practice-grid :is(textarea, section, article, aside) {
+  min-inline-size: 0;
+}
+.dale-practice-grid textarea {
+  max-inline-size: 100%;
+  min-block-size: 12rem;
+}
+.dale-practice-metrics {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr));
+}
+.dale-practice-metrics strong {
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+.dale-practice-actions { flex-wrap: wrap; }
+.dale-practice-actions > :is(a, button) {
+  flex: 1 1 min(100%, 13.5rem);
+  white-space: normal;
+}
+
+/* Los graficos mantienen su escala legible, con region de scroll operable con Tab
+   y flechas. No obligamos a contraer texto SVG hasta hacerlo ilegible. */
+.dale-chart-scroll {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-inline: .75rem;
+  border-radius: .75rem;
+}
+.dale-chart-scroll:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 3px;
+}
+.dale-chart-scroll > svg { max-inline-size: none; }
+
+@media (min-width: 80rem) and (min-height: 48rem) {
+  .dale-plan-summary { position: sticky; inset-block-start: 6rem; }
+}
+
+/* Ventanas estrechas, incluido un escritorio redimensionado. */
+@media (max-width: 48rem) {
+  .dale-header-inner { column-gap: .5rem; }
+  .dale-hero-heading { font-size: clamp(2rem, 7.8vw, 3.1rem); line-height: 1.1; }
+  .dale-hero-cta > a { inline-size: 100%; }
+  .dale-practice-steps { gap: .35rem; font-size: .77rem; line-height: 1.25; }
+  .dale-practice-steps > li { padding-inline: .35rem; }
+  .dale-practice-actions > :is(a, button) { flex-basis: 100%; }
+  .dale-chart-scroll { border: 1px solid #cbd5e1; padding: .5rem; }
+  .dale-scenario-dialog { border-radius: 1rem 1rem 0 0; }
+}
+
+@media (max-width: 30rem) {
+  .dale-header-inner { align-items: center; }
+  .dale-brand { flex: 1 1 100%; }
+  .dale-primary-nav { flex: 1 1 100%; justify-content: space-between; margin-inline-start: 0; }
+  .dale-hero-heading { font-size: clamp(1.95rem, 8.5vw, 2.55rem); }
+  .dale-mobile-menu-panel { max-block-size: calc(100dvh - 8rem); }
+  .dale-main :where(#escenarios, #situaciones, #como-funciona, #entrenamiento-personalizado) { scroll-margin-block-start: 8rem; }
+  .dale-hero-art { aspect-ratio: 1 / 1; }
+  .dale-hero-note { inset-block-start: .5rem; inset-inline-start: .5rem; padding: .65rem; }
+  .dale-hero-summary { inset-block-end: .5rem; inset-inline-start: .5rem; padding: .65rem; }
+  .dale-hero-bubble { position: static; display: table; margin: .8rem auto 0; text-align: center; }
+  .dale-scenario-dialog { padding: 1rem; }
+  .dale-practice-steps { font-size: .72rem; }
+  .dale-access-widget { inset-inline-end: .5rem; inset-block-end: calc(.5rem + env(safe-area-inset-bottom, 0px)); }
+  .dale-access-widget > button { min-block-size: 2.75rem; padding: .65rem .85rem; }
+  .dale-site-footer { padding-block-end: 3.75rem; }
+}
+
+@media (max-height: 35rem) and (orientation: landscape) {
+  .dale-site-header { position: relative; }
+  .dale-mobile-menu-panel { max-block-size: calc(100dvh - 2rem); }
+  .dale-scenario-dialog { max-block-size: calc(100dvh - 1rem); }
+  .dale-plan-summary { position: static; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dale-fluid-grid * { scroll-behavior: auto; }
+}
+
+@media (forced-colors: active) {
+  .dale-mobile-menu[open] summary { border: 2px solid ButtonText; }
+  .dale-chart-scroll { border: 1px solid CanvasText; }
+}
+
+html[data-dale-contrast="high"] .dale-mobile-menu[open] summary {
+  color: #000 !important;
+  background: #fff !important;
+  border: 2px solid #000 !important;
+}
+html[data-dale-contrast="high"] .dale-chart-scroll {
+  border: 2px solid #000;
+}

@@ -32,3 +32,7 @@ Consulta [redisenio de la portada y selector de entrenamientos](etapa-16-1-redis
 ## Experiencia v0.16.2
 
 [Entrenamiento personalizado y recomendaciones deterministas](etapa-16-2-entrenamiento-personalizado.html).
+
+## Ajustes responsive v0.16.3
+
+[Diseno adaptable, validacion por anchos y zoom](etapa-16-3-responsive.html).
