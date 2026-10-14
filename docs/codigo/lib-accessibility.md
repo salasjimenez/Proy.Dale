@@ -29,7 +29,7 @@ export function normalizeContrastMode(value: unknown): ContrastMode {
 export const ONBOARDING_STEPS = [
   {
     title: "Elige una situacion real",
-    description: "Explora entrevistas, tramites, conversaciones sociales y situaciones academicas. Puedes filtrar por categoria o dificultad.",
+    description: "Explora entrevistas, tramites, conversaciones sociales y situaciones academicas. Puedes elegir el ambito y despues como quieres entrenar.",
     href: "/#escenarios",
     linkLabel: "Explorar escenarios",
   },

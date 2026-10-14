@@ -24,6 +24,7 @@ Dale es una plataforma abierta para practicar comunicación en situaciones reale
 - [Etapa 14: Páginas legales y registro](etapa-14-paginas-legales.html)
 - [Etapa 15: Componentes Vue copiables](etapa-15-componentes-vue.html)
 - [Etapa 16: Accesibilidad y onboarding](etapa-16-accesibilidad-onboarding.html)
+- [Etapa 16.1: Portada y entrenamiento real](etapa-16-1-redisenio-home.html)
 - [CHANGELOG](CHANGELOG.html)
 
 ## Componentes Vue documentados

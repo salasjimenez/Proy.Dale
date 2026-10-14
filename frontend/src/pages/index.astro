@@ -2,73 +2,273 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ScenarioCatalog from "../components/vue/ScenarioCatalog.vue";
 import OnboardingGuide from "../components/vue/OnboardingGuide.vue";
+import { FEATURED_SCENARIOS, scenarioVisual } from "../lib/scenarioVisuals";
+
+const categoryChoices = [
+  {
+    code: "LABORAL",
+    title: "Trabajo y entrevistas",
+    description: "Entrevistas, reuniones y conversaciones profesionales.",
+    image: "/landing/entrevista-laboral.webp",
+    background: "bg-sky-50",
+    label: "Profesional",
+  },
+  {
+    code: "JOVENES_ESTUDIANTES",
+    title: "Estudios y exposiciones",
+    description: "Presentaciones, docentes y oportunidades académicas.",
+    image: "/landing/exposicion-clase.webp",
+    background: "bg-violet-50",
+    label: "Académico",
+  },
+  {
+    code: "SOCIAL",
+    title: "Conversaciones sociales",
+    description: "Conocer personas, pedir apoyo o expresar desacuerdos.",
+    image: "/landing/conversacion-social.webp",
+    background: "bg-orange-50",
+    label: "Social",
+  },
+  {
+    code: "TRAMITES_CALLE",
+    title: "Trámites y vida diaria",
+    description: "Pedir información, reclamar y resolver imprevistos.",
+    image: "/landing/pedir-informacion.webp",
+    background: "bg-emerald-50",
+    label: "Cotidiano",
+  },
+] as const;
+
+const trainingSteps = [
+  {
+    number: "01",
+    title: "Escoge la situación",
+    description: "Selecciona una conversación que podrías tener en tu vida diaria.",
+    accent: "bg-blue-100 text-blue-900",
+  },
+  {
+    number: "02",
+    title: "Entrena tu respuesta",
+    description: "Practica por escrito o con tu voz, a tu propio ritmo.",
+    accent: "bg-violet-100 text-violet-900",
+  },
+  {
+    number: "03",
+    title: "Observa tus resultados",
+    description: "Revisa ritmo, pausas y muletillas cuando corresponda.",
+    accent: "bg-amber-100 text-amber-900",
+  },
+  {
+    number: "04",
+    title: "Vuelve a intentarlo",
+    description: "Compara tus prácticas y descubre qué te conviene seguir entrenando.",
+    accent: "bg-emerald-100 text-emerald-900",
+  },
+] as const;
 ---
 
-<BaseLayout>
-  <section class="relative overflow-hidden border-b border-slate-200 bg-white">
-    <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:px-8 lg:py-24">
+<BaseLayout
+  title="Dale | Entrena conversaciones reales"
+  description="Elige una situación de la vida real, practica por texto o voz y sigue tu progreso con Dale. Entrenamiento gratuito de comunicación."
+>
+  <section class="dale-home-hero relative isolate overflow-hidden border-b border-blue-100 bg-gradient-to-br from-[#eaf4ff] via-white to-[#e9f8f5]">
+    <div aria-hidden="true" class="pointer-events-none absolute -left-28 -top-44 size-80 rounded-full bg-blue-200/45 blur-3xl"></div>
+    <div aria-hidden="true" class="pointer-events-none absolute -bottom-40 right-6 size-96 rounded-full bg-cyan-100/70 blur-3xl"></div>
+
+    <div class="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.04fr_0.96fr] lg:gap-14 lg:px-8 lg:py-24">
       <div>
-        <span class="inline-flex rounded-full bg-blue-50 px-3 py-1 text-sm font-bold text-blue-700 ring-1 ring-inset ring-blue-200">
-          Hablar se practica
-        </span>
-        <h1 class="mt-5 max-w-3xl text-4xl font-black tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
-          Practica conversaciones reales antes de enfrentarlas.
-        </h1>
-        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-          Dale te ayuda a entrenar entrevistas, reclamos, exposiciones y conversaciones sociales con escenarios progresivos y métricas claras.
+        <p class="inline-flex max-w-full items-center gap-2 rounded-full border border-blue-200 bg-white/90 px-4 py-2 text-xs font-extrabold uppercase tracking-wide text-blue-800 shadow-sm sm:text-sm">
+          <span class="h-2 w-2 shrink-0 rounded-full bg-blue-600" aria-hidden="true"></span>
+          Entrenamiento real de comunicación
         </p>
-        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-          <a href="#escenarios" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-slate-950 px-6 py-3 font-bold text-white transition hover:bg-blue-700">
-            Elegir un escenario
+        <h1 class="mt-6 max-w-3xl text-[clamp(2.35rem,5.3vw,4.7rem)] font-black leading-[1.07] tracking-tight text-slate-950">
+          Entrena hoy lo que dirás <span class="text-blue-700">en la vida real.</span>
+        </h1>
+        <p class="mt-6 max-w-xl text-base leading-7 text-slate-700 sm:text-lg sm:leading-8">
+          Una entrevista, un reclamo, una exposición o una conversación importante.
+          Elige tu escenario, practica por texto o voz y descubre cómo vas mejorando.
+        </p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a href="#escenarios" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3 text-center font-extrabold text-white shadow-lg shadow-blue-700/15 transition hover:bg-blue-800 focus-visible:outline-blue-700">
+            Elegir mi entrenamiento <span aria-hidden="true">→</span>
           </a>
-          <a href="#como-funciona" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 font-bold text-slate-700 transition hover:bg-slate-50">
-            Cómo funciona
+          <a href="#situaciones" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-blue-200 bg-white px-6 py-3 text-center font-extrabold text-slate-900 transition hover:bg-blue-50">
+            Ver situaciones reales
           </a>
         </div>
+        <p class="mt-5 text-sm font-semibold text-slate-600">Gratuito · Sin anuncios · Audio no almacenado</p>
         <OnboardingGuide client:load />
       </div>
 
-      <div class="mx-auto w-full max-w-md rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm sm:p-7">
-        <img src="/DaleConTodoMiKing.png" alt="Identidad visual de Dale" class="mx-auto h-40 w-40 rounded-3xl object-cover shadow-md sm:h-48 sm:w-48" />
-        <div class="mt-6 grid grid-cols-3 gap-2 text-center">
-          <div class="rounded-2xl bg-white p-3">
-            <strong class="block text-2xl font-black text-slate-950">36</strong>
-            <span class="text-xs font-semibold text-slate-500">escenarios</span>
+      <div class="relative mx-auto w-full max-w-[38rem]">
+        <div class="relative isolate aspect-[6/5] overflow-hidden rounded-[2.25rem] border border-white bg-gradient-to-br from-[#bddaff] via-[#dce9ff] to-[#a9d8fb] shadow-2xl shadow-blue-900/10">
+          <div aria-hidden="true" class="absolute -bottom-24 -right-16 size-[25rem] rounded-full bg-blue-400/25 blur-2xl"></div>
+          <img
+            src="/landing/hero-entrenamiento.webp"
+            alt="Ilustración de una persona motivada durante un entrenamiento de comunicación"
+            width="640"
+            height="710"
+            fetchpriority="high"
+            decoding="async"
+            class="absolute bottom-0 right-0 h-[95%] w-[70%] object-cover object-top sm:w-[66%]"
+          />
+          <div class="absolute left-4 top-5 max-w-[57%] rounded-2xl border border-white/85 bg-white/95 p-3 shadow-xl sm:left-7 sm:top-8 sm:max-w-[55%] sm:p-5">
+            <p class="text-[0.65rem] font-black uppercase tracking-wider text-blue-700 sm:text-xs">Tu espacio de práctica</p>
+            <p class="mt-1 text-sm font-black leading-snug text-slate-950 sm:mt-2 sm:text-xl">Una conversación a la vez.</p>
+            <p class="mt-2 hidden text-sm leading-5 text-slate-600 sm:block">Prepárate a tu ritmo, sin presión.</p>
           </div>
-          <div class="rounded-2xl bg-white p-3">
-            <strong class="block text-2xl font-black text-slate-950">4</strong>
-            <span class="text-xs font-semibold text-slate-500">categorías</span>
+          <div class="absolute bottom-4 left-4 max-w-[58%] rounded-2xl border border-white/90 bg-white/95 p-3 shadow-lg sm:bottom-7 sm:left-7 sm:p-5">
+            <p class="text-[0.65rem] font-black uppercase tracking-wider text-slate-500 sm:text-xs">Así funciona</p>
+            <p class="mt-1 text-xs font-extrabold leading-5 text-slate-950 sm:text-base">Elige · Practica · Mejora</p>
+            <div aria-hidden="true" class="mt-2 flex items-end gap-1.5 sm:mt-3">
+              <span class="h-3 w-2 rounded-full bg-blue-200"></span>
+              <span class="h-5 w-2 rounded-full bg-blue-300"></span>
+              <span class="h-7 w-2 rounded-full bg-blue-400"></span>
+              <span class="h-9 w-2 rounded-full bg-blue-600"></span>
+            </div>
           </div>
-          <div class="rounded-2xl bg-white p-3">
-            <strong class="block text-2xl font-black text-slate-950">3</strong>
-            <span class="text-xs font-semibold text-slate-500">niveles</span>
-          </div>
+        </div>
+        <div class="absolute -bottom-5 right-3 rounded-full border border-emerald-200 bg-white px-4 py-2 text-xs font-extrabold text-emerald-900 shadow-md sm:right-7 sm:text-sm">
+          A tu ritmo, en tu entorno
         </div>
       </div>
     </div>
   </section>
 
-  <section id="como-funciona" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <div class="grid gap-4 md:grid-cols-3">
-      <article class="rounded-2xl border border-slate-200 bg-white p-5">
-        <span class="text-sm font-black text-blue-700">01</span>
-        <h2 class="mt-2 text-lg font-black text-slate-950">Elige una situación</h2>
-        <p class="mt-2 text-sm leading-6 text-slate-600">Selecciona una categoría y empieza por el nivel que te resulte manejable.</p>
-      </article>
-      <article class="rounded-2xl border border-slate-200 bg-white p-5">
-        <span class="text-sm font-black text-blue-700">02</span>
-        <h2 class="mt-2 text-lg font-black text-slate-950">Practica a tu ritmo</h2>
-        <p class="mt-2 text-sm leading-6 text-slate-600">Practica por texto o voz y repite el mismo escenario tantas veces como necesites.</p>
-      </article>
-      <article class="rounded-2xl border border-slate-200 bg-white p-5">
-        <span class="text-sm font-black text-blue-700">03</span>
-        <h2 class="mt-2 text-lg font-black text-slate-950">Mide tu progreso</h2>
-        <p class="mt-2 text-sm leading-6 text-slate-600">Dale guarda tus intentos y, en voz, mide ritmo, pausas y muletillas para comparar tu evolución.</p>
-      </article>
+  <section aria-label="Características de Dale" class="border-b border-slate-100 bg-white">
+    <div class="mx-auto grid max-w-7xl gap-4 px-4 py-7 sm:grid-cols-3 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-3">
+        <strong class="text-3xl font-black text-blue-700">12</strong>
+        <span class="text-sm font-semibold leading-5 text-slate-700">situaciones reales para elegir</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <strong class="text-3xl font-black text-blue-700">2</strong>
+        <span class="text-sm font-semibold leading-5 text-slate-700">formas de practicar: texto o voz</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <strong class="text-3xl font-black text-blue-700">4</strong>
+        <span class="text-sm font-semibold leading-5 text-slate-700">ámbitos de comunicación cotidiana</span>
+      </div>
     </div>
   </section>
 
-  <section id="escenarios" class="mx-auto max-w-7xl scroll-mt-24 px-4 py-10 sm:px-6 lg:px-8">
+  <section id="situaciones" class="mx-auto max-w-7xl scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
+    <div class="max-w-3xl">
+      <p class="text-sm font-black uppercase tracking-[0.16em] text-blue-700">Entrena para lo que viene</p>
+      <h2 class="mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">¿Dónde quieres entrenar hoy?</h2>
+      <p class="mt-3 text-base leading-7 text-slate-600">Elige un ámbito. Después podrás seleccionar una situación concreta y cómo deseas practicarla.</p>
+    </div>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {categoryChoices.map((item) => (
+        <a
+          href={`/?categoria=${encodeURIComponent(item.code)}#escenarios`}
+          class:list={[
+            "dale-home-tile group flex min-w-0 flex-col overflow-hidden rounded-3xl border border-slate-200 shadow-sm transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-lg focus-visible:outline-blue-600",
+            item.background,
+          ]}
+          aria-label={`Explorar entrenamientos de ${item.title}`}
+        >
+          <img src={item.image} alt="" loading="lazy" decoding="async" width="660" height="324" class="aspect-[2/1] w-full object-cover" />
+          <div class="flex flex-1 flex-col p-5">
+            <span class="text-xs font-extrabold uppercase tracking-wide text-blue-700">{item.label}</span>
+            <h3 class="mt-2 text-lg font-black leading-snug text-slate-950">{item.title}</h3>
+            <p class="mt-2 flex-1 text-sm leading-6 text-slate-700">{item.description}</p>
+            <span class="mt-4 inline-flex min-h-10 items-center gap-2 text-sm font-extrabold text-blue-800">Explorar escenarios <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="dale-home-soft border-y border-slate-100 bg-[#f5f8fd] py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div class="max-w-3xl">
+          <p class="text-sm font-black uppercase tracking-[0.16em] text-blue-700">Situaciones para empezar</p>
+          <h2 class="mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Escoge una conversación real</h2>
+          <p class="mt-3 text-base leading-7 text-slate-600">Estos son algunos entrenamientos disponibles en Dale. Puedes explorar el catálogo completo más abajo.</p>
+        </div>
+        <a href="#escenarios" class="inline-flex min-h-11 items-center gap-2 font-extrabold text-blue-800 underline-offset-4 hover:underline">Todos los escenarios <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {FEATURED_SCENARIOS.map((item) => {
+          const visual = scenarioVisual(item.slug);
+          return (
+            <article class="flex min-w-0 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:shadow-lg">
+              <img src={visual.src} alt={visual.alt} loading="lazy" decoding="async" width="660" height="324" class="aspect-[2/1] w-full object-cover" />
+              <div class="flex flex-1 flex-col p-5 sm:p-6">
+                <span class="text-xs font-black uppercase tracking-wide text-blue-700">{item.category}</span>
+                <h3 class="mt-2 text-xl font-black leading-snug text-slate-950">{item.title}</h3>
+                <p class="mt-2 flex-1 text-sm leading-6 text-slate-600">{item.description}</p>
+                <a href={`/practicar?escenario=${encodeURIComponent(item.slug)}`} class="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-2.5 text-center text-sm font-extrabold text-blue-800 transition hover:bg-blue-100">
+                  Comenzar este entrenamiento <span class="ml-2" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section id="como-funciona" class="mx-auto max-w-7xl scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
+    <div class="max-w-3xl">
+      <p class="text-sm font-black uppercase tracking-[0.16em] text-blue-700">Un método sencillo</p>
+      <h2 class="mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Aprende practicando, no memorizando</h2>
+      <p class="mt-3 leading-7 text-slate-600">No necesitas experiencia previa: puedes empezar con una conversación breve y repetirla cuando quieras.</p>
+    </div>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {trainingSteps.map((step) => (
+        <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+          <span class:list={["inline-grid size-12 place-items-center rounded-2xl text-lg font-black", step.accent]}>{step.number}</span>
+          <h3 class="mt-5 text-lg font-black text-slate-950">{step.title}</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600">{step.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-white py-16">
+    <div class="mx-auto grid max-w-7xl items-center gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+      <div>
+        <p class="text-sm font-black uppercase tracking-[0.16em] text-blue-700">Practica a tu manera</p>
+        <h2 class="mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Escribe tu respuesta o entrénala en voz alta</h2>
+        <p class="mt-4 leading-7 text-slate-600">En ambos casos Dale te ayuda a analizar tu entrenamiento. En la modalidad de voz, calcula indicadores de ritmo y pausas estimadas.</p>
+        <p class="mt-4 text-sm leading-6 text-slate-600">Dale no guarda archivos de audio. Según el navegador, el reconocimiento de voz puede utilizar servicios de su proveedor. <a href="/privacidad" class="font-bold text-blue-800 underline underline-offset-4">Consulta la política de privacidad</a>.</p>
+        <a href="#escenarios" class="mt-6 inline-flex min-h-12 items-center justify-center rounded-xl bg-slate-950 px-6 py-3 font-extrabold text-white hover:bg-blue-800">Elegir cómo entrenar</a>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <article class="rounded-3xl border border-blue-200 bg-blue-50 p-6">
+          <span class="inline-grid size-12 place-items-center rounded-2xl bg-white text-3xl text-blue-800" aria-hidden="true">Aa</span>
+          <h3 class="mt-5 text-xl font-black text-slate-950">Por texto</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-700">Organiza lo que quieres decir, redacta y revisa tus ideas.</p>
+          <p class="mt-4 text-xs font-bold uppercase tracking-wide text-blue-800">Disponible en el navegador</p>
+        </article>
+        <article class="rounded-3xl border border-violet-200 bg-violet-50 p-6">
+          <span class="inline-grid size-12 place-items-center rounded-2xl bg-white text-2xl font-black text-violet-800" aria-hidden="true">◖))</span>
+          <h3 class="mt-5 text-xl font-black text-slate-950">Por voz</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-700">Practica cómo suenas y observa métricas de ritmo, pausas y muletillas.</p>
+          <p class="mt-4 text-xs font-bold uppercase tracking-wide text-violet-800">Requiere micrófono y navegador compatible</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="escenarios" class="mx-auto max-w-7xl scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
     <ScenarioCatalog client:load />
+  </section>
+
+  <section class="bg-slate-950 py-14 text-white sm:py-20">
+    <div class="mx-auto grid max-w-7xl gap-7 px-4 sm:px-6 lg:grid-cols-[1fr_auto] lg:items-center lg:px-8">
+      <div>
+        <p class="text-xs font-black uppercase tracking-[0.17em] text-cyan-300">Progreso que puedes revisar</p>
+        <h2 class="mt-2 max-w-2xl text-3xl font-black tracking-tight sm:text-4xl">Cada conversación entrenada cuenta.</h2>
+        <p class="mt-4 max-w-2xl leading-7 text-slate-200">Vuelve a practicar tus escenarios y consulta la evolución real de tus intentos cuando tengas resultados guardados.</p>
+      </div>
+      <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+        <a href="/progreso" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 py-3 font-extrabold text-slate-950 hover:bg-blue-50">Ver mi progreso</a>
+        <a href="/mapa" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-400 px-6 py-3 font-extrabold text-white hover:bg-slate-800">Mapa de escenarios</a>
+      </div>
+    </div>
   </section>
 </BaseLayout>

@@ -1,5 +1,19 @@
 # Dale - Historial de cambios
 
+## [0.16.1] - 2026-10-13
+
+### Agregado
+
+- Portada visual centrada en entrenamiento de comunicaciones reales, con ilustraciones WebP locales y seis situaciones destacadas.
+- Seleccion por cuatro categorias y catalogo con una tarjeta por situacion (12 en vez de 36 repetidas).
+- Dialogo accesible para elegir Preparacion, Practica guiada o Simulacion real, sin cambiar los codigos de Prisma.
+- Comprobacion `npm run home:check` integrada en CI y `npm run check`.
+- Guia tecnica de UX en /docs y versiones actualizadas a 0.16.1.
+
+### Conservado
+
+- Registro, backend, PostgreSQL, sesion, metrica, accesibilidad de v0.16.0 y despliegue desactivado.
+
 ## [0.16.0] - 2026-10-12
 
 ### Agregado

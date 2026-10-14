@@ -4,7 +4,7 @@ Dale es una plataforma web gratuita, responsive y de código abierto para practi
 
 ## Estado actual
 
-Versión `0.16.0` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
+Versión `0.16.1` — funcionalidades principales de práctica y progreso, pruebas automatizadas, pipeline CI/CD y documentación técnica publicable en GitHub Pages.
 
 - Frontend: Astro + Vue + Tailwind CSS.
 - Backend: Node.js + Express + TypeScript.
@@ -17,7 +17,7 @@ Versión `0.16.0` — funcionalidades principales de práctica y progreso, prueb
 - Privacidad de voz: Dale no almacena archivos de audio; persiste transcripción y métricas.
 - Control de datos: exportación JSON, eliminación de prácticas e eliminación de cuenta desde `/cuenta`.
 - Desarrollo local: Docker Compose.
-- Imagen única del proyecto: `frontend/public-assets/DaleConTodoMiKing.png`.
+- Identidad visual: `DaleConTodoMiKing.png` e ilustraciones WebP locales en `frontend/public-assets/landing/`.
 - Calidad: pruebas automatizadas de rutas críticas del backend con Vitest + Supertest.
 - CI/CD: workflow `test -> build -> deploy`, con migraciones Prisma antes del despliegue.
 - Documentación: `/docs` publicable de forma independiente mediante GitHub Pages.
@@ -47,6 +47,12 @@ La validacion de consistencia de la documentacion se ejecuta tambien en `npm run
 La interfaz incorpora controles globales para ajustar el texto a 100 %, 112,5 % o 125 % y activar un modo de mayor contraste. Esas preferencias se guardan solo en el navegador, sin cookies adicionales ni llamadas a la API. La portada incluye una guia voluntaria de cuatro pasos para descubrir escenarios, practica y progreso; puede reabrirse con `/?guia=1`.
 
 Los dialogos del catalogo y de la guia gestionan foco y teclado; se mantiene el enlace para saltar al contenido y el respeto por movimiento reducido. Consulta [la guia tecnica de la etapa 16](docs/etapa-16-accesibilidad-onboarding.md). La revision manual con NVDA y con zoom sigue siendo necesaria; los tests no equivalen a una certificacion WCAG.
+
+## Inicio redisenado y entrenamiento real (v0.16.1)
+
+La portada permite elegir entre trabajo, estudios, vida social y tramites y ofrece seis situaciones destacadas con imagenes locales. El catalogo completo agrupa los 36 registros en 12 situaciones, evitando tarjetas repetidas. Dentro de cada situacion, el usuario escoge **Preparacion**, **Practica guiada** o **Simulacion real**; el backend mantiene los codigos `BASICO`, `INTERMEDIO` y `DIFICIL`. Los enlaces a `/practicar` siguen utilizando escenarios reales del seed.
+
+Las nuevas ilustraciones WebP no requieren conexiones externas. Se conservan la guia de onboarding, el panel de accesibilidad, las practicas por texto/voz, autenticacion y dashboards. No se agregan migraciones ni dependencias. Prueba `npm run home:check` y consulta [la etapa 16.1](docs/etapa-16-1-redisenio-home.md).
 
 ## Desarrollo local
 

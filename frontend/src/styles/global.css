@@ -111,3 +111,12 @@ html[data-dale-contrast="high"] :is(.bg-slate-950, .bg-blue-700, .bg-blue-800) :
 @media (forced-colors: active) {
   .dale-access-widget button { forced-color-adjust: auto; }
 }
+
+
+/* v0.16.1: las superficies ilustradas respetan el modo de alto contraste. */
+html[data-dale-contrast="high"] .dale-home-hero,
+html[data-dale-contrast="high"] .dale-home-soft,
+html[data-dale-contrast="high"] .dale-home-tile {
+  background: #fff !important;
+  color: #000 !important;
+}
