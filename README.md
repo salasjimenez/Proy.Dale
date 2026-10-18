@@ -72,6 +72,10 @@ El flujo principal de `/entrenar` y del catálogo abre `/simulacion` en tres fas
 
 `/analisis-voz` utiliza `GET /api/progreso?modalidad=VOZ&limit=30` para mostrar métricas reales con alternativas tabulares accesibles. El pie incluye un modal **Creador** con avatar ilustrado y enlace a Instagram `@pitx29`. Consulta [etapa 16.4](docs/etapa-16-4-simulacion-voz.md). No hay migraciones Prisma ni servicios de pago. Ejecuta `npm run voice:check`, `npm run docs:check` y `npm run check`.
 
+## Parche de Simulación Difícil (v0.16.4-P1)
+
+Los escenarios `DIFICIL` presentan objeciones mas exigentes, metas explicitas y respuestas minimas de 24/30/35 palabras. Al finalizar, se muestran indicadores por fase: texto, palabras/minuto, pausas, muletillas y repeticiones (si corresponde). El panel `/analisis-voz` distingue los registros consolidados de modo Difícil. **No se infieren emociones, expresiones faciales ni competencia personal.** El desglose por fase es temporal y no se almacena en PostgreSQL. [Detalles](docs/etapa-16-4-parche-dificil.md). Valida con `npm run hard:check`, `npm run voice:check` y `npm run check`.
+
 ## Desarrollo local
 
 1. Crear `backend/.env` y `frontend/.env` desde sus respectivos `.env.example`.

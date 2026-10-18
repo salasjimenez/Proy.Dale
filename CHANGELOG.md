@@ -2,6 +2,14 @@
 
 ## [0.16.4] - 2026-10-14
 
+### Parche P1 — 2026-10-17
+
+- Objeciones contextualizadas y presion realzada solo en `DIFICIL`; minimo 24, 30 y 35 palabras en las tres fases.
+- Nuevo desglose temporal de indicadores verbales, duracion, ritmo, silencios estimados, muletillas y repeticiones.
+- Reto no superado cuando los umbrales orientativos no se alcanzan; no es un juicio personal o emocional.
+- Vista historica filtrada de simulaciones DIFICIL por voz en `/analisis-voz`, utilizando metricas consolidadas existentes.
+- Pruebas `npm run hard:check` integradas en `npm run check` y CI. Sin cambios en PostgreSQL ni nuevas dependencias.
+
 ### Agregado
 
 - Nueva simulación de tres fases con apertura, objeción y presión contextual, incluida presión elevada en los escenarios DIFICIL.

@@ -22,6 +22,8 @@ export type SequencePhase = {
   hint: string;
   intensity: "Normal" | "Desafiante" | "Alta";
   minimumWords: number;
+  /** Pistas de evaluación explícitas para la simulación exigente. */
+  goals?: readonly string[];
 };
 export type PhaseAnswer = {
   text: string;
@@ -48,36 +50,65 @@ const byCategory: Record<string, [string, string]> = {
   ],
 };
 
+/** Objeciones difíciles por contexto; no afirman conversar con una IA. */
+const extremeByCategory: Record<string, [string, string]> = {
+  LABORAL: [
+    "Tu interlocutor cuestiona una afirmación que hiciste y exige un ejemplo verificable de resultados. Responde a esa objeción sin desviarte del objetivo.",
+    "La persona rechaza tu primera propuesta y solicita una alternativa concreta con responsables o plazos. Explica límites realistas sin prometer algo imposible.",
+  ],
+  TRAMITES_CALLE: [
+    "Te comunican que la información es contradictoria y que tu solicitud podría rechazarse. Precisa los hechos y pide que aclaren el criterio aplicado.",
+    "El trámite queda suspendido y te exigen resolverlo de inmediato. No puedes asegurar el resultado: pide una alternativa formal y acuerda qué comprobante o paso sigue.",
+  ],
+  SOCIAL: [
+    "La otra persona atribuye a tu mensaje una intención distinta y cuestiona lo que dijiste. Reconoce el malentendido y aclara tu postura con un ejemplo.",
+    "El diálogo se vuelve tenso, hay una interrupción y te piden decidir en ese momento. Explica tu límite, ofrece una alternativa respetuosa y concreta el siguiente paso.",
+  ],
+  JOVENES_ESTUDIANTES: [
+    "Cuestionan la evidencia de tu argumento y presentan un contraejemplo. Explica qué dato respalda tu postura y qué aspecto revisarías.",
+    "Te interrumpen con una pregunta inesperada mientras debes cerrar tu exposición. Prioriza la idea esencial, reconoce la duda y propone una conclusión verificable.",
+  ],
+};
+
 export function sequencePhases(scenario: Pick<ScenarioCardData, "situacion" | "instrucciones" | "categoria" | "nivel">): SequencePhase[] {
-  const [objection, pressure] = byCategory[scenario.categoria.codigo] ?? byCategory.SOCIAL!;
   const high = scenario.nivel.codigo === "DIFICIL";
   const medium = scenario.nivel.codigo === "INTERMEDIO";
+  const [objection, pressure] = high
+    ? (extremeByCategory[scenario.categoria.codigo] ?? extremeByCategory.SOCIAL!)
+    : (byCategory[scenario.categoria.codigo] ?? byCategory.SOCIAL!);
   return [
     {
       id: "apertura",
       title: "1. Abre la conversación",
       interaction: scenario.situacion,
-      hint: scenario.instrucciones,
-      intensity: "Normal",
-      minimumWords: 5,
+      hint: high
+        ? `${scenario.instrucciones} Expón el contexto, qué buscas lograr y una primera acción concreta.`
+        : scenario.instrucciones,
+      intensity: high ? "Desafiante" : "Normal",
+      minimumWords: high ? 24 : 5,
+      ...(high ? { goals: ["Explica el contexto", "Expresa un objetivo", "Propón un primer paso"] } : {}),
     },
     {
       id: "objecion",
       title: "2. Responde una objeción",
       interaction: objection,
-      hint: "Responde a la otra persona con una idea y un ejemplo concreto.",
-      intensity: medium || high ? "Desafiante" : "Normal",
-      minimumWords: 7,
+      hint: high
+        ? "Reconoce la objeción, aporta una razón o evidencia, plantea una alternativa y concreta cómo avanzar."
+        : "Responde a la otra persona con una idea y un ejemplo concreto.",
+      intensity: high ? "Alta" : medium ? "Desafiante" : "Normal",
+      minimumWords: high ? 30 : 7,
+      ...(high ? { goals: ["Reconoce la objeción", "Apoya tu respuesta con datos o ejemplos", "Plantea una alternativa", "Acuerda un paso verificable"] } : {}),
     },
     {
       id: "presion",
       title: "3. Gestiona la presión",
       interaction: pressure,
       hint: high
-        ? "Simulación exigente: responde a la presión, pide claridad cuando la necesites y propón un cierre realista."
+        ? "Responde sin prometer resultados imposibles. Reconoce la objeción, fija una condición o prioridad y propón un cierre verificable."
         : "Mantén la calma, resume tu idea y plantea el siguiente paso.",
       intensity: high ? "Alta" : "Desafiante",
-      minimumWords: 8,
+      minimumWords: high ? 35 : 8,
+      ...(high ? { goals: ["Responde a la objeción", "Señala límites o prioridades", "Ofrece una salida realista", "Concreta un seguimiento"] } : {}),
     },
   ];
 }

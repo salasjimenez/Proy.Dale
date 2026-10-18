@@ -39,7 +39,8 @@ for (const category of ["LABORAL", "TRAMITES_CALLE", "SOCIAL", "JOVENES_ESTUDIAN
 }
 check(sequence.sequencePhases({ ...base, nivel: { codigo: "BASICO", nombre: "Básico" } })[2].intensity !== "Alta", "No se debe presentar toda situacion como extrema");
 check(sequence.answerWordCount("hola   buenos días") === 3, "Conteo de palabras incorrecto");
-check(sequence.answerReady("uno dos tres cuatro cinco", sequence.sequencePhases(base)[0]), "Respuesta suficiente rechazada");
+check(sequence.answerReady(Array(25).fill("palabra").join(" "), sequence.sequencePhases(base)[0]), "Respuesta suficiente rechazada");
+check(!sequence.answerReady("uno dos tres cuatro cinco", sequence.sequencePhases(base)[0]), "Modo dificil acepta una respuesta superficial");
 check(!sequence.answerReady("sí", sequence.sequencePhases(base)[0]), "Respuesta demasiado breve aceptada");
 const answers = [
   { text: "Primera fase: presento una respuesta clara.", durationMs: 10000, pauses: [{ inicioMs: 1000, duracionMs: 800 }] },

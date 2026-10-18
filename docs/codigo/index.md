@@ -9,6 +9,7 @@ Archivos TypeScript que utilizan los componentes. Su contenido se sincroniza dir
 
 - [`frontend/src/lib/accessibility.ts`](lib-accessibility.html)
 - [`frontend/src/lib/api.ts`](lib-api.html)
+- [`frontend/src/lib/hardSimulation.ts`](lib-hardSimulation.html)
 - [`frontend/src/lib/legal.ts`](lib-legal.html)
 - [`frontend/src/lib/scenarioVisuals.ts`](lib-scenarioVisuals.html)
 - [`frontend/src/lib/sequence.ts`](lib-sequence.html)

@@ -23,6 +23,9 @@ function shortDate(iso: string): string {
 }
 const voiceOnly = computed(() => points.value.filter(point => point.modalidad === "VOZ"));
 const count = computed(() => voiceOnly.value.length);
+const hardVoiceOnly = computed(() => voiceOnly.value.filter(point => point.escenario.nivel.codigo === "DIFICIL"));
+const hardAvgScore = computed(() => average(hardVoiceOnly.value.map(point => point.metricas.puntajeGeneral)));
+const hardAvgWpm = computed(() => average(hardVoiceOnly.value.map(point => point.metricas.palabrasPorMinuto)));
 const avgScore = computed(() => average(voiceOnly.value.map(p => p.metricas.puntajeGeneral)));
 const avgWpm = computed(() => average(voiceOnly.value.map(p => p.metricas.palabrasPorMinuto)));
 const avgPauses = computed(() => average(voiceOnly.value.map(p => p.metricas.cantidadPausas), 1));
@@ -97,6 +100,28 @@ onMounted(() => void load());
         <article class="rounded-2xl border border-slate-200 bg-white p-5"><p class="text-xs font-bold text-slate-600">Muletillas por práctica (media)</p><strong class="mt-2 block text-3xl font-black text-slate-950">{{ metric(avgFillers) }}</strong></article>
         <article class="rounded-2xl border border-slate-200 bg-white p-5"><p class="text-xs font-bold text-slate-600">Cambio entre primer y último puntaje visible</p><strong class="mt-2 block text-3xl font-black text-slate-950">{{ improvement === null ? 'Sin datos' : `${improvement > 0 ? '+' : ''}${improvement} pts` }}</strong></article>
       </div>
+      <section class="rounded-3xl border border-blue-200 bg-white p-5 sm:p-7" aria-labelledby="hard-voice-history-heading">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div><p class="text-xs font-black uppercase tracking-widest text-blue-800">Modo Difícil</p><h2 id="hard-voice-history-heading" class="mt-2 text-xl font-black text-slate-950">Historial de simulaciones exigentes por voz</h2></div>
+          <p class="rounded-lg bg-blue-50 px-3 py-2 text-sm font-bold text-blue-900">{{ hardVoiceOnly.length }} de las {{ count }} prácticas visibles</p>
+        </div>
+        <p class="mt-3 text-sm leading-6 text-slate-700">Solo utiliza intentos de voz en escenarios marcados DIFICIL dentro de los últimos 30 registros disponibles. Las puntuaciones son las consolidadas del backend, no una reconstrucción de las fases.</p>
+        <p v-if="hardVoiceOnly.length === 0" class="mt-4 rounded-xl bg-slate-50 p-4 text-sm text-slate-700">Aún no hay intentos exigentes por voz entre las prácticas visibles.</p>
+        <template v-else>
+          <div class="mt-5 grid gap-3 sm:grid-cols-3">
+            <div class="rounded-xl bg-slate-50 p-4"><span class="block text-xs font-semibold text-slate-600">Intentos</span><strong class="text-2xl font-black text-slate-950">{{ hardVoiceOnly.length }}</strong></div>
+            <div class="rounded-xl bg-slate-50 p-4"><span class="block text-xs font-semibold text-slate-600">Puntaje general medio</span><strong class="text-2xl font-black text-slate-950">{{ metric(hardAvgScore) }}</strong></div>
+            <div class="rounded-xl bg-slate-50 p-4"><span class="block text-xs font-semibold text-slate-600">Ritmo medio (palabras/min)</span><strong class="text-2xl font-black text-slate-950">{{ metric(hardAvgWpm) }}</strong></div>
+          </div>
+          <div class="mt-5 overflow-x-auto" tabindex="0" role="region" aria-label="Tabla desplazable de entrenamientos difíciles por voz">
+            <table class="w-full min-w-[44rem] text-left text-sm">
+              <caption class="mb-2 text-left font-bold text-slate-800">Últimos intentos exigentes por voz (máximo diez)</caption>
+              <thead><tr class="border-b border-slate-200"><th scope="col" class="p-2">Fecha</th><th scope="col" class="p-2">Escenario</th><th scope="col" class="p-2">Puntaje</th><th scope="col" class="p-2">Palabras/min</th><th scope="col" class="p-2">Pausas</th><th scope="col" class="p-2">Muletillas</th><th scope="col" class="p-2">Repeticiones</th></tr></thead>
+              <tbody><tr v-for="point in [...hardVoiceOnly].reverse().slice(0, 10)" :key="point.id" class="border-b border-slate-100"><td class="p-2">{{ shortDate(point.fecha) }}</td><td class="p-2">{{ point.escenario.titulo }}</td><td class="p-2">{{ metric(point.metricas.puntajeGeneral) }}</td><td class="p-2">{{ metric(point.metricas.palabrasPorMinuto) }}</td><td class="p-2">{{ point.metricas.cantidadPausas }}</td><td class="p-2">{{ point.metricas.muletillasTotal }}</td><td class="p-2">{{ point.metricas.repeticiones }}</td></tr></tbody>
+            </table>
+          </div>
+        </template>
+      </section>
       <section class="rounded-3xl border border-slate-200 bg-white p-5 sm:p-7" aria-labelledby="voice-evolution-heading">
         <h2 id="voice-evolution-heading" class="text-xl font-black text-slate-950">Evolución del puntaje general</h2>
         <p class="mt-2 text-xs leading-5 text-slate-600">Puntajes de la API de progreso, no interpretaciones clínicas. La escala va de 0 a 100.</p>

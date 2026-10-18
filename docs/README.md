@@ -40,3 +40,7 @@ Consulta [redisenio de la portada y selector de entrenamientos](etapa-16-1-redis
 ## Simulaciones y voz (v0.16.4)
 
 [Secuencia por fases, analitica vocal y privacidad](etapa-16-4-simulacion-voz.html).
+
+## Parche de simulaciones exigentes (v0.16.4-P1)
+
+[Reglas, limites y metricas de voz por fase](etapa-16-4-parche-dificil.html).

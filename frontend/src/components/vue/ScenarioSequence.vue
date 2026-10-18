@@ -6,6 +6,7 @@ import type { ScenarioCardData } from "../../types/scenario";
 import type { PracticeSession, PracticeSessionResponse } from "../../types/session";
 import { focusSuggestion, recommendNextStage, remainingTimeLabel, trainingStageName, type TrainingStage } from "../../lib/training";
 import { answerReady, answerWordCount, assembleSequence, sequencePhases, sequenceVerdict, type PhaseAnswer, type SequenceMode } from "../../lib/sequence";
+import { assessHardPhase, hardSimulationVerdict } from "../../lib/hardSimulation";
 import VoiceCapture, { type VoiceCaptureResult } from "./VoiceCapture.vue";
 
 const scenario = ref<ScenarioCardData | null>(null);
@@ -34,7 +35,16 @@ let timer: number | undefined;
 const phases = computed(() => scenario.value ? sequencePhases(scenario.value) : []);
 const phase = computed(() => phases.value[phaseIndex.value]);
 const completed = computed(() => session.value?.estado === "COMPLETADA");
+const isHard = computed(() => scenario.value?.nivel.codigo === "DIFICIL");
+const phaseDiagnostics = computed(() => isHard.value
+  ? answers.value.map((answer, index) => assessHardPhase(phases.value[index]!, answer, mode.value))
+  : []);
+const lastDiagnostic = computed(() => phaseDiagnostics.value.at(-1) ?? null);
+const hardResult = computed(() => isHard.value && completed.value
+  ? hardSimulationVerdict(phaseDiagnostics.value, session.value?.metrica?.puntajeGeneral ?? null)
+  : null);
 const verdict = computed(() => sequenceVerdict(session.value?.metrica?.puntajeGeneral ?? null, completed.value));
+const shownVerdict = computed(() => hardResult.value ?? verdict.value);
 const next = computed(() => scenario.value && completed.value
   ? recommendNextStage(scenario.value.slug, session.value?.metrica?.puntajeGeneral ?? null)
   : null);
@@ -205,9 +215,9 @@ onBeforeUnmount(stopTimer);
     </div>
     <template v-else>
       <header class="rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-5 sm:p-8">
-        <p class="text-xs font-black uppercase tracking-[0.16em] text-blue-800">Simulador de conversaciones · v0.16.4</p>
+        <p class="text-xs font-black uppercase tracking-[0.16em] text-blue-800">Simulador de conversaciones · v0.16.4 · parche Difícil</p>
         <h1 id="sequence-heading" class="mt-2 text-3xl font-black leading-tight text-slate-950 sm:text-4xl">{{ scenario.titulo }}</h1>
-        <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-700">Tres retos consecutivos para practicar cómo actuar cuando cambia una conversación.</p>
+        <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-700">{{ isHard ? "Simulación exigente: objeciones específicas, presión creciente y análisis de cada respuesta." : "Tres retos consecutivos para practicar cómo actuar cuando cambia una conversación." }}</p>
         <div class="mt-4 flex flex-wrap gap-2 text-xs font-bold">
           <span class="rounded-full border border-blue-300 bg-white px-3 py-2 text-blue-900">{{ scenario.categoria.nombre }}</span>
           <span class="rounded-full border border-blue-300 bg-white px-3 py-2 text-blue-900">{{ trainingStageName(scenario.nivel.codigo as TrainingStage) }}</span>
@@ -233,6 +243,10 @@ onBeforeUnmount(stopTimer);
         <div v-if="!session" class="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <article class="min-w-0 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
             <h2 class="text-xl font-black text-slate-950">Antes de empezar</h2>
+            <div v-if="isHard" class="mt-4 rounded-2xl border border-amber-300 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
+              <strong class="block">Modo Difícil: simulación exigente</strong>
+              Cada fase presenta una objeción más compleja. Se analizarán señales explícitas de tu respuesta y, si usas voz, ritmo, pausas y repeticiones. El resultado no mide emociones ni éxito real.
+            </div>
             <p class="mt-3 leading-7 text-slate-700">{{ scenario.situacion }}</p>
             <p class="mt-4 rounded-xl bg-blue-50 p-4 text-sm leading-6 text-blue-950"><strong>Tu objetivo:</strong> {{ scenario.instrucciones }}</p>
             <p class="mt-5 text-sm font-black">¿Cómo responderás?</p>
@@ -250,7 +264,7 @@ onBeforeUnmount(stopTimer);
             <ol class="mt-4 space-y-3">
               <li v-for="step in phases" :key="step.id" class="rounded-xl border border-slate-200 bg-white p-4">
                 <span class="font-black">{{ step.title }}</span>
-                <span class="mt-1 block text-xs text-slate-600">Presión {{ step.intensity.toLowerCase() }}</span>
+                <span class="mt-1 block text-xs text-slate-600">Presión {{ step.intensity.toLowerCase() }} · mínimo {{ step.minimumWords }} palabras</span>
               </li>
             </ol>
             <p class="mt-4 text-xs leading-5 text-slate-600">Guion estructurado, no conversación con una IA. El sistema no interpreta emociones ni video.</p>
@@ -267,12 +281,22 @@ onBeforeUnmount(stopTimer);
               <li v-for="(step, index) in phases" :key="step.id" class="min-w-0 rounded-lg px-2 py-3 text-center" :class="index < phaseIndex ? 'bg-emerald-100 text-emerald-900' : index === phaseIndex ? 'bg-blue-700 text-white' : 'bg-slate-100 text-slate-600'" :aria-current="index === phaseIndex ? 'step' : undefined">{{ index < phaseIndex ? '✓ ' : '' }}{{ step.id === 'apertura' ? 'Apertura' : step.id === 'objecion' ? 'Objeción' : 'Presión' }}</li>
             </ol>
           </div>
+          <div v-if="isHard && lastDiagnostic" class="rounded-2xl border border-blue-200 bg-blue-50 p-4" role="status">
+            <strong class="block text-sm text-blue-950">Fase anterior: {{ lastDiagnostic.title }}</strong>
+            <p class="mt-1 text-sm text-blue-950">Índice orientativo: {{ lastDiagnostic.score }}/100 · {{ lastDiagnostic.words }} palabras{{ lastDiagnostic.wordsPerMinute === null ? '' : ` · ${lastDiagnostic.wordsPerMinute} palabras/min` }}.</p>
+            <p class="mt-1 text-xs leading-5 text-blue-900">{{ lastDiagnostic.suggestions[0] }}</p>
+          </div>
           <div v-if="phase" class="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
             <aside class="min-w-0 rounded-3xl border border-blue-200 bg-blue-50 p-5 sm:p-7">
               <p class="text-xs font-black uppercase tracking-wide text-blue-800">{{ phase.title }} · Presión {{ phase.intensity.toLowerCase() }}</p>
               <h3 class="mt-4 text-lg font-black text-slate-950">La situación cambia</h3>
               <p class="mt-3 text-base leading-8 text-slate-800">{{ phase.interaction }}</p>
               <div class="mt-5 rounded-2xl border border-blue-200 bg-white p-4 text-sm leading-6 text-slate-700"><strong>Tu reto:</strong> {{ phase.hint }}</div>
+              <div v-if="isHard && phase.goals?.length" class="mt-4 rounded-xl border border-blue-200 bg-white p-4 text-sm text-slate-700">
+                <p class="font-black text-slate-950">Aspectos que practicarás</p>
+                <ul class="mt-2 list-inside list-disc space-y-1"><li v-for="goal in phase.goals" :key="goal">{{ goal }}</li></ul>
+                <p class="mt-2 text-xs leading-5">El sistema buscará expresiones indicativas, no interpretará la intención de tus palabras.</p>
+              </div>
               <p class="mt-4 text-xs text-blue-900">No hay respuestas automáticas de un personaje. Tú avanzas cuando completas cada fase.</p>
             </aside>
             <article class="min-w-0 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
@@ -301,7 +325,7 @@ onBeforeUnmount(stopTimer);
           <div class="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 sm:p-8" role="status">
             <p class="text-xs font-black uppercase tracking-[0.16em] text-emerald-900">Tres fases completadas</p>
             <div class="mt-3 flex flex-wrap items-center justify-between gap-4">
-              <div class="min-w-0"><h2 class="text-2xl font-black text-slate-950 sm:text-3xl">{{ verdict.label }}</h2><p class="mt-2 max-w-2xl text-sm leading-6 text-slate-700">{{ verdict.description }}</p></div>
+              <div class="min-w-0"><h2 class="text-2xl font-black text-slate-950 sm:text-3xl">{{ shownVerdict.label }}</h2><p class="mt-2 max-w-2xl text-sm leading-6 text-slate-700">{{ shownVerdict.description }}</p></div>
               <div class="rounded-xl bg-white px-6 py-3 text-center"><span class="block text-xs font-bold text-slate-700">Puntaje orientativo</span><strong class="text-4xl font-black text-slate-950">{{ formatMetric(session.metrica.puntajeGeneral) }}</strong><span class="text-xs">/100</span></div>
             </div>
           </div>
@@ -311,6 +335,45 @@ onBeforeUnmount(stopTimer);
             <article class="rounded-xl border border-slate-200 bg-white p-5"><p class="text-xs text-slate-600">Pausas estimadas</p><strong class="mt-2 block text-3xl">{{ session.metrica.cantidadPausas }}</strong></article>
             <article class="rounded-xl border border-slate-200 bg-white p-5"><p class="text-xs text-slate-600">Muletillas</p><strong class="mt-2 block text-3xl">{{ session.metrica.muletillasTotal }}</strong></article>
           </div>
+          <section v-if="isHard && hardResult" class="space-y-4 rounded-3xl border-2 border-blue-200 bg-white p-5 sm:p-7" aria-labelledby="hard-diagnostic-heading">
+            <div class="flex flex-wrap items-start justify-between gap-4">
+              <div class="max-w-2xl">
+                <p class="text-xs font-black uppercase tracking-widest text-blue-800">Análisis de simulación exigente</p>
+                <h3 id="hard-diagnostic-heading" class="mt-2 text-2xl font-black text-slate-950">Indicadores de cada fase</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-700">Las señales discursivas se identifican mediante expresiones en la transcripción. No verifican que una respuesta sea correcta, ni detectan intención, emociones, actitud, gestos o expresiones faciales.</p>
+              </div>
+              <div class="rounded-xl bg-blue-50 px-4 py-3 text-center">
+                <span class="block text-xs font-bold text-blue-900">Índice por fases</span>
+                <strong class="text-3xl font-black text-blue-950">{{ hardResult.localScore ?? '—' }}</strong>
+                <span class="text-xs text-blue-900">/100</span>
+              </div>
+            </div>
+            <div class="grid gap-4 xl:grid-cols-3">
+              <article v-for="item in phaseDiagnostics" :key="item.phaseId" class="min-w-0 rounded-2xl border border-slate-300 bg-slate-50 p-4 sm:p-5">
+                <h4 class="text-lg font-black text-slate-950">{{ item.title }}</h4>
+                <p class="mt-2 text-sm font-bold text-blue-800">Índice orientativo: {{ item.score }}/100</p>
+                <dl class="mt-3 grid grid-cols-2 gap-2 text-sm text-slate-800">
+                  <div><dt class="text-xs text-slate-600">Palabras</dt><dd class="font-black">{{ item.words }}</dd></div>
+                  <div><dt class="text-xs text-slate-600">Muletillas estimadas</dt><dd class="font-black">{{ item.fillers }}</dd></div>
+                  <div><dt class="text-xs text-slate-600">Repeticiones</dt><dd class="font-black">{{ item.repetitions }}</dd></div>
+                  <div><dt class="text-xs text-slate-600">Palabras/min</dt><dd class="font-black">{{ item.wordsPerMinute ?? 'Sin datos (texto)' }}</dd></div>
+                  <div><dt class="text-xs text-slate-600">Pausas detectadas</dt><dd class="font-black">{{ item.pauseCount ?? 'Sin datos (texto)' }}</dd></div>
+                  <div><dt class="text-xs text-slate-600">Tiempo en pausas</dt><dd class="font-black">{{ item.pauseRatioPercent === null ? 'Sin datos (texto)' : `${item.pauseRatioPercent}%` }}</dd></div>
+                </dl>
+                <h5 class="mt-4 text-sm font-black text-slate-900">Expresiones identificables</h5>
+                <ul class="mt-2 space-y-2 text-xs leading-5">
+                  <li v-for="signal in item.signals" :key="signal.label" class="rounded-lg border border-slate-200 bg-white p-2">
+                    <span :class="signal.detected ? 'text-emerald-800' : 'text-slate-700'">{{ signal.detected ? 'Coincidencia' : 'No identificada' }}</span>:
+                    <strong>{{ signal.label }}</strong>
+                    <span v-if="signal.example" class="block text-slate-600">Expresión: «{{ signal.example }}»</span>
+                  </li>
+                </ul>
+                <p class="mt-4 text-xs leading-5 text-blue-950"><strong>Para ensayar:</strong> {{ item.suggestions[0] }}</p>
+              </article>
+            </div>
+            <p class="text-xs leading-5 text-slate-600">La API guarda una única sesión con transcripción y métricas de voz consolidadas. El detalle por fase se calcula localmente y desaparece al salir o recargar. El modo texto no produce mediciones acústicas.</p>
+          </section>
+
           <div class="grid gap-5 lg:grid-cols-2">
             <article class="rounded-2xl border border-slate-200 bg-white p-6">
               <h3 class="text-xl font-black">Resumen de las tres fases</h3>
