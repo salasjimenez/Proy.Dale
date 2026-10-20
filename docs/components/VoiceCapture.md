@@ -49,7 +49,7 @@ El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. P
 
 ```vue
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
 export type VoicePause = {
   inicioMs: number;
@@ -102,6 +102,16 @@ const emit = defineEmits<{
   error: [message: string];
 }>();
 
+// Dialect selection changes only the browser recognition language, not the metrics.
+const dialectOptions = [
+  { code: "es-PE", label: "Perú" },
+  { code: "es-MX", label: "México" },
+  { code: "es-CO", label: "Colombia" },
+  { code: "es-AR", label: "Argentina" },
+  { code: "es-CL", label: "Chile" },
+  { code: "es-ES", label: "España" },
+] as const;
+const selectedDialect = ref<string>("es-PE");
 const isRecording = ref(false);
 const isPreparing = ref(false);
 const finalTranscript = ref("");
@@ -227,7 +237,7 @@ function configureRecognition(): SpeechRecognitionLike {
   const instance = new Constructor();
   instance.continuous = true;
   instance.interimResults = true;
-  instance.lang = "es-PE";
+  instance.lang = selectedDialect.value;
   instance.maxAlternatives = 1;
 
   instance.onresult = (event) => {
@@ -356,6 +366,12 @@ async function finishCapture(): Promise<void> {
   });
 }
 
+onMounted(() => {
+  const browserLang = typeof navigator === "undefined" ? "es-PE" : navigator.language;
+  const exact = dialectOptions.find(item => item.code.toLowerCase() === browserLang.toLowerCase());
+  if (exact) selectedDialect.value = exact.code;
+});
+
 onBeforeUnmount(() => {
   shouldListen = false;
   isRecording.value = false;
@@ -365,6 +381,12 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="space-y-5">
+    <label class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm font-bold text-slate-900">
+      <span>Variante de español para la transcripción</span>
+      <select v-model="selectedDialect" :disabled="isRecording || isPreparing" class="min-h-11 w-full max-w-full rounded-lg border border-slate-400 bg-white px-3 py-2 text-slate-950 disabled:opacity-60 sm:w-auto" aria-label="Selecciona variante regional del español">
+        <option v-for="item in dialectOptions" :key="item.code" :value="item.code">{{ item.label }} ({{ item.code }})</option>
+      </select>
+    </label>
     <div class="rounded-2xl border border-blue-200 bg-blue-50 p-5">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>

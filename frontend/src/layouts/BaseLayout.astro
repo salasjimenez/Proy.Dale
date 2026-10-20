@@ -134,6 +134,13 @@ const isAccount = pathname === "/cuenta";
         </div>
       </header>
 
+      <div id="dale-api-status" role="status" aria-live="polite" class="hidden border-b border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950">
+        <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
+          <span>Dale no puede contactar al servidor. Las prácticas podrían no guardarse. Reintenta cuando vuelva la conexión.</span>
+          <button id="dale-api-dismiss" type="button" class="rounded-lg border border-amber-800 px-3 py-2">Cerrar aviso</button>
+        </div>
+      </div>
+
       <main id="contenido-principal" class="dale-main" tabindex="-1">
         <slot />
       </main>
@@ -176,6 +183,21 @@ const isAccount = pathname === "/cuenta";
         desktop.addEventListener("change", (event) => {
           if (event.matches) menu.open = false;
         });
+      })();
+    </script>
+    <script is:inline>
+      (() => {
+        const banner = document.getElementById("dale-api-status");
+        const dismiss = document.getElementById("dale-api-dismiss");
+        if (!banner) return;
+        const show = () => banner.classList.remove("hidden");
+        const hide = () => banner.classList.add("hidden");
+        window.addEventListener("dale:api-unavailable", show);
+        window.addEventListener("dale:api-available", hide);
+        window.addEventListener("offline", show);
+        window.addEventListener("online", hide);
+        dismiss?.addEventListener("click", hide);
+        if (!navigator.onLine) show();
       })();
     </script>
   </body>

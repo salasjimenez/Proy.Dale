@@ -98,3 +98,17 @@ export const env = {
     "AUTH_RATE_LIMIT_MAX",
   ),
 } as const;
+
+// Dale P2 production guards: fail before the API starts, without logging secrets.
+if (env.nodeEnv === "production") {
+  if (!env.authCookieSecure) throw new Error("Production requires AUTH_COOKIE_SECURE=true");
+  if (env.jwtSecret.length < 32 || env.jwtSecret.toLowerCase().includes("change_me")) {
+    throw new Error("Production requires a non-placeholder JWT_SECRET of at least 32 characters");
+  }
+  for (const origin of env.frontendOrigins) {
+    if (!origin.startsWith("https://")) throw new Error("Production FRONTEND_URL must use HTTPS");
+  }
+}
+if (env.authCookieSameSite === "none" && !env.authCookieSecure) {
+  throw new Error("AUTH_COOKIE_SAME_SITE=none requires AUTH_COOKIE_SECURE=true");
+}

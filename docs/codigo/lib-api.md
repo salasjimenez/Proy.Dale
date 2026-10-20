@@ -10,7 +10,9 @@ Archivo de apoyo utilizado por los componentes de Dale. Copia el bloque completo
 {% raw %}
 
 ```typescript
-export const API_BASE_URL = (import.meta.env.PUBLIC_API_URL || "http://localhost:3000").replace(/\/$/, "");
+// Never embed localhost URLs as production fallbacks.
+const configuredApiUrl = import.meta.env.PUBLIC_API_URL?.trim() || "";
+export const API_BASE_URL = (configuredApiUrl || (import.meta.env.DEV ? "http://localhost:3000" : "")).replace(/\/$/, "");
 
 export class ApiError extends Error {
   status: number;
@@ -38,7 +40,9 @@ type ApiOptions = {
 };
 
 async function apiRequest<T>(path: string, options: ApiOptions = {}): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
     method: options.method ?? "GET",
     headers: {
       Accept: "application/json",
@@ -47,7 +51,14 @@ async function apiRequest<T>(path: string, options: ApiOptions = {}): Promise<T>
     credentials: "include",
     ...(options.body !== undefined ? { body: JSON.stringify(options.body) } : {}),
     ...(options.signal ? { signal: options.signal } : {}),
-  });
+    });
+  } catch (error) {
+    // AbortError is expected for a cancelled search and must not display an outage.
+    if (error instanceof DOMException && error.name === "AbortError") throw error;
+    if (typeof window !== "undefined") window.dispatchEvent(new Event("dale:api-unavailable"));
+    throw new ApiError("No pudimos conectar con Dale. Comprueba tu conexión e intenta nuevamente.", 0, "NETWORK_UNAVAILABLE");
+  }
+  if (typeof window !== "undefined") window.dispatchEvent(new Event("dale:api-available"));
 
   if (!response.ok) {
     let message = "No se pudo completar la solicitud.";

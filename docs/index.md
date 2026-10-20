@@ -29,6 +29,7 @@ Dale es una plataforma abierta para practicar comunicación en situaciones reale
 - [Etapa 16.3: Responsive adaptable](etapa-16-3-responsive.html)
 - [Etapa 16.4: Simulación secuencial y voz](etapa-16-4-simulacion-voz.html)
 - [Parche v0.16.4-P1: Dificultad Difícil](etapa-16-4-parche-dificil.html)
+- [Parche v0.16.4-P2: QA preproducción](etapa-16-4-parche-qa-p2.html)
 - [CHANGELOG](CHANGELOG.html)
 
 ## Componentes Vue documentados

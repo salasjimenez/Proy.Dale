@@ -7,6 +7,16 @@ title: "Changelog"
 
 ## [0.16.4] - 2026-10-14
 
+### Parche P2 — 2026-10-19
+
+- Setup de pruebas local/CI aislado de producción y generación automática de Prisma Client.
+- Bloqueo de solicitudes con origen no autorizado y validaciones de cookies/secretos para producción.
+- API web con error NETWORK_UNAVAILABLE y aviso discreto de desconexión; cancelaciones AbortError intactas.
+- Selector de variante regional de español (es-PE, es-MX, es-CO, es-AR, es-CL, es-ES).
+- Correcciones responsive de cabecera, menú móvil y footer Creador.
+- Scripts qa:p2, production:check y security:audit; auditoría npm y validación legal siguen pendientes.
+- No se cambian migraciones, endpoints, algoritmos de voz ni tablas PostgreSQL.
+
 ### Parche P1 — 2026-10-17
 
 - Objeciones contextualizadas y presion realzada solo en `DIFICIL`; minimo 24, 30 y 35 palabras en las tres fases.

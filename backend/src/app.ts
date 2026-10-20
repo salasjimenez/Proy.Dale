@@ -5,6 +5,7 @@ import { env } from "./config/env.js";
 import { errorHandler } from "./middleware/error-handler.js";
 import { notFoundHandler } from "./middleware/not-found.js";
 import { requestIdMiddleware } from "./middleware/request-id.js";
+import { requireTrustedOrigin } from "./middleware/origin-guard.js";
 import { healthRouter } from "./routes/health.routes.js";
 import { apiRouter } from "./routes/index.js";
 import { pingRouter } from "./routes/ping.routes.js";
@@ -29,6 +30,7 @@ app.use(
   }),
 );
 app.use(express.json({ limit: "1mb" }));
+app.use(requireTrustedOrigin);
 
 app.use("/health", healthRouter);
 app.use("/ping", pingRouter);

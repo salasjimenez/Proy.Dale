@@ -185,3 +185,68 @@ html[data-dale-contrast="high"] .dale-mobile-menu[open] summary {
 html[data-dale-contrast="high"] .dale-chart-scroll {
   border: 2px solid #000;
 }
+
+/* Dale P2: mobile QA findings (header, empty menu, footer) */
+.dale-mobile-menu[open] .dale-mobile-menu-panel {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto;
+  background: #fff;
+  color: #0f172a;
+  z-index: 100;
+  box-shadow: 0 15px 35px rgba(15, 23, 42, .2);
+}
+.dale-mobile-menu[open] .dale-mobile-menu-panel > a {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #0f172a !important;
+  background: #fff;
+  min-block-size: 2.75rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.dale-mobile-menu[open] .dale-mobile-menu-panel > a:is(:hover, :focus-visible) {
+  background: #dbeafe;
+  color: #172554 !important;
+}
+.dale-site-footer nav[aria-label="Ayuda y enlaces legales"] {
+  align-items: center;
+  row-gap: .5rem;
+}
+.dale-site-footer nav[aria-label="Ayuda y enlaces legales"] > * {
+  min-inline-size: 0;
+  min-block-size: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+}
+@media (max-width: 30rem) {
+  .dale-header-inner { flex-wrap: nowrap; gap: .35rem; min-block-size: 4rem; }
+  .dale-brand { flex: 0 0 auto; min-inline-size: 2.75rem; }
+  .dale-primary-nav { flex: 1 1 auto; min-inline-size: 0; flex-wrap: nowrap; justify-content: flex-end; }
+  .dale-mobile-menu { flex: 0 0 auto; }
+  .dale-mobile-menu[open] .dale-mobile-menu-panel {
+    position: fixed;
+    top: 4.5rem;
+    left: 1rem;
+    right: 1rem;
+    inline-size: auto;
+    max-inline-size: calc(100vw - 2rem);
+    max-block-size: calc(100dvh - 5rem);
+    overflow-y: auto;
+  }
+  .dale-site-footer nav[aria-label="Ayuda y enlaces legales"] {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    justify-content: start;
+    gap: .25rem .8rem;
+    width: 100%;
+  }
+  .dale-site-footer nav[aria-label="Ayuda y enlaces legales"] > * {
+    justify-self: start;
+    width: auto;
+  }
+  .dale-site-footer { padding-bottom: 6rem; }
+}
