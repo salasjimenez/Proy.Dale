@@ -39,7 +39,7 @@ check(layout.includes('<CreatorModal client:load />') && creator.includes('>Crea
 check(creator.includes('www.instagram.com/pitx29/'), 'Missing creator Instagram link');
 check(css.includes('Dale P2:') && css.includes('dale-site-footer'), 'Responsive QA fixes missing');
 check(production.includes('AUTH_COOKIE_SECURE') && production.includes('DATABASE_URL') && production.includes('PUBLIC_API_URL'), 'Missing production environment checks');
-check(get('README.md').includes('v0.16.4-P2'), 'README does not identify the patch');
+check(get('README.md').includes('## Estado actual') && get('README.md').includes(pkg.version), 'README must show the current stable version');
 check(get('docs/index.md').includes('etapa-16-4-parche-qa-p2.html'), 'QA documentation is not indexed');
 
 if (errors.length) {
