@@ -18,7 +18,7 @@ const layout = get('frontend/src/layouts/BaseLayout.astro');
 const css = get('frontend/src/styles/responsive.css');
 const production = get('scripts/check_production_readiness.mjs');
 
-check(pkg.version === '0.16.4', 'P2 must not change the stable semantic version');
+check(pkg.version === '0.16.5', 'P2 must not change the stable semantic version');
 check(pkg.scripts['qa:p2']?.includes('check_qa_p2.mjs'), 'Missing qa:p2 script');
 check(pkg.scripts['production:check']?.includes('check_production_readiness.mjs'), 'Missing production:check script');
 check(pkg.scripts['security:audit']?.includes('npm audit'), 'Missing audited-dependency gate');

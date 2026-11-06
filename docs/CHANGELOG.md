@@ -307,3 +307,12 @@ Todos los cambios relevantes de Dale se documentan en este archivo siguiendo ver
 - Backend Node.js + Express + TypeScript preparado para Prisma.
 - PostgreSQL local mediante Docker Compose.
 - Variables de entorno de ejemplo y reglas de exclusión de secretos.
+
+## [0.16.5] - Charmy, experiencia de bienvenida
+
+- Rediseño interactivo y responsive de inicio; seis casos reales antes de registro.
+- Mascota Charmy animada (WebP) con voz nativa optativa por SpeechSynthesis.
+- Introducción de hasta 5 minutos en `/probar`, con reconocimiento opcional de voz, respuesta escrita, 5 preguntas por caso, tiempo máximo y cierre hacia login/registro.
+- Catálogo completo en `/escenarios`, sin alterar sesiones ni endpoints existentes.
+- Pruebas y documentación para la nueva interfaz: `npm run ux:check`.
+- Sin cambios de PostgreSQL, SDK de IA, cookies nuevas ni dependencias de pago.

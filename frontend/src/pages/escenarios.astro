@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ScenarioCatalog from '../components/vue/ScenarioCatalog.vue';
+---
+<BaseLayout
+  title="Escenarios de entrenamiento | Dale"
+  description="Encuentra conversaciones reales para practicar entrevistas, presentaciones, situaciones sociales y trámites."
+>
+  <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="charmy-catalog-intro">
+      <span class="charmy-eyebrow">ENTRENAMIENTO A TU MEDIDA</span>
+      <h1>Elige tu próximo caso</h1>
+      <p>Explora situaciones reales. Puedes comenzar con <a href="/probar" class="charmy-inline-link">la prueba gratuita guiada por Charmy</a> o acceder a los entrenamientos completos con tu cuenta.</p>
+    </div>
+    <ScenarioCatalog client:load />
+  </section>
+</BaseLayout>

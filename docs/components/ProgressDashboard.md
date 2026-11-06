@@ -33,7 +33,7 @@ import ProgressDashboard from "../components/vue/ProgressDashboard.vue";
 
 {% endraw %}
 
-## Codigo fuente completo — v0.16.4
+## Codigo fuente completo — v0.16.5
 
 El siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre `ProgressDashboard.vue`.
 

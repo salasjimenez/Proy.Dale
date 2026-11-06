@@ -86,5 +86,5 @@ const dashboard = read("frontend/src/components/vue/VoiceAnalyticsDashboard.vue"
 check(dashboard.includes("hardVoiceOnly") && dashboard.includes("point.escenario.nivel.codigo"), "El dashboard no filtra dificultad real");
 check(dashboard.includes("repeticiones") || dashboard.includes("Repeticiones"), "No aparecen repeticiones en el dashboard");
 check(read("scripts/generar_docs_vue.mjs").includes("ScenarioSequence:"), "No están integradas las fichas de Vue");
-check(JSON.parse(read("package.json")).version === "0.16.4", "El parche cambió la versión principal");
+check(JSON.parse(read("package.json")).version === "0.16.5", "El parche cambió la versión principal");
 console.log(`Dale hard:check OK (${tests} pruebas): nivel Difícil, indicios de respuesta, pausas, voz y resultados.`);

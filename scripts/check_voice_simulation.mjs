@@ -72,6 +72,6 @@ const creator = read("frontend/src/components/vue/CreatorModal.vue");
 check(creator.includes("Jhonn Pether") && creator.includes("https://www.instagram.com/pitx29/"), "El creador no tiene datos correctos");
 check(creator.includes('aria-modal="true"') && creator.includes("Escape"), "El modal no es accesible");
 check(fs.statSync(path.join(root, "frontend/public-assets/creator-avatar.svg")).size > 200, "Falta avatar local");
-check(JSON.parse(read("package.json")).version === "0.16.4", "Version raiz incorrecta");
-check(read("backend/src/version.ts").includes('APP_VERSION = "0.16.4"'), "Version backend no coincide");
+check(JSON.parse(read("package.json")).version === "0.16.5", "Version raiz incorrecta");
+check(read("backend/src/version.ts").includes('APP_VERSION = "0.16.5"'), "Version backend no coincide");
 console.log(`Dale voice:check OK (${checks} aserciones): fases, presion, pausas acumuladas, transcript, resultados, analitica, creador y versiones.`);

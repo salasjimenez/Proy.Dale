@@ -4,6 +4,7 @@ import AccessibilityControls from "../components/vue/AccessibilityControls.vue";
 import CreatorModal from "../components/vue/CreatorModal.vue";
 import "../styles/global.css";
 import "../styles/responsive.css";
+import "../styles/charmy-v165.css";
 
 interface Props {
   title?: string;
@@ -46,87 +47,39 @@ const isAccount = pathname === "/cuenta";
     <meta name="description" content={description} />
     <meta name="theme-color" content="#172554" />
     <meta name="color-scheme" content="light" />
-    <link rel="icon" type="image/png" href="/DaleConTodoMiKing.png" />
+    <link rel="icon" type="image/png" href="/charmy/charmy-icon.webp" />
     <title>{title}</title>
   </head>
   <body>
     <a href="#contenido-principal" class="skip-link">Saltar al contenido principal</a>
 
     <div class="dale-site-shell min-h-screen text-slate-800">
-      <header class="dale-site-header sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur">
-        <div class="dale-header-inner mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-3 px-4 py-2 sm:px-6 lg:px-8">
-          <a href="/" class="dale-brand flex min-w-0 items-center gap-3" aria-label="Ir al inicio de Dale">
-            <img
-              src="/DaleConTodoMiKing.png"
-              alt="Dale"
-              class="h-10 w-10 shrink-0 rounded-xl object-cover shadow-sm"
-            />
-            <div class="hidden leading-tight xs:block sm:block">
-              <strong class="block text-lg font-black tracking-tight text-slate-950">Dale</strong>
-              <span class="hidden text-xs text-slate-500 md:block">Practica. Mide. Mejora.</span>
-            </div>
+      <header class="dale-site-header charmy-site-header sticky top-0 z-50">
+        <div class="dale-header-inner charmy-header-inner mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <a href="/" class="charmy-site-brand" aria-label="Ir al inicio de Dale">
+            <img src="/charmy/charmy-icon.webp" width="40" height="40" alt="" /> <span>Dale</span>
           </a>
-
-          <nav aria-label="Navegación principal" class="dale-primary-nav flex min-w-0 items-center gap-1 sm:gap-2">
-            <a
-              href="/entrenar"
-              aria-current={isTraining ? "page" : undefined}
-              class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition xl:inline-flex",
-                isTraining ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
-              ]}
-            >
-              Entrenar
-            </a>
-            <a
-              href="/#escenarios"
-              aria-current={isHome ? "page" : undefined}
-              class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition xl:inline-flex",
-                isHome ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
-              ]}
-            >
-              Escenarios
-            </a>
-            <a
-              href="/progreso"
-              aria-current={isProgress ? "page" : undefined}
-              class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition xl:inline-flex",
-                isProgress ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
-              ]}
-            >
-              Progreso
-            </a>
-            <a
-              href="/mapa"
-              aria-current={isMap ? "page" : undefined}
-              class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition xl:inline-flex",
-                isMap ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
-              ]}
-            >
-              Mapa
-            </a>
-            <a
-              href="/cuenta"
-              aria-current={isAccount ? "page" : undefined}
-              class:list={[
-                "hidden rounded-lg px-3 py-2 text-sm font-semibold transition xl:inline-flex",
-                isAccount ? "bg-slate-100 text-slate-950" : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
-              ]}
-            >
-              Mis prácticas
-            </a>
+          <nav class="charmy-header-links" aria-label="Navegación principal">
+            <a href="/" aria-current={isHome ? "page" : undefined}>Inicio</a>
+            <a href="/escenarios">Casos</a>
+            <a href="/entrenar" aria-current={isTraining ? "page" : undefined}>Entrenar</a>
+            <a href="/progreso" aria-current={isProgress ? "page" : undefined}>Resultados</a>
+            <a href="/analisis-voz">Analítica de voz</a>
+          </nav>
+          <nav class="dale-primary-nav" aria-label="Accesos de usuario">
+            <a class="charmy-nav-demo" href="/probar">Probar gratis</a>
             <details class="dale-mobile-menu relative xl:hidden">
-              <summary class="flex min-h-11 cursor-pointer list-none items-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-bold text-slate-900 focus-visible:outline focus-visible:outline-4 focus-visible:outline-blue-700">Menú</summary>
-              <nav aria-label="Navegación móvil" class="dale-mobile-menu-panel absolute right-0 top-full z-50 mt-2 flex w-[min(18rem,calc(100vw-2rem))] flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl">
-                <a href="/entrenar" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Preparar entrenamiento</a>
-                <a href="/#escenarios" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Todos los escenarios</a>
-                <a href="/progreso" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Mi progreso</a>
-                <a href="/analisis-voz" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Analítica de voz</a>
-                <a href="/mapa" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Mapa</a>
-                <a href="/cuenta" class="rounded-lg px-4 py-3 font-bold text-slate-900 hover:bg-blue-50">Mis prácticas</a>
+              <summary aria-label="Abrir navegación móvil">☰ Menú</summary>
+              <nav aria-label="Navegación móvil" class="dale-mobile-menu-panel">
+                <a href="/probar">Probar con Charmy</a>
+                <a href="/escenarios">Elegir caso</a>
+                <a href="/entrenar">Preparar entrenamiento</a>
+                <a href="/progreso">Mi progreso</a>
+                <a href="/analisis-voz">Analítica de voz</a>
+                <a href="/mapa" aria-current={isMap ? "page" : undefined}>Mapa</a>
+                <a href="/cuenta" aria-current={isAccount ? "page" : undefined}>Mis prácticas</a>
+                <a href="/login">Iniciar sesión</a>
+                <a href="/registro">Crear cuenta</a>
               </nav>
             </details>
             <div class="dale-auth-slot"><AuthNav client:load /></div>
@@ -145,18 +98,15 @@ const isAccount = pathname === "/cuenta";
         <slot />
       </main>
 
-      <footer class="dale-site-footer mt-16 border-t border-slate-200 bg-white">
-        <div class="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-8 text-sm text-slate-600 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-          <div>
-            <p class="font-semibold text-slate-900">Dale</p>
-            <p>Plataforma gratuita y abierta para practicar comunicación en situaciones reales.</p>
-          </div>
-          <nav aria-label="Ayuda y enlaces legales" class="flex flex-wrap gap-x-5 gap-y-2">
-            <a href="/?guia=1" class="font-medium hover:text-slate-950">Guía inicial</a>
-            <a href="/privacidad" class="font-medium hover:text-slate-950">Privacidad</a>
-            <a href="/terminos" class="font-medium hover:text-slate-950">Términos</a>
-            <a href="/cookies" class="font-medium hover:text-slate-950">Cookies</a>
-            <a href="/analisis-voz" class="font-medium hover:text-slate-950">Analítica de voz</a>
+      <footer class="dale-site-footer charmy-footer">
+        <div class="charmy-footer-inner">
+          <div class="charmy-footer-brand"><strong>Dale</strong><p>Entrena conversaciones reales con Charmy. Una introducción gratuita antes de crear una cuenta.</p></div>
+          <nav class="charmy-footer-links" aria-label="Ayuda y enlaces legales">
+            <a href="/probar">Guía inicial</a>
+            <a href="/privacidad">Privacidad</a>
+            <a href="/terminos">Términos</a>
+            <a href="/cookies">Cookies</a>
+            <a href="/analisis-voz">Analítica de voz</a>
             <CreatorModal client:load />
           </nav>
         </div>

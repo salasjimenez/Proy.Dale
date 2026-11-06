@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * Dale v0.16.4. Documentacion de componentes Vue generada desde el codigo fuente.
+ * Dale v0.16.5. Documentacion de componentes Vue generada desde el codigo fuente.
  * Node.js nativo: no agrega dependencias.
  * Uso: node scripts/generar_docs_vue.mjs --write | --check
  */
@@ -39,6 +39,18 @@ function astro(name, markup, client = true) {
 }
 
 const metadata = {
+  CharmyTrial: {
+    description: 'Introducción guiada sin registro: selector de seis casos, máximo cinco minutos, voz por SpeechSynthesis y respuesta mediante Web Speech o texto.',
+    interface: 'Sin props ni eventos. Lee /probar?caso=slug. Al terminar ofrece registro o login.',
+    examples: [{ title: 'Ruta pública de prueba (Astro)', language: 'astro', source: astro('CharmyTrial', '') }],
+    notes: ['Las respuestas de invitado solo existen en memoria; no se transmiten a Dale ni se guardan tras registrar la cuenta.', 'El reconocimiento por voz puede usar servicios externos del proveedor del navegador.', 'No usa IA generativa, analiza solo la extensión de las respuestas.'],
+  },
+  CharmyWelcome: {
+    description: 'Presentación animada de Charmy en la portada con síntesis de voz opcional al hacer clic.',
+    interface: 'Sin props ni eventos. Controles de inicio y parada de voz.',
+    examples: [{ title: 'Portada (Astro)', language: 'astro', source: astro('CharmyWelcome', '') }],
+    notes: ['La reproducción de voz requiere interacción del usuario.', 'Usa una imagen alternativa estática con prefers-reduced-motion.'],
+  },
   CreatorModal: {
     description: 'Modal accesible del creador con avatar ilustrado, nombre Jhonn Pether y enlace a Instagram @pitx29.',
     interface: 'Sin props ni eventos. Se abre con el boton Creador del pie de pagina.',
@@ -189,12 +201,12 @@ for (const filename of componentFiles) {
   ).join('\n');
   const dependencies = links.length ? links.map(link => `- ${link}`).join('\n') : 'No utiliza archivos locales adicionales.';
   const notes = spec.notes.map(note => `- ${note}`).join('\n');
-  const body = `---\nlayout: default\ntitle: "${name}.vue | Dale"\n---\n\n# ${name}.vue\n\n${spec.description}\n\n**Archivo fuente:** \`frontend/src/components/vue/${filename}\`  \n**Interfaz:** ${spec.interface}\n\n## Requisitos y dependencias\n\n${dependencies}\n\nEn Dale se usa Astro + Vue + Tailwind CSS. Los imports relativos del codigo completo suponen la estructura original \`frontend/src\`; copia tambien las dependencias indicadas o adapta esas rutas a tu proyecto. Para las islas Astro, \`client:load\` habilita la interaccion en el navegador.\n\n## Ejemplos de uso\n\n${examples}\n## Codigo fuente completo — v0.16.4\n\nEl siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre \`${filename}\`.\n\n${fenced('vue', source)}\n\n## Consideraciones\n\n${notes}\n\nConsulta [todos los componentes](index.html) y el [codigo auxiliar reutilizable](../codigo/index.html).\n`;
+  const body = `---\nlayout: default\ntitle: "${name}.vue | Dale"\n---\n\n# ${name}.vue\n\n${spec.description}\n\n**Archivo fuente:** \`frontend/src/components/vue/${filename}\`  \n**Interfaz:** ${spec.interface}\n\n## Requisitos y dependencias\n\n${dependencies}\n\nEn Dale se usa Astro + Vue + Tailwind CSS. Los imports relativos del codigo completo suponen la estructura original \`frontend/src\`; copia tambien las dependencias indicadas o adapta esas rutas a tu proyecto. Para las islas Astro, \`client:load\` habilita la interaccion en el navegador.\n\n## Ejemplos de uso\n\n${examples}\n## Codigo fuente completo — v0.16.5\n\nEl siguiente bloque reproduce el archivo Vue actual sin omisiones funcionales. Puedes copiarlo sobre \`${filename}\`.\n\n${fenced('vue', source)}\n\n## Consideraciones\n\n${notes}\n\nConsulta [todos los componentes](index.html) y el [codigo auxiliar reutilizable](../codigo/index.html).\n`;
   expected.set(path.join(componentDir, `${name}.md`), normalize(body));
 }
 
 const compList = componentNames.map(name => `- [${name}.vue](${name}.html): ${metadata[name].description}`).join('\n');
-expected.set(path.join(componentDir, 'index.md'), normalize(`---\nlayout: default\ntitle: "Catalogo Vue | Dale"\n---\n\n# Catalogo de componentes Vue\n\nDocumentacion de los **${componentNames.length} componentes Vue reales** de Dale v0.16.4, generada directamente desde \`frontend/src/components/vue/\` sin recortar el codigo.\n\n${compList}\n\n## Como copiar e integrar\n\n1. Copia el bloque de codigo completo del componente a \`frontend/src/components/vue/\`.\n2. Copia los archivos TypeScript que aparezcan en **Requisitos y dependencias**, desde [Codigo auxiliar](../codigo/index.html).\n3. En Astro, importa el componente y agrega \`client:load\` cuando necesite interaccion.\n4. Configura \`PUBLIC_API_URL\` para que apunte a tu backend y ejecuta las migraciones si una funcionalidad las necesita.\n5. Comprueba los endpoints del backend y las restricciones de autenticacion.\n\nLos componentes conectados a la API no son demos aisladas: requieren backend Express, sesion y tipos correspondientes. Copiar solo el archivo \`.vue\` no reemplaza esos servicios.\n\n## Evitar desactualizacion\n\n- \`npm run docs:sync\`: regenera las paginas desde el codigo fuente.\n- \`npm run docs:check\`: verifica que los bloques documentados sean identicos al codigo.\n\nNo se agregan paquetes ni servicios externos para documentar los componentes.\n`));
+expected.set(path.join(componentDir, 'index.md'), normalize(`---\nlayout: default\ntitle: "Catalogo Vue | Dale"\n---\n\n# Catalogo de componentes Vue\n\nDocumentacion de los **${componentNames.length} componentes Vue reales** de Dale v0.16.5, generada directamente desde \`frontend/src/components/vue/\` sin recortar el codigo.\n\n${compList}\n\n## Como copiar e integrar\n\n1. Copia el bloque de codigo completo del componente a \`frontend/src/components/vue/\`.\n2. Copia los archivos TypeScript que aparezcan en **Requisitos y dependencias**, desde [Codigo auxiliar](../codigo/index.html).\n3. En Astro, importa el componente y agrega \`client:load\` cuando necesite interaccion.\n4. Configura \`PUBLIC_API_URL\` para que apunte a tu backend y ejecuta las migraciones si una funcionalidad las necesita.\n5. Comprueba los endpoints del backend y las restricciones de autenticacion.\n\nLos componentes conectados a la API no son demos aisladas: requieren backend Express, sesion y tipos correspondientes. Copiar solo el archivo \`.vue\` no reemplaza esos servicios.\n\n## Evitar desactualizacion\n\n- \`npm run docs:sync\`: regenera las paginas desde el codigo fuente.\n- \`npm run docs:check\`: verifica que los bloques documentados sean identicos al codigo.\n\nNo se agregan paquetes ni servicios externos para documentar los componentes.\n`));
 
 for (const srcPath of supportFiles) {
   const name = supportPage(srcPath);

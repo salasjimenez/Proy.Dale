@@ -48,3 +48,7 @@ Consulta [redisenio de la portada y selector de entrenamientos](etapa-16-1-redis
 ## QA previo a producción (v0.16.4-P2)
 
 [Matriz de hallazgos, remediaciones y puertas de salida](etapa-16-4-parche-qa-p2.html).
+
+## Dale v0.16.5
+
+[Charmy, portada dinámica y prueba sin registro](etapa-16-5-charmy-experiencia.html).

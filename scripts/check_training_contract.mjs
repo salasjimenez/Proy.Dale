@@ -49,7 +49,8 @@ const practice = read("frontend/src/components/vue/PracticeSimulator.vue");
 const layout = read("frontend/src/layouts/BaseLayout.astro");
 const page = read("frontend/src/pages/entrenar.astro");
 const sourceGenerator = read("scripts/generar_docs_vue.mjs");
-check(home.includes("<TrainingPlanner client:load />") && home.includes("<ScenarioCatalog client:load />"), "Portada sin planificador o sin catálogo de escenarios");
+check(home.includes("<CharmyWelcome client:load />") && home.includes("CHARMY_CASES.map"), "La portada debe presentar a Charmy y los casos");
+check(read("frontend/src/pages/escenarios.astro").includes("<ScenarioCatalog client:load />"), "Catálogo completo no disponible");
 check(page.includes("<TrainingPlanner client:load />"), "Falta /entrenar");
 check(planner.includes("trainingHref(") && planner.includes("shortSession"), "Selector no conecta entrenamiento breve con práctica");
 check(practice.includes("shortSession") && practice.includes("remainingTimeLabel"), "Simulador sin seguimiento de tiempo");
@@ -57,8 +58,8 @@ check(practice.includes("recommendNextStage") && practice.includes("focusSuggest
 check(practice.includes("finishVoicePractice") && practice.includes("finishTextPractice"), "Se alteró una modalidad de práctica");
 check(layout.includes("Navegación móvil") && layout.includes('href="/entrenar"'), "Falta navegación de entrenamiento en móvil");
 check(sourceGenerator.includes("TrainingPlanner:"), "Falta la ficha generada de TrainingPlanner en /docs");
-check(JSON.parse(read("package.json")).version === "0.16.4", "La versión raíz no es 0.16.4");
-check(read("backend/src/version.ts").includes('APP_VERSION = "0.16.4"'), "El health backend tiene versión distinta");
+check(JSON.parse(read("package.json")).version === "0.16.5", "La versión raíz no es 0.16.5");
+check(read("backend/src/version.ts").includes('APP_VERSION = "0.16.5"'), "El health backend tiene versión distinta");
 
 if (errors.length) {
   console.error(`Dale training:check FALLÓ (${errors.length} hallazgos)`);
